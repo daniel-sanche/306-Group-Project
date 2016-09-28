@@ -11,16 +11,21 @@ public class TileGenerator : MonoBehaviour {
 
 	public GameObject grass;
 	public GameObject gravel;
+	private Transform boardHolder; 
 
 	// Use this for initialization
 	public void GenerateLevel () {
+		boardHolder = new GameObject ("BoardTiles").transform;
 		for (int y = 0; y < rows; y++) {
 			for(int x=0; x<cols; x++){
+				GameObject toInstantiate;
 				if (Random.value >= 0.5) {
-					Instantiate (grass, new Vector3 (x, y, 0), Quaternion.identity);
+					toInstantiate = grass;
 				} else {
-					Instantiate (gravel, new Vector3 (x, y, 0), Quaternion.identity);
+					toInstantiate = gravel;
 				}
+				GameObject instance = Instantiate (toInstantiate, new Vector3 (x, y, 0), Quaternion.identity) as GameObject;
+				instance.transform.SetParent (boardHolder);
 			}
 		}
 	}
