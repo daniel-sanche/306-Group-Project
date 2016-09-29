@@ -18,9 +18,8 @@ public class TileRenderer : MonoBehaviour {
 	public GameObject grass;
 	public GameObject gravel;
 
-	private Transform boardHolder; 
+	public static Transform heading; 
 	private TileChunk [,] chunkMatrix;
-
 
 
 	/**
@@ -61,6 +60,7 @@ public class TileRenderer : MonoBehaviour {
 	 * Called when the script is first initialized
 	 **/
 	void Awake () {
+		heading = new GameObject ("Tiles").transform;
 		InitMap ();
 	}
 

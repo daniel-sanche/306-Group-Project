@@ -20,7 +20,7 @@ public class TileGenerator : MonoBehaviour {
 		int[,] tileMap = new int[xSize, ySize];
 		for(int x=0; x<xSize; x++){
 			for(int y=0; y<ySize; y++){
-				if (Random.value >= 0.5) {
+				if (Random.value >= 0.15) {
 					tileMap [x, y] = 0;
 				} else {
 					tileMap [x, y] = 1;

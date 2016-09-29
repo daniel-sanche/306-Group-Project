@@ -80,6 +80,7 @@ public class TileChunk : MonoBehaviour {
 					GameObject groundTile = tileRenderer.SpriteForCode (code);
 					GameObject instance = Instantiate (groundTile, new Vector3 (topLeftCorner.x + x, topLeftCorner.y + y, 0), Quaternion.identity) as GameObject;
 					tileList.Add (instance);
+					instance.transform.SetParent (TileRenderer.heading);
 				}
 			}
 			isRendered = true;
