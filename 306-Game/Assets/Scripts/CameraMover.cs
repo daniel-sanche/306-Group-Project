@@ -20,6 +20,7 @@ public class CameraMover : MonoBehaviour {
 
 	void Awake () {
 		generator = gameObject.GetComponent<TileGenerator> () as TileGenerator;
+		generator.SetActiveChunk (0, 0);
 	}
 
 
@@ -53,6 +54,6 @@ public class CameraMover : MonoBehaviour {
 			maxY = (chunkNumY+1) * TileChunk.chunkSizeY;
 			generator.SetActiveChunk (chunkNumX, chunkNumY);
 		}
-		Debug.Log (chunkNumX + ", " + chunkNumY);
+		//Debug.Log (chunkNumX + ", " + chunkNumY);
 	}
 }
