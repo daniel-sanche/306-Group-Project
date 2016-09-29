@@ -19,7 +19,7 @@ public class TileGenerator : MonoBehaviour {
 	}
 
 
-	public TileChunk GetChunk () {
+	public TileChunk GetChunk (int x, int y) {
 		boardHolder = new GameObject ("Tiles").transform;
 		List<GameObject> tileList = new List<GameObject> ();
 		for (int y = 0; y < rows; y++) {
