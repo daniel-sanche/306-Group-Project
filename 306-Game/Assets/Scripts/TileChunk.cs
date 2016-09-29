@@ -4,8 +4,6 @@ using System.Collections.Generic;
 [System.Serializable]
 public class TileChunk : MonoBehaviour {
 
-	public static int chunkSizeX = 20;
-	public static int chunkSizeY = 10;
 
 	private int [,] terrainMap;
 	private List<GameObject> tileList;
@@ -19,10 +17,10 @@ public class TileChunk : MonoBehaviour {
 
 
 	public void InitChunk(int [,] terrain, int x, int y){
-		terrainMap = terrain;
-		topLeftCorner = new Vector2 (x*chunkSizeX, y*chunkSizeY);
-		tileList = new List<GameObject> ();
 		generator = GetComponent<TileGenerator> ();
+		terrainMap = terrain;
+		topLeftCorner = new Vector2 (x*generator.TilesPerChunkX, y*generator.TilesPerChunkY);
+		tileList = new List<GameObject> ();
 		connectedChunks = new List<TileChunk>();
 		distantChunks = new List<TileChunk>();
 	}
@@ -31,11 +29,9 @@ public class TileChunk : MonoBehaviour {
 		Render ();
 		foreach (TileChunk thisNeighbour in connectedChunks) {
 			thisNeighbour.Render ();
-			Debug.Log ("Added " + thisNeighbour.topLeftCorner.x / chunkSizeX + ", " + thisNeighbour.topLeftCorner.y / chunkSizeY);
 		}
 		foreach (TileChunk distantChunk in distantChunks) {
 			distantChunk.Remove ();
-			Debug.Log ("Removed " + distantChunk.topLeftCorner.x / chunkSizeX + ", " + distantChunk.topLeftCorner.y / chunkSizeY);
 		}
 	}
 
@@ -51,8 +47,8 @@ public class TileChunk : MonoBehaviour {
 	private void Render() {
 		if (!isRendered) {
 			tileList.Clear ();
-			for (int x = 0; x < chunkSizeX; x++) {
-				for (int y = 0; y < chunkSizeY; y++) {
+			for (int x = 0; x < generator.TilesPerChunkX; x++) {
+				for (int y = 0; y < generator.TilesPerChunkY; y++) {
 					int code = terrainMap [x, y];
 					GameObject groundTile = generator.SpriteForCode (code);
 					GameObject instance = Instantiate (groundTile, new Vector3 (topLeftCorner.x + x, topLeftCorner.y + y, 0), Quaternion.identity) as GameObject;

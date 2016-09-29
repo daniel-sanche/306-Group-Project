@@ -6,19 +6,23 @@ using Random = UnityEngine.Random;
 [System.Serializable]
 public class TileGenerator : MonoBehaviour {
 
-	private static Transform boardHolder; 
 
-	public TileChunk [,] chunkList;
+	public int NumChunksX = 30;
+	public int NumChunksY = 30;
+
+	public int TilesPerChunkX = 15;
+	public int TilesPerChunkY = 10;
+
 	public GameObject grass;
 	public GameObject gravel;
 
-	public static int rows = 10;
-	public static int cols = 10;
+	private Transform boardHolder; 
+	private TileChunk [,] chunkList;
 
 	void Awake () {
-		int[,] tileMap = new int[TileChunk.chunkSizeX, TileChunk.chunkSizeY];
-		for(int x=0; x<TileChunk.chunkSizeX; x++){
-			for(int y=0; y<TileChunk.chunkSizeY; y++){
+		int[,] tileMap = new int[TilesPerChunkX, TilesPerChunkY];
+		for(int x=0; x<TilesPerChunkX; x++){
+			for(int y=0; y<TilesPerChunkY; y++){
 				if (Random.value >= 0.5) {
 					tileMap [x, y] = 0;
 				} else {
@@ -27,9 +31,9 @@ public class TileGenerator : MonoBehaviour {
 			}
 		}
 
-		chunkList = new TileChunk[rows, cols];
-		for(int y=0; y<rows; y++){
-			for(int x=0; x<cols; x++){
+		chunkList = new TileChunk[NumChunksX, NumChunksY];
+		for(int y=0; y<NumChunksX; y++){
+			for(int x=0; x<NumChunksY; x++){
 				TileChunk newChunk = gameObject.AddComponent<TileChunk> () as TileChunk;
 				newChunk.InitChunk(tileMap, x, y);
 				chunkList [x, y] = newChunk;
@@ -37,7 +41,7 @@ public class TileGenerator : MonoBehaviour {
 					for (int j = -2; j <= 0; j++) {
 						int newX = x + i;
 						int newY = y + j;
-						if (newX >= 0 && newX < cols && newY >= 0 && newY < rows && (i != 0 || j != 0) && (newX < x || newY < y)) {
+						if (newX >= 0 && newX < NumChunksY && newY >= 0 && newY < NumChunksX && (i != 0 || j != 0) && (newX < x || newY < y)) {
 							TileChunk closeChunk = chunkList [newX, newY];
 							float absI = Mathf.Abs (i);
 							float absJ = Mathf.Abs (j);
@@ -57,7 +61,7 @@ public class TileGenerator : MonoBehaviour {
 
 
 	public void SetActiveChunk(int activeX, int activeY){
-		if (activeX >= 0 && activeX < cols && activeY >= 0 && activeY < rows) {
+		if (activeX >= 0 && activeX < NumChunksY && activeY >= 0 && activeY < NumChunksX) {
 			TileChunk newChunk = chunkList [activeX, activeY];
 			newChunk.Activate ();
 		}
