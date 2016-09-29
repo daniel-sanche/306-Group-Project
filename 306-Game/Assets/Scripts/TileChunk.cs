@@ -8,7 +8,7 @@ public class TileChunk : MonoBehaviour {
 	private int [,] terrainMap;
 	private List<GameObject> tileList;
 	private Vector2 topLeftCorner;
-	private TileGenerator generator;
+	private TileRenderer tileRenderer;
 
 	private bool isRendered = false;
 
@@ -17,9 +17,9 @@ public class TileChunk : MonoBehaviour {
 
 
 	public void InitChunk(int [,] terrain, int x, int y){
-		generator = GetComponent<TileGenerator> ();
+		tileRenderer = GetComponent<TileRenderer> ();
 		terrainMap = terrain;
-		topLeftCorner = new Vector2 (x*generator.TilesPerChunkX, y*generator.TilesPerChunkY);
+		topLeftCorner = new Vector2 (x*tileRenderer.TilesPerChunk.x, y*(int)tileRenderer.TilesPerChunk.y);
 		tileList = new List<GameObject> ();
 		connectedChunks = new List<TileChunk>();
 		distantChunks = new List<TileChunk>();
@@ -47,10 +47,10 @@ public class TileChunk : MonoBehaviour {
 	private void Render() {
 		if (!isRendered) {
 			tileList.Clear ();
-			for (int x = 0; x < generator.TilesPerChunkX; x++) {
-				for (int y = 0; y < generator.TilesPerChunkY; y++) {
+			for (int x = 0; x < tileRenderer.TilesPerChunk.x; x++) {
+				for (int y = 0; y < tileRenderer.TilesPerChunk.y; y++) {
 					int code = terrainMap [x, y];
-					GameObject groundTile = generator.SpriteForCode (code);
+					GameObject groundTile = tileRenderer.SpriteForCode (code);
 					GameObject instance = Instantiate (groundTile, new Vector3 (topLeftCorner.x + x, topLeftCorner.y + y, 0), Quaternion.identity) as GameObject;
 					tileList.Add (instance);
 				}

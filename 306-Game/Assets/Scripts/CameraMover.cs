@@ -14,13 +14,13 @@ public class CameraMover : MonoBehaviour {
 	private int maxY = 0;
 
 
-	private TileGenerator generator;
+	private TileRenderer tileRenderer;
 
 	void Awake () {
-		generator = gameObject.GetComponent<TileGenerator> () as TileGenerator;
-		generator.SetActiveChunk (0, 0);
-		maxX = generator.TilesPerChunkX;
-		maxY = generator.TilesPerChunkY;
+		tileRenderer = gameObject.GetComponent<TileRenderer> () as TileRenderer;
+		tileRenderer.SetActiveChunk (0, 0);
+		maxX = (int)tileRenderer.TilesPerChunk.x;
+		maxY = (int)tileRenderer.TilesPerChunk.y;
 	}
 
 
@@ -46,13 +46,13 @@ public class CameraMover : MonoBehaviour {
 
 		Vector3 newPos = this.transform.position;
 		if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
-			int chunkNumX = (int)Mathf.Floor (newPos.x / generator.TilesPerChunkX);
-			minX = chunkNumX * generator.TilesPerChunkX;
-			maxX = (chunkNumX+1) * generator.TilesPerChunkX;
-			int chunkNumY = (int)Mathf.Floor (newPos.y / generator.TilesPerChunkY);
-			minY = chunkNumY * generator.TilesPerChunkY;
-			maxY = (chunkNumY+1) * generator.TilesPerChunkY;
-			generator.SetActiveChunk (chunkNumX, chunkNumY);
+			int chunkNumX = (int)Mathf.Floor (newPos.x / tileRenderer.TilesPerChunk.x);
+			minX = chunkNumX * (int)tileRenderer.TilesPerChunk.x;
+			maxX = (chunkNumX+1) * (int)tileRenderer.TilesPerChunk.x;
+			int chunkNumY = (int)Mathf.Floor (newPos.y / tileRenderer.TilesPerChunk.y);
+			minY = chunkNumY * (int)tileRenderer.TilesPerChunk.y;
+			maxY = (chunkNumY+1) * (int)tileRenderer.TilesPerChunk.y;
+			tileRenderer.SetActiveChunk (chunkNumX, chunkNumY);
 		}
 	}
 }
