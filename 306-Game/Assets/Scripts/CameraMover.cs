@@ -5,6 +5,7 @@ using System;
 public class CameraMover : MonoBehaviour {
 	/**
 	 * very simple script that lets us move the camera around with the arrow keys
+	 * As the camera moves, it activates the TileChunk that is cenered in the view
 	 * Useful for early testing, but can likely be deleted later
 	 */
 
@@ -46,6 +47,7 @@ public class CameraMover : MonoBehaviour {
 
 		Vector3 newPos = this.transform.position;
 		if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
+			//changing active chunk of tiles
 			int chunkNumX = (int)Mathf.Floor (newPos.x / tileRenderer.TilesPerChunk.x);
 			minX = chunkNumX * (int)tileRenderer.TilesPerChunk.x;
 			maxX = (chunkNumX+1) * (int)tileRenderer.TilesPerChunk.x;

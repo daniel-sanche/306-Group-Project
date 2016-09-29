@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class TileChunk : MonoBehaviour {
+	/**
+	 * This class represents a group of tiles chunked together so they can be loaded/released from memory as a unit
+	 * Each chunk represents approximately screen's visible region
+	 * As the player moves around, the chunk in the screen's center will be the active chunk
+	 * The active chunk will render it's neighbours so transition is seamless, and tell chunks further away to remove themselves from the view
+	 **/
 
 
 	private int [,] terrainMap;
@@ -15,7 +21,12 @@ public class TileChunk : MonoBehaviour {
 	private List<TileChunk> connectedChunks;
 	private List<TileChunk> distantChunks;
 
-
+	/**
+	 * Creates a new chunk of tiles
+	 * terrain = array of tileIDs
+	 * x = the x coordinate of the tile in the overall matrix of tiles
+	 * y = the y coordinate of the tile in the overall matrix of tiles
+	 */
 	public void InitChunk(int [,] terrain, int x, int y){
 		tileRenderer = GetComponent<TileRenderer> ();
 		terrainMap = terrain;
@@ -25,6 +36,11 @@ public class TileChunk : MonoBehaviour {
 		distantChunks = new List<TileChunk>();
 	}
 
+	/**
+	 * Sets the chunk as active
+	 * Should be called when the chunk is the one in the center of the screen
+	 * Renders the chunk and it's neighbours, and tells further chunk to remove themselves from memory
+	 **/
 	public void Activate(){
 		Render ();
 		foreach (TileChunk thisNeighbour in connectedChunks) {
@@ -35,15 +51,26 @@ public class TileChunk : MonoBehaviour {
 		}
 	}
 
+
+	/**
+	 * Adds the chunk to the list of neighbours that are rendered when this chunk becomes active
+	 * newChunk = the chunk to add to the list of neighbours
+	 **/
 	public void AddConnectedChunk(TileChunk newChunk){
 		connectedChunks.Add (newChunk);
 	}
 
+	/**
+	 * Adds the chunk to the list of distant chunks that are told to remove themselves when this chunk becomes active
+	 * newChunk = the chunk to add to the list of distant chunks
+	 **/
 	public void AddDistantChunk(TileChunk newChunk){
 		distantChunks.Add (newChunk);
 	}
 
-
+	/**
+	 * render's the tiles in the chunk on screen
+	 **/
 	private void Render() {
 		if (!isRendered) {
 			tileList.Clear ();
@@ -59,6 +86,9 @@ public class TileChunk : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * removes the tiles rendered by this chunk from the screen
+	 **/
 	private void Remove () {
 		if (isRendered) {
 			foreach (GameObject thisTile in tileList) {

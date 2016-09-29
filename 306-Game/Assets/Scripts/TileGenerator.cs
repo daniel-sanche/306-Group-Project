@@ -3,10 +3,19 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-[System.Serializable]
 public class TileGenerator : MonoBehaviour {
+	/**
+	 * This class is responsible for procedurally generating the island
+	 * All functions should be static
+	 **/
 
 
+	/**
+	 *	Generates a map of pixels representing the island
+	 *  xSize = horizontal size of map
+	 *	ySize = vertical size of map
+	 *	returns an array of numbers where each number represents the terrain at that space
+	**/
 	public static int[,] GenerateTileMap(int xSize, int ySize){
 		int[,] tileMap = new int[xSize, ySize];
 		for(int x=0; x<xSize; x++){
