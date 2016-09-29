@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Slot : MonoBehaviour {
 
@@ -57,6 +58,6 @@ public class Slot : MonoBehaviour {
 	/// </summary>
 	/// <param name="sprite">The sprite to render.</param>
 	public void setSprite(Sprite sprite){
-		GetComponent<SpriteRenderer> ().sprite = sprite;		
+		GetComponentInChildren<Image> ().sprite = sprite;		
 	}
 }
