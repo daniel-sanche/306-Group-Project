@@ -21,22 +21,40 @@ public class TileRenderer : MonoBehaviour {
 	public static Transform heading; 
 	private TileChunk [,] chunkMatrix;
 
+	//these variables are for changing the active  chunk
+	private int minX = 0;
+	private int maxX = 0;
+	private int minY = 0;
+	private int maxY = 0;
 
 	/**
-	 * Sets the chunk at the current location as active
-	 * The active chuk and its neighbours will be rendered on screen
-	 * activeX = the X position of the new active chunk
-	 * activeY = the Y position of the new active chunk
+	 * Called when the script is first initialized
 	 **/
-	public void SetActiveChunk(int activeX, int activeY){
-		if (chunkMatrix == null) {
-			InitMap ();
-		}
-		if (activeX >= 0 && activeX < NumChunks.x && activeY >= 0 && activeY < NumChunks.y) {
-			TileChunk newChunk = chunkMatrix [activeX, activeY];
-			newChunk.Activate ();
+	void Awake(){
+		maxX = (int)TilesPerChunk.x;
+		maxY = (int)TilesPerChunk.y;
+		InitMap ();
+		SetActiveChunk (0, 0);
+	}
+
+	/**
+	 * Called on a continuous loop
+	 * Will check the current position of the camera, and render new chunks if necessary
+	 **/
+	void Update(){
+		Vector3 newPos = this.transform.position;
+		if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
+			//changing active chunk of tiles
+			int chunkNumX = (int)Mathf.Floor (newPos.x / TilesPerChunk.x);
+			minX = chunkNumX * (int)TilesPerChunk.x;
+			maxX = (chunkNumX+1) * (int)TilesPerChunk.x;
+			int chunkNumY = (int)Mathf.Floor (newPos.y / TilesPerChunk.y);
+			minY = chunkNumY * (int)TilesPerChunk.y;
+			maxY = (chunkNumY+1) * (int)TilesPerChunk.y;
+			SetActiveChunk (chunkNumX, chunkNumY);
 		}
 	}
+
 
 	/**
 	 * Converts between tile id's and the actual game objects they represent
@@ -58,6 +76,20 @@ public class TileRenderer : MonoBehaviour {
 	 * Helper Functions
 	 * --------------------------------------------------------------------------------------------------------------------------------------------
 	 **/
+
+	/**
+	* Sets the chunk at the current location as active
+	* The active chuk and its neighbours will be rendered on screen
+	* activeX = the X position of the new active chunk
+	* activeY = the Y position of the new active chunk
+	**/
+	private void SetActiveChunk(int activeX, int activeY){
+		if (activeX >= 0 && activeX < NumChunks.x && activeY >= 0 && activeY < NumChunks.y) {
+			TileChunk newChunk = chunkMatrix [activeX, activeY];
+			newChunk.Activate ();
+		}
+	}
+		
 
 	/**
 	 * Initial map set up
