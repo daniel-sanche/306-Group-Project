@@ -29,6 +29,9 @@ public class TileRenderer : MonoBehaviour {
 	 * activeY = the Y position of the new active chunk
 	 **/
 	public void SetActiveChunk(int activeX, int activeY){
+		if (chunkMatrix == null) {
+			InitMap ();
+		}
 		if (activeX >= 0 && activeX < NumChunks.x && activeY >= 0 && activeY < NumChunks.y) {
 			TileChunk newChunk = chunkMatrix [activeX, activeY];
 			newChunk.Activate ();
@@ -57,18 +60,11 @@ public class TileRenderer : MonoBehaviour {
 	 **/
 
 	/**
-	 * Called when the script is first initialized
-	 **/
-	void Awake () {
-		heading = new GameObject ("Tiles").transform;
-		InitMap ();
-	}
-
-	/**
 	 * Initial map set up
 	 * Calls on TileGenerator to create a map, then generates chunks from the map
 	 **/
 	private void InitMap(){
+		heading = new GameObject ("Tiles").transform;
 		int[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y);
 		chunkMatrix = ChunksFromTileMap (tileMap, NumChunks, TilesPerChunk);
 	}
