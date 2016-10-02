@@ -5,7 +5,6 @@ using System;
 public class CameraMover : MonoBehaviour {
 	/**
 	 * very simple script that lets us move the camera around with the arrow keys
-	 * As the camera moves, it activates the TileChunk that is cenered in the view
 	 * Useful for early testing, but can likely be deleted later
 	 */
 
@@ -13,20 +12,17 @@ public class CameraMover : MonoBehaviour {
 	void Update()
 	{
 		Vector3 oldPos = this.transform.position;
-		if(Input.GetKey(KeyCode.RightArrow))
-		{
+		float h = Input.GetAxis ("Horizontal");
+		float v = Input.GetAxis ("Vertical");
+
+		if (h>0) {
 			transform.position = new Vector3(oldPos.x + 1,oldPos.y,oldPos.z);
-		}
-		if(Input.GetKey(KeyCode.LeftArrow))
-		{
+		} else if(h<0) {
 			transform.position = new Vector3(oldPos.x -1,oldPos.y,oldPos.z);
 		}
-		if(Input.GetKey(KeyCode.DownArrow))
-		{
+		if (v<0) {
 			transform.position = new Vector3(oldPos.x, oldPos.y-1,oldPos.z);
-		}
-		if(Input.GetKey(KeyCode.UpArrow))
-		{
+		} else if(v>0) {
 			transform.position = new Vector3(oldPos.x,oldPos.y+1,oldPos.z);
 		}
 	}
