@@ -15,8 +15,7 @@ public class TileRenderer : MonoBehaviour {
 	public Vector2 NumChunks = new Vector2 ( 30, 30);
 	public Vector2 TilesPerChunk = new Vector2 (15, 10);
 
-	public GameObject grass;
-	public GameObject gravel;
+	public GameObject tileChunkObj;
 
 	public static Transform heading; 
 	private TileChunk [,] chunkMatrix;
@@ -54,22 +53,7 @@ public class TileRenderer : MonoBehaviour {
 			SetActiveChunk (chunkNumX, chunkNumY);
 		}
 	}
-
-
-	/**
-	 * Converts between tile id's and the actual game objects they represent
-	 * TileGenerator generates a 2D matrix of tile id's, but it's TileRenderer's job to turn them into actual tiles
-	 * code = the id of the tile from the generator
-	 **/
-	public GameObject SpriteForCode(int code){
-		GameObject groundTile;
-		if (code == 0) {
-			groundTile = grass;
-		} else {
-			groundTile = gravel;
-		}
-		return groundTile;
-	}
+		
 
 	/**
 	 * --------------------------------------------------------------------------------------------------------------------------------------------
@@ -96,7 +80,7 @@ public class TileRenderer : MonoBehaviour {
 	 * Calls on TileGenerator to create a map, then generates chunks from the map
 	 **/
 	private void InitMap(){
-		heading = new GameObject ("Tiles").transform;
+		heading = new GameObject ("GameBoard").transform;
 		int[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y);
 		chunkMatrix = ChunksFromTileMap (tileMap, NumChunks, TilesPerChunk);
 	}
@@ -119,9 +103,11 @@ public class TileRenderer : MonoBehaviour {
 						theseTiles [tileRow, tileCol] = combinedMap [tileRow+chunkRow*(int)numTiles.x, tileCol+chunkCol*(int)numTiles.y];
 					}
 				}
-				TileChunk newChunk = gameObject.AddComponent<TileChunk> () as TileChunk;
-				newChunk.InitChunk(theseTiles, chunkCol, chunkRow);
-				chunkMat [chunkCol, chunkRow] = newChunk;
+				GameObject newChunk = Instantiate (tileChunkObj, new Vector3 (chunkCol*TilesPerChunk.x, chunkRow*TilesPerChunk.y, 0), Quaternion.identity) as GameObject;
+				TileChunk chunkScript = newChunk.GetComponent<TileChunk> ();
+				chunkScript.transform.SetParent (TileRenderer.heading);
+				chunkScript.InitChunk(theseTiles, chunkCol, chunkRow, TilesPerChunk);
+				chunkMat [chunkCol, chunkRow] = chunkScript;
 			}
 		}
 		ConnectChunks(chunkMat, numChunks);

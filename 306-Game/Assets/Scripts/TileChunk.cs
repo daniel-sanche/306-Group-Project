@@ -13,13 +13,15 @@ public class TileChunk : MonoBehaviour {
 
 	private int [,] terrainMap;
 	private List<GameObject> tileList;
-	private Vector2 topLeftCorner;
-	private TileRenderer tileRenderer;
-
+	private Vector2 tilesPerChunk;
 	private bool isRendered = false;
+
 
 	private List<TileChunk> connectedChunks;
 	private List<TileChunk> distantChunks;
+
+	public GameObject grass;
+	public GameObject gravel;
 
 	/**
 	 * Creates a new chunk of tiles
@@ -27,13 +29,13 @@ public class TileChunk : MonoBehaviour {
 	 * x = the x coordinate of the tile in the overall matrix of tiles
 	 * y = the y coordinate of the tile in the overall matrix of tiles
 	 */
-	public void InitChunk(int [,] terrain, int x, int y){
-		tileRenderer = GetComponent<TileRenderer> ();
+	public void InitChunk(int [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
-		topLeftCorner = new Vector2 (x*tileRenderer.TilesPerChunk.x, y*(int)tileRenderer.TilesPerChunk.y);
 		tileList = new List<GameObject> ();
 		connectedChunks = new List<TileChunk>();
 		distantChunks = new List<TileChunk>();
+		tilesPerChunk = tilesInChunk;
+		isRendered = false;
 	}
 
 	/**
@@ -74,16 +76,20 @@ public class TileChunk : MonoBehaviour {
 	private void Render() {
 		if (!isRendered) {
 			tileList.Clear ();
-			for (int x = 0; x < tileRenderer.TilesPerChunk.x; x++) {
-				for (int y = 0; y < tileRenderer.TilesPerChunk.y; y++) {
+			for (int x = 0; x < tilesPerChunk.x; x++) {
+				for (int y = 0; y < tilesPerChunk.y; y++) {
 					int code = terrainMap [x, y];
-					GameObject groundTile = tileRenderer.SpriteForCode (code);
-					GameObject instance = Instantiate (groundTile, new Vector3 (topLeftCorner.x + x, topLeftCorner.y + y, 0), Quaternion.identity) as GameObject;
+					GameObject groundTile = SpriteForCode (code);
+					GameObject instance = Instantiate (groundTile, new Vector3 (x, y, 0), Quaternion.identity) as GameObject;
 					tileList.Add (instance);
-					instance.transform.SetParent (TileRenderer.heading);
+					instance.transform.SetParent (transform);
+					instance.transform.localPosition = new Vector3 (x, y, 0); 
 				}
 			}
 			isRendered = true;
+			gameObject.SetActive(true);
+		} else {
+			gameObject.SetActive(true);
 		}
 	}
 
@@ -91,14 +97,23 @@ public class TileChunk : MonoBehaviour {
 	 * removes the tiles rendered by this chunk from the screen
 	 **/
 	private void Remove () {
-		if (isRendered) {
-			foreach (GameObject thisTile in tileList) {
-				GameObject.Destroy (thisTile);
-			}
-			tileList.Clear ();
-			isRendered = false;
-		}
+		gameObject.SetActive(false);
 	}
-	
+
+
+	/**
+	 * Converts between tile id's and the actual game objects they represent
+	 * TileGenerator generates a 2D matrix of tile id's, but it's TileRenderer's job to turn them into actual tiles
+	 * code = the id of the tile from the generator
+	 **/
+	public GameObject SpriteForCode(int code){
+		GameObject groundTile;
+		if (code == 0) {
+			groundTile = grass;
+		} else {
+			groundTile = gravel;
+		}
+		return groundTile;
+	}
 
 }
