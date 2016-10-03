@@ -33,11 +33,15 @@ public class TileChunk : MonoBehaviour {
 	 */
 	public void InitChunk(int [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
+		tilesPerChunk = tilesInChunk;
+	}
+
+	void Awake(){
+		isCached = false;
+		gameObject.SetActive(false);
 		tileList = new List<GameObject> ();
 		connectedChunks = new List<TileChunk>();
 		distantChunks = new List<TileChunk>();
-		tilesPerChunk = tilesInChunk;
-		isCached = false;
 	}
 
 	/**
@@ -83,7 +87,7 @@ public class TileChunk : MonoBehaviour {
 				for (int y = 0; y < tilesPerChunk.y; y++) {
 					int code = terrainMap [x, y];
 					GameObject groundTile = SpriteForCode (code);
-					GameObject instance = Instantiate (groundTile, new Vector3 (x, y, 0), Quaternion.identity) as GameObject;
+					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
 					tileList.Add (instance);
 					instance.transform.SetParent (transform);
 					instance.transform.localPosition = new Vector3 (x, y, 0); 
