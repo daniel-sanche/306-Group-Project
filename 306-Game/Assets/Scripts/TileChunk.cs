@@ -14,7 +14,7 @@ public class TileChunk : MonoBehaviour {
 	private int [,] terrainMap;
 	private List<GameObject> tileList;
 	private Vector2 tilesPerChunk;
-	private bool isRendered = false;
+	private bool isCached = false;
 
 
 	private List<TileChunk> connectedChunks;
@@ -22,6 +22,8 @@ public class TileChunk : MonoBehaviour {
 
 	public GameObject grass;
 	public GameObject gravel;
+
+	public float cacheClearTime = (5f*60f);
 
 	/**
 	 * Creates a new chunk of tiles
@@ -35,7 +37,7 @@ public class TileChunk : MonoBehaviour {
 		connectedChunks = new List<TileChunk>();
 		distantChunks = new List<TileChunk>();
 		tilesPerChunk = tilesInChunk;
-		isRendered = false;
+		isCached = false;
 	}
 
 	/**
@@ -44,12 +46,12 @@ public class TileChunk : MonoBehaviour {
 	 * Renders the chunk and it's neighbours, and tells further chunk to remove themselves from memory
 	 **/
 	public void Activate(){
-		Render ();
+		DisplayTiles ();
 		foreach (TileChunk thisNeighbour in connectedChunks) {
-			thisNeighbour.Render ();
+			thisNeighbour.DisplayTiles ();
 		}
 		foreach (TileChunk distantChunk in distantChunks) {
-			distantChunk.Remove ();
+			distantChunk.HideTiles ();
 		}
 	}
 
@@ -71,10 +73,11 @@ public class TileChunk : MonoBehaviour {
 	}
 
 	/**
-	 * render's the tiles in the chunk on screen
+	 * render's the tiles in the chunk on screen. 
+	 * If the tiles were already saved in a cache, just set the chunk as active so they are rendered
 	 **/
-	private void Render() {
-		if (!isRendered) {
+	private void DisplayTiles() {
+		if (!isCached) {
 			tileList.Clear ();
 			for (int x = 0; x < tilesPerChunk.x; x++) {
 				for (int y = 0; y < tilesPerChunk.y; y++) {
@@ -86,7 +89,7 @@ public class TileChunk : MonoBehaviour {
 					instance.transform.localPosition = new Vector3 (x, y, 0); 
 				}
 			}
-			isRendered = true;
+			isCached = true;
 			gameObject.SetActive(true);
 		} else {
 			gameObject.SetActive(true);
@@ -94,10 +97,28 @@ public class TileChunk : MonoBehaviour {
 	}
 
 	/**
-	 * removes the tiles rendered by this chunk from the screen
+	 * hides the tiles rendered on screen
+	 * If the tiles aren't in use after a set amount of time, clear the cache of the tiles in memory
 	 **/
-	private void Remove () {
+	private void HideTiles () {
 		gameObject.SetActive(false);
+		Invoke ("ClearCache", cacheClearTime);
+	}
+
+	/**
+	 * Function to clear the cache of tile objects from memory
+	 * The next time they need to be rendered, they will have to be created from scratch
+	 */
+	private void ClearCache(){
+		if (!gameObject.activeInHierarchy) {
+			foreach (GameObject thisTile in tileList) {
+				GameObject.Destroy (thisTile);
+			}
+			tileList.Clear ();
+			isCached = false;
+		} else {
+			Invoke ("ClearCache", cacheClearTime);
+		}
 	}
 
 
