@@ -9,10 +9,15 @@ public class Slot : MonoBehaviour {
 	/// </summary>
 	public Item item;
 
+	/// <summary>
+	/// The pickup prefab.
+	/// </summary>
+	public GameObject pickupPrefab;
+
 	// Use this for initialization
 	void Start () {
-		item = null;
-		setSprite (null);
+		item = null;							//Initializes the item to null
+		setSprite (null);						//Ensure the sprite is null
 	}
 
 	/// <summary>
@@ -20,7 +25,7 @@ public class Slot : MonoBehaviour {
 	/// </summary>
 	/// <returns> <c>true</c> if slot is empty <c>false</c> otherwise </returns>
 	public bool isEmpty(){
-		return item == null ? true : false;		//returns true if the 
+		return item == null ? true : false;		//returns true if the slot is empty, false otherwise
 	}
 
 		
@@ -58,6 +63,6 @@ public class Slot : MonoBehaviour {
 	/// </summary>
 	/// <param name="sprite">The sprite to render.</param>
 	public void setSprite(Sprite sprite){
-		GetComponentInChildren<Image> ().sprite = sprite;		
+		GetComponentInChildren<Image> ().sprite = sprite;
 	}
 }
