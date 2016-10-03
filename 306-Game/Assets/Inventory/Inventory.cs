@@ -48,7 +48,10 @@ public class Inventory : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		if (Input.GetMouseButtonDown (1)) {
+			GraphicRaycaster mouse = new GraphicRaycaster ();
+			mouse.
+		}
 	}
 
 	/// <summary>

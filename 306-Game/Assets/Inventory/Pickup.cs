@@ -7,7 +7,13 @@ public class Pickup : MonoBehaviour {
 	/// The item to be picked up.
 	/// </summary>
 	public Item item;
-	
+
+	void Update(){
+		if (item != null) {
+			GetComponent<SpriteRenderer> ().sprite = item.sprite;
+		}
+	}
+
 	void OnCollisionEnter2D(Collision2D col){
 		if (col.gameObject.tag == "Player") {					//If a player collides with this
 			if (Inventory.AddItem (item))						//Attempt to add the item to the inventory
