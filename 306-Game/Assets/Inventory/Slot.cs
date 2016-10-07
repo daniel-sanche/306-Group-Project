@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler {
+public class Slot : MonoBehaviour, IPointerClickHandler, IEndDragHandler, IDropHandler {
 
 	/// <summary>
 	/// Currently contained item.
@@ -15,6 +15,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler {
 	/// </summary>
 	public GameObject pickupPrefab;
 
+
+	private Slot selectedSlot;
 	// Use this for initialization
 	void Start () {
 		item = null;							//Initializes the item to null
@@ -82,11 +84,37 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler {
 	public void OnPointerClick(PointerEventData eventData)
 	{
 		if (eventData.button == PointerEventData.InputButton.Right) {			//If this is clicked with the left mouse button
-			dropItem ();														//Drop the item
+			//dropItem ();														//Drop the item
 		}
 	}
 
-	public void OnDrag(PointerEventData eventData){
+	public void OnEndDrag(PointerEventData eventData){
+		if (eventData.pointerCurrentRaycast.gameObject == null) {
+			dropItem ();
+		}
+	}
+
+
+	/// <summary>
+	/// This function is called when a player drags something and releases it on this slot.
+	/// </summary>
+	/// <param name="eventData">Event data.</param>
+	public void OnDrop(PointerEventData eventData){
 		
+		if (eventData.pointerDrag != null) {									//If the player dragged something
+			if (eventData.pointerDrag.tag == "Slot") {							//If the player dragged from a spot
+				Slot dragged = eventData.pointerDrag.GetComponent<Slot>();
+
+				if (!dragged.isEmpty ()) {										//If the slot has an item
+					if (isEmpty ())												//If this slot is empty
+						setItem (dragged.getItem ());							//Give the item to this slot
+					else {
+						Item cur = getItem ();									//Otherwise
+						setItem (dragged.getItem ());							//Swap the two items
+						dragged.setItem (cur);
+					}
+				}	
+			}
+		}
 	}
 }
