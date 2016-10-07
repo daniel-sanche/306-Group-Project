@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IPointerClickHandler, IEndDragHandler, IDropHandler {
+public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler, IDropHandler {
 
 	/// <summary>
 	/// Currently contained item.
@@ -116,5 +116,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IEndDragHandler, IDropH
 				}	
 			}
 		}
+	}
+
+	public void OnDrag(PointerEventData eventData){
+		
 	}
 }
