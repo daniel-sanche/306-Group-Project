@@ -14,7 +14,7 @@ public class Pickup : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D col){
+	void OnTriggerEnter2D(Collider2D col){
 		if (col.gameObject.tag == "Player") {					//If a player collides with this
 			if (Inventory.AddItem (item))						//Attempt to add the item to the inventory
 				Destroy (this.gameObject);						//Delete this object if successful

@@ -5,37 +5,32 @@ using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler {
 
-	/// <summary>
-	/// Currently contained item.
-	/// </summary>
+	//Currently contained item.
 	public Item item;
 
-	/// <summary>
-	/// The pickup prefab.
-	/// </summary>
+	//The pickup prefab.
 	public GameObject pickupPrefab;
 
+	//The force given to items dropped.
+	public float dropForce;
 
-	private Slot selectedSlot;
 	// Use this for initialization
 	void Start () {
 		item = null;							//Initializes the item to null
 		setSprite (null);						//Ensure the sprite is null
 	}
 
-	/// <summary>
-	/// Is the slot currently empty?
-	/// </summary>
-	/// <returns> <c>true</c> if slot is empty <c>false</c> otherwise </returns>
+	/*
+	 * Is the slot currently empty?
+	 **/
 	public bool isEmpty(){
 		return item == null ? true : false;		//returns true if the slot is empty, false otherwise
 	}
 
 		
-	/// <summary>
-	/// Removes and returns the item from the slot.
-	/// </summary>
-	/// <returns>The item.</returns>
+	/*
+	 * Removes and returns the item from the slot.
+	 **/
 	public Item getItem(){
 
 		if (!isEmpty()) {						//If the slot is occupied
@@ -49,10 +44,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	}
 
 
-	/// <summary>
-	/// Sets the slot's current item.
-	/// </summary>
-	/// <param name="toIns"> The item to insert. </param>
+	/*
+	 * Sets the slot's current item.
+	 **/
 	public void setItem(Item toIns){
 		if (isEmpty ()){						//If the slot is empty
 			item = toIns;						//Add the item
@@ -60,53 +54,44 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		}
 	}
 
-	/// <summary>
-	/// Drops the item based on the current mouse position.
-	/// </summary>
+	/*
+	 * Drops the item based on the current mouse position.
+	 **/
 	public void dropItem(){
 		if (!isEmpty ()) {
 			Vector2 relativeMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint (GameObject.FindGameObjectWithTag("Player").transform.position);		//Gets the position of the mouse in relation to the player;
 			Vector2 dropPos = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, 2f);					//Finds the drop position based on the mouse and the player
-			Vector2 dropForce = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, 4f);					//Finds the force to apply based on the mouse and player
+			Vector2 itemForce = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, dropForce + 2f);		//Finds the force to apply based on the mouse and player
 
 			GameObject drop = (GameObject)Instantiate (pickupPrefab, dropPos, Quaternion.identity);																	//Drops the item at the given location
-			drop.GetComponent<Rigidbody2D> ().AddForce (dropForce - dropPos);																						//Applies force relative to the player
+			drop.GetComponent<Rigidbody2D> ().AddForce (itemForce - dropPos);																						//Applies force relative to the player
 			drop.GetComponent<Pickup> ().item = getItem ();																											//Transfers item from this to the pickup item
 		}
 	}
 
-	/// <summary>
-	/// Gives the sprite renderer a new sprite
-	/// </summary>
-	/// <param name="sprite">The sprite to render.</param>
-	public void setSprite(Sprite sprite){
-		GetComponentInChildren<Image> ().sprite = sprite;
-	}
 
-
-	/// <summary>
-	/// Handles all events involving mouse clicks
-	/// </summary>
-	/// <param name="eventData">Event data.</param>
+	/**
+	 * Handles all events involving mouse clicks
+	 **/
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		if (eventData.button == PointerEventData.InputButton.Right) {			//If this is clicked with the left mouse button
-			//dropItem ();														//Drop the item
-		}
+		
 	}
 
+	/*
+	 * This function is called once the player has released something they are dragging.
+	 **/
 	public void OnEndDrag(PointerEventData eventData){
-		Destroy (hoverImage);
-		if (eventData.pointerCurrentRaycast.gameObject == null) {
-			dropItem ();
+		Destroy (hoverImage);													//Destroy the item hover imaage
+		if (eventData.pointerCurrentRaycast.gameObject == null) {				//If we dragged an item over nothing
+			dropItem ();														//Drop the item
 		}
 	}
 
 
-	/// <summary>
-	/// This function is called when a player drags something and releases it on this slot.
-	/// </summary>
-	/// <param name="eventData">Event data.</param>
+	/*
+	 * This function is called when the player drags something onto this slot
+	 **/
 	public void OnDrop(PointerEventData eventData){
 		
 		if (eventData.pointerDrag != null) {									//If the player dragged something
@@ -126,21 +111,41 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		}
 	}
 
-	public void OnDrag(PointerEventData eventData){
-		if(hoverImage != null)
+	/*
+	 * This function is called constantly while this slot is dragged by the cursor
+	 **/
+	public void OnDrag(PointerEventData eventData){						
+		if(hoverImage != null)													//Set the hover object's location to the mouse position
 			hoverImage.transform.position = eventData.position;
 	}
 
+	//GameObject that represents the hover image for when items are moved by the player
 	private GameObject hoverImage;
 
+	/**
+	 * This function is called whenever this slot is initially dragged by the cursor
+	 **/
 	public void OnBeginDrag(PointerEventData eventData){
-		if (!isEmpty ()) {
-			hoverImage = new GameObject ("Hover Image");
+		if (!isEmpty ()) {																	//If there is an item in this slot
+			hoverImage = new GameObject ("Hover Image");									//Create a new hover object
 
-			hoverImage.transform.SetParent (GetComponentInParent<Canvas> ().transform);
-			hoverImage.AddComponent<Image> ().sprite = item.sprite;
-			hoverImage.GetComponent<Image> ().raycastTarget = false;
+			hoverImage.transform.SetParent (GetComponentInParent<Canvas> ().transform);		//Set the parent of the hover object to be the canvas
+			hoverImage.AddComponent<Image> ().sprite = item.sprite;							//Sets the sprite of the hover object as the item
+			hoverImage.GetComponent<Image> ().raycastTarget = false;						//Prevents the hover image from being raycasted into
 
 		}
+	}
+
+
+//****************************************************************************************************************************************************
+// Private/Helper functions
+//****************************************************************************************************************************************************
+
+
+	/*
+	 * Gives the sprite renderer a new sprite.
+	 **/
+	private void setSprite(Sprite sprite){
+		GetComponentInChildren<Image> ().sprite = sprite;
 	}
 }
