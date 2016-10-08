@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler, IDropHandler {
+public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler {
 
 	/// <summary>
 	/// Currently contained item.
@@ -60,11 +60,18 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragH
 		}
 	}
 
+	/// <summary>
+	/// Drops the item based on the current mouse position.
+	/// </summary>
 	public void dropItem(){
 		if (!isEmpty ()) {
-			GameObject drop = (GameObject)Instantiate (pickupPrefab, GameObject.FindGameObjectWithTag ("Player").transform.position + Vector3.up * 2, Quaternion.identity);
-			drop.GetComponent<Rigidbody2D> ().AddForce (Vector2.up * 2);
-			drop.GetComponent<Pickup> ().item = getItem ();
+			Vector2 relativeMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint (GameObject.FindGameObjectWithTag("Player").transform.position);		//Gets the position of the mouse in relation to the player;
+			Vector2 dropPos = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, 2f);					//Finds the drop position based on the mouse and the player
+			Vector2 dropForce = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, 4f);					//Finds the force to apply based on the mouse and player
+
+			GameObject drop = (GameObject)Instantiate (pickupPrefab, dropPos, Quaternion.identity);																	//Drops the item at the given location
+			drop.GetComponent<Rigidbody2D> ().AddForce (dropForce - dropPos);																						//Applies force relative to the player
+			drop.GetComponent<Pickup> ().item = getItem ();																											//Transfers item from this to the pickup item
 		}
 	}
 
@@ -89,6 +96,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragH
 	}
 
 	public void OnEndDrag(PointerEventData eventData){
+		Destroy (hoverImage);
 		if (eventData.pointerCurrentRaycast.gameObject == null) {
 			dropItem ();
 		}
@@ -119,6 +127,20 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragH
 	}
 
 	public void OnDrag(PointerEventData eventData){
-		
+		if(hoverImage != null)
+			hoverImage.transform.position = eventData.position;
+	}
+
+	private GameObject hoverImage;
+
+	public void OnBeginDrag(PointerEventData eventData){
+		if (!isEmpty ()) {
+			hoverImage = new GameObject ("Hover Image");
+
+			hoverImage.transform.SetParent (GetComponentInParent<Canvas> ().transform);
+			hoverImage.AddComponent<Image> ().sprite = item.sprite;
+			hoverImage.GetComponent<Image> ().raycastTarget = false;
+
+		}
 	}
 }
