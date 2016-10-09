@@ -81,7 +81,7 @@ public class TileRenderer : MonoBehaviour {
 	 **/
 	private void InitMap(){
 		heading = new GameObject ("GameBoard").transform;
-		int[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y);
+		TileType[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y);
 		chunkMatrix = ChunksFromTileMap (tileMap, NumChunks, TilesPerChunk);
 	}
 
@@ -93,11 +93,11 @@ public class TileRenderer : MonoBehaviour {
 	 * numTiles = the number of tiles per chunk in the x and y direction
 	 * returns a grid of TileChunks
 	 **/
-	private TileChunk [,] ChunksFromTileMap(int[,] combinedMap, Vector2 numChunks, Vector2 numTiles){
+		private TileChunk [,] ChunksFromTileMap(TileType[,] combinedMap, Vector2 numChunks, Vector2 numTiles){
 		TileChunk [,] chunkMat = new TileChunk[(int)numChunks.x, (int)numChunks.y];
 		for (int chunkCol = 0; chunkCol < numChunks.x; chunkCol++) {
 			for (int chunkRow = 0; chunkRow < numChunks.y; chunkRow++) {
-				int[,] theseTiles = new int[(int)numTiles.x, (int)numTiles.y];
+				TileType[,] theseTiles = new TileType[(int)numTiles.x, (int)numTiles.y];
 				for (int tileRow = 0; tileRow < numTiles.x; tileRow++) {
 					for (int tileCol = 0; tileCol < numTiles.y; tileCol++) {
 						theseTiles [tileRow, tileCol] = combinedMap [tileRow+chunkRow*(int)numTiles.x, tileCol+chunkCol*(int)numTiles.y];

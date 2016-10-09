@@ -11,7 +11,7 @@ public class TileChunk : MonoBehaviour {
 	 **/
 
 
-	private int [,] terrainMap;
+	private TileType [,] terrainMap;
 	private List<GameObject> tileList;
 	private Vector2 tilesPerChunk;
 	private bool isCached = false;
@@ -31,7 +31,7 @@ public class TileChunk : MonoBehaviour {
 	 * x = the x coordinate of the tile in the overall matrix of tiles
 	 * y = the y coordinate of the tile in the overall matrix of tiles
 	 */
-	public void InitChunk(int [,] terrain, int x, int y, Vector2 tilesInChunk){
+	public void InitChunk(TileType [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
 		tilesPerChunk = tilesInChunk;
 	}
@@ -85,7 +85,7 @@ public class TileChunk : MonoBehaviour {
 			tileList.Clear ();
 			for (int x = 0; x < tilesPerChunk.x; x++) {
 				for (int y = 0; y < tilesPerChunk.y; y++) {
-					int code = terrainMap [x, y];
+					TileType code = terrainMap [x, y];
 					GameObject groundTile = SpriteForCode (code);
 					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
 					tileList.Add (instance);
@@ -131,12 +131,14 @@ public class TileChunk : MonoBehaviour {
 	 * TileGenerator generates a 2D matrix of tile id's, but it's TileRenderer's job to turn them into actual tiles
 	 * code = the id of the tile from the generator
 	 **/
-	public GameObject SpriteForCode(int code){
+	public GameObject SpriteForCode(TileType code){
 		GameObject groundTile;
-		if (code == 0) {
+		if (code == TileType.Grass) {
 			groundTile = grass;
-		} else {
+		} else if (code == TileType.Gravel) {
 			groundTile = gravel;
+		} else {
+			groundTile = grass;
 		}
 		return groundTile;
 	}
