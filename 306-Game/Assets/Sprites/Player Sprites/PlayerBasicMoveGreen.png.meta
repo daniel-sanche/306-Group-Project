@@ -1,0 +1,437 @@
+fileFormatVersion: 2
+guid: 6a28d4836852fb44ea20b3f492229479
+timeCreated: 1475983605
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: PlayerBasicMoveGreen_0
+    21300002: PlayerBasicMoveGreen_1
+    21300004: PlayerBasicMoveGreen_2
+    21300006: PlayerBasicMoveGreen_3
+    21300008: PlayerBasicMoveGreen_4
+    21300010: PlayerBasicMoveGreen_5
+    21300012: PlayerBasicMoveGreen_6
+    21300014: PlayerBasicMoveGreen_7
+    21300016: PlayerBasicMoveGreen_8
+    21300018: PlayerBasicMoveGreen_9
+    21300020: PlayerBasicMoveGreen_10
+    21300022: PlayerBasicMoveGreen_11
+    21300024: PlayerBasicMoveGreen_12
+    21300026: PlayerBasicMoveGreen_13
+    21300028: PlayerBasicMoveGreen_14
+    21300030: PlayerBasicMoveGreen_15
+    21300032: PlayerBasicMoveGreen_16
+    21300034: PlayerBasicMoveGreen_17
+    21300036: PlayerBasicMoveGreen_18
+    21300038: PlayerBasicMoveGreen_19
+    21300040: PlayerBasicMoveGreen_20
+    21300042: PlayerBasicMoveGreen_21
+    21300044: PlayerBasicMoveGreen_22
+    21300046: PlayerBasicMoveGreen_23
+    21300048: PlayerBasicMoveGreen_24
+    21300050: PlayerBasicMoveGreen_25
+    21300052: PlayerBasicMoveGreen_26
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 87
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_1
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 87
+        width: 15
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_2
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 87
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_3
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 87
+        width: 15
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_4
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 87
+        width: 15
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_5
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 87
+        width: 15
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_6
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 87
+        width: 16
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_7
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 87
+        width: 15
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_8
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 87
+        width: 16
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_9
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 54
+        width: 14
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_10
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 54
+        width: 16
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_11
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 54
+        width: 13
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_12
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 54
+        width: 16
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_13
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 54
+        width: 13
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_14
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 54
+        width: 22
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_15
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 54
+        width: 17
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_16
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 54
+        width: 19
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_17
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 54
+        width: 15
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_18
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 20
+        width: 16
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_19
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 20
+        width: 15
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_20
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 20
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_21
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 20
+        width: 16
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_22
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 20
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_23
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 20
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_24
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 20
+        width: 16
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_25
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 20
+        width: 15
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerBasicMoveGreen_26
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 20
+        width: 16
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
