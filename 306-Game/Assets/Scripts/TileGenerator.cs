@@ -29,7 +29,7 @@ public class TileGenerator : MonoBehaviour {
 				}
 			}
 		}
-		Vector2 buildingSize = new Vector2 (5, 5);
+		Vector2 buildingSize = new Vector2 (10, 10);
 		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize);
 		for (int x = 0; x < buildingSize.x; x++) {
 			for (int y = 0; y < buildingSize.y; y++) {

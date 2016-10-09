@@ -7,12 +7,31 @@ public class BuidingGenerator : MonoBehaviour {
 
 	public static TileType[,] GenerateBuilding(Vector2 size){
 		RoomNode root = new RoomNode (size);
-		root.GenerateSubtree (0.5);
+		root.GenerateSubtree (1, 1);
 		return GenerateTiles (root);
 	}
 
 	private static TileType[,] GenerateTiles(RoomNode root){
 		TileType[,] tileMap = GenerateOuterWalls(root);
+		if (!root._isLeaf) {
+			if (root._verticalSplit) {
+				//add walls along the vertical wall
+				RoomNode leftSide = root._firstChild;
+				for (int y = 1; y < root._size.y-1; y++) {
+					tileMap [(int)leftSide._size.x, y] = TileType.FloorRight;
+				}
+				tileMap [(int)leftSide._size.x, 0] = TileType.FloorBR;
+				tileMap [(int)leftSide._size.x, (int)root._size.y-1] = TileType.FloorTR;
+			} else {
+				//add walls along the horizontal wall
+				RoomNode topSide = root._firstChild;
+				for (int x = 1; x < root._size.x-1; x++) {
+					tileMap [x, (int)topSide._size.y] = TileType.FloorBottom;
+				}
+				tileMap [0, (int)topSide._size.y] = TileType.FloorBL;
+				tileMap [(int)root._size.x-1, (int)topSide._size.y] = TileType.FloorBR;
+			}
+		}
 		return tileMap;
 	}
 
@@ -46,10 +65,10 @@ public class BuidingGenerator : MonoBehaviour {
 
 	private class RoomNode {
 		public Vector2 _size;
-		private RoomNode _firstChild;
-		private RoomNode _secondChild;
-		private bool _verticalSplit = false;
-		private bool _isLeaf = true;
+		public RoomNode _firstChild;
+		public RoomNode _secondChild;
+		public bool _verticalSplit = false;
+		public bool _isLeaf = true;
 		public int smallestRoomArea = 4;
 
 		public RoomNode(Vector2 roomSize){
@@ -91,8 +110,8 @@ public class BuidingGenerator : MonoBehaviour {
 				}
 				_firstChild = new RoomNode (firstSize);
 				_secondChild = new RoomNode (secondSize);
-				_firstChild.GenerateSubtree (0.5);
-				_secondChild.GenerateSubtree(0.5);
+				_firstChild.GenerateSubtree (splitProb, vertProb);
+				_secondChild.GenerateSubtree(splitProb, vertProb);
 			}
 		}
 	}
