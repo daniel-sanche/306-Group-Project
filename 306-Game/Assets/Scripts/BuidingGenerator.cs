@@ -69,7 +69,6 @@ public class BuidingGenerator : MonoBehaviour {
 		public RoomNode _secondChild;
 		public bool _verticalSplit = false;
 		public bool _isLeaf = true;
-		public int smallestRoomArea = 4;
 
 		public RoomNode(Vector2 roomSize){
 			_size = roomSize;
@@ -78,23 +77,22 @@ public class BuidingGenerator : MonoBehaviour {
 		public void GenerateSubtree(double splitProb, double vertProb=0.5){
 			int height = (int)_size.y;
 			int width = (int)_size.x;
-			int area = height * width;
 			//randomly decide whether we're going to split this room into 2. never split small rooms
-			if (Random.value <= splitProb && area > smallestRoomArea) {
-				_isLeaf = false;
+			if (Random.value <= splitProb && (height >= 4 || width >= 4)) {
 				//make it so rooms small in one dimension cannot be split in that direction
-				if (height <= 2) {
+				if (height < 4) {
 					vertProb = 1;
-				} else if (width <= 2) {
+				} else if (width < 4) {
 					vertProb = -1;
 				}
+				_isLeaf = false;
 				//calculate whether we're doing a vertical split of a horizontal one
 				Vector2 firstSize = _size;
 				Vector2 secondSize  = _size;
 				if (Random.value <= vertProb) {
 					//do a vertical split
 					//find a split point on the x axis that's not an edge
-					int splitPt = (int)(Random.value * (width - 2)) + 1;
+					int splitPt = (int)(0.5 * (width - 4)) + 2;
 					//adjust the child sizes to reflect split
 					firstSize.x = splitPt;
 					secondSize.x = _size.x - splitPt;
@@ -102,10 +100,10 @@ public class BuidingGenerator : MonoBehaviour {
 				} else {
 					//do a horizontal split
 					//find a split point on the y axis that's not an edge
-					int splitPt = (int)(Random.value * (height - 2)) + 1;
+					int splitPt = (int)(0.5 * (height - 4)) + 2;
 					//adjust the child sizes to reflect split
 					firstSize.y = splitPt;
-					secondSize.y = _size.x - splitPt;
+					secondSize.y = _size.y - splitPt;
 					_verticalSplit = false;
 				}
 				_firstChild = new RoomNode (firstSize);
