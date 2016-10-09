@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler {
+public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
 	//Currently contained item.
 	public Item item;
@@ -136,6 +136,32 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		}
 	}
 
+	//GameObject that represents the tooltip displayed when hovering over an item
+	private GameObject tooltip;
+
+	/**
+	 * This function is called whenever the pointer enters the slot
+	 **/
+	public void OnPointerEnter(PointerEventData eventData){
+		if (tooltip == null && !isEmpty()) {
+			tooltip = new GameObject ("Tooltip");
+			tooltip.transform.SetParent (GetComponentInParent<Canvas> ().transform);			//Set the parent of the tooltip to be the canvas
+			tooltip.AddComponent<Text> ().text = item.tooltip;									//Set the text of the tooltip to display the current item's tooltip
+			tooltip.transform.position = transform.position;									//Set the tooltip's location
+			tooltip.GetComponent<Text> ().raycastTarget = false;								//Prevents the hover image from being raycasted into
+			tooltip.GetComponent<Text>().font = Font.CreateDynamicFontFromOSFont("Arial", 12);	//Set the font of the tooltip
+			tooltip.GetComponent<Text> ().color = Color.black;									//Set the font color
+		}
+	}
+
+	/**
+	 * This function is called whenever the pointer exits the slot
+	 **/
+	public void OnPointerExit(PointerEventData eventData){
+		if (tooltip != null) {																	//Upon moving the mouse out of the sloow
+			Destroy (tooltip);																	//Delete the tooltip
+		}
+	}
 
 //****************************************************************************************************************************************************
 // Private/Helper functions
@@ -146,6 +172,15 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 * Gives the sprite renderer a new sprite.
 	 **/
 	private void setSprite(Sprite sprite){
-		GetComponentInChildren<Image> ().sprite = sprite;
+		Color invis = GetComponent<Image> ().color;
+
+		if (sprite == null) {
+			invis.a = 100f;
+		} else {
+			invis.a = 100f;
+		}
+
+		GetComponent<Image> ().sprite = sprite;
+		GetComponent<Image> ().color = invis;
 	}
 }
