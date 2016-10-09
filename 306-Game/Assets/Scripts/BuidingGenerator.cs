@@ -7,32 +7,52 @@ public class BuidingGenerator : MonoBehaviour {
 
 	public static TileType[,] GenerateBuilding(Vector2 size){
 		RoomNode root = new RoomNode (size);
-		root.GenerateSubtree (1, 1);
+		root.GenerateSubtree (0.5, 0.5);
 		return GenerateTiles (root);
 	}
 
 	private static TileType[,] GenerateTiles(RoomNode root){
 		TileType[,] tileMap = GenerateOuterWalls(root);
+		GenerateInnerWalls (root, tileMap);
+		return tileMap;
+	}
+
+	private static void GenerateInnerWalls(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0){
 		if (!root._isLeaf) {
 			if (root._verticalSplit) {
 				//add walls along the vertical wall
 				RoomNode leftSide = root._firstChild;
-				for (int y = 1; y < root._size.y-1; y++) {
-					tileMap [(int)leftSide._size.x, y] = TileType.FloorRight;
-				}
-				tileMap [(int)leftSide._size.x, 0] = TileType.FloorBR;
-				tileMap [(int)leftSide._size.x, (int)root._size.y-1] = TileType.FloorTR;
+				RoomNode rightSide = root._secondChild;
+				int leftWidth = (int)leftSide._size.x;
+				GenerateInnerWalls (leftSide, tileMap, xOffset, yOffset);
+				GenerateInnerWalls (rightSide, tileMap, xOffset + leftWidth, yOffset);
 			} else {
 				//add walls along the horizontal wall
-				RoomNode topSide = root._firstChild;
-				for (int x = 1; x < root._size.x-1; x++) {
-					tileMap [x, (int)topSide._size.y] = TileType.FloorBottom;
-				}
-				tileMap [0, (int)topSide._size.y] = TileType.FloorBL;
-				tileMap [(int)root._size.x-1, (int)topSide._size.y] = TileType.FloorBR;
+				RoomNode bottomSide = root._firstChild;
+				RoomNode topSide = root._secondChild;
+				int bottomHeight = (int)bottomSide._size.y;
+				GenerateInnerWalls (bottomSide, tileMap, xOffset, yOffset);
+				GenerateInnerWalls (topSide, tileMap, xOffset, yOffset + bottomHeight);
 			}
+		} else {
+			//add bottom row
+			for(int x=xOffset; x< xOffset+root._size.x; x++){
+				if (tileMap [x, yOffset] == TileType.FloorRight || tileMap [x, yOffset] == TileType.FloorBR) {
+					tileMap [x, yOffset] = TileType.FloorBR;
+				} else {
+					tileMap [x, yOffset] = TileType.FloorBottom;
+				}
+			}
+			//add left row
+			for(int y=yOffset; y< yOffset+root._size.y; y++){
+				if (tileMap [xOffset, y] == TileType.FloorTop || tileMap [xOffset, y] == TileType.FloorTL) {
+					tileMap [xOffset, y] = TileType.FloorTL;
+				} else {
+					tileMap [xOffset, y] = TileType.FloorLeft;
+				}
+			}
+			tileMap [xOffset, yOffset] = TileType.FloorBL;
 		}
-		return tileMap;
 	}
 
 	private static TileType[,] GenerateOuterWalls(RoomNode root){
@@ -45,18 +65,13 @@ public class BuidingGenerator : MonoBehaviour {
 				bool isRight = (x == (int)root._size.x - 1);
 				if (isTop) {
 					tileMap [x, y] = TileType.FloorTop;
-				} else if (isBottom) {
-					tileMap [x, y] = TileType.FloorBottom;
 				} else if (isRight) {
 					tileMap [x, y] = TileType.FloorRight;
-				} else if (isLeft) {
-					tileMap [x, y] = TileType.FloorLeft;
 				} else {
 					tileMap [x, y] = TileType.Floor;
 				}
 			}
 		}
-		tileMap [0, 0] = TileType.FloorBL;
 		tileMap [0, (int)root._size.y-1] = TileType.FloorTL;
 		tileMap [(int)root._size.x-1, 0] = TileType.FloorBR;
 		tileMap [(int)root._size.x-1, (int)root._size.y-1] = TileType.FloorTR;
