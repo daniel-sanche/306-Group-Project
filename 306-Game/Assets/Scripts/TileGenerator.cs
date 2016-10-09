@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public enum TileType {Grass, Gravel, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR};
+public enum TileType {Grass, Gravel, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR};
 
 public class TileGenerator : MonoBehaviour {
 	/**
@@ -27,6 +27,13 @@ public class TileGenerator : MonoBehaviour {
 				} else {
 					tileMap [x, y] = TileType.Gravel;
 				}
+			}
+		}
+		Vector2 buildingSize = new Vector2 (5, 5);
+		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize);
+		for (int x = 0; x < buildingSize.x; x++) {
+			for (int y = 0; y < buildingSize.y; y++) {
+				tileMap [x, y] = buildingMap [x, y];
 			}
 		}
 		return tileMap;

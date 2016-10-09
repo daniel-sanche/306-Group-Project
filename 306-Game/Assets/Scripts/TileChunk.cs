@@ -22,6 +22,15 @@ public class TileChunk : MonoBehaviour {
 
 	public GameObject grass;
 	public GameObject gravel;
+	public GameObject floor;
+	public GameObject floorTop;
+	public GameObject floorBottom;
+	public GameObject floorLeft;
+	public GameObject floorRight;
+	public GameObject floorTL;
+	public GameObject floorTR;
+	public GameObject floorBL;
+	public GameObject floorBR;
 
 	public float cacheClearTime = (5f*60f);
 
@@ -132,15 +141,33 @@ public class TileChunk : MonoBehaviour {
 	 * code = the id of the tile from the generator
 	 **/
 	public GameObject SpriteForCode(TileType code){
-		GameObject groundTile;
-		if (code == TileType.Grass) {
-			groundTile = grass;
-		} else if (code == TileType.Gravel) {
-			groundTile = gravel;
-		} else {
-			groundTile = grass;
+		switch (code) 
+		{
+		case TileType.Grass:
+			return grass;
+		case TileType.Gravel:
+			return gravel;
+		case TileType.Floor:
+			return floor;
+		case TileType.FloorTop:
+			return floorTop;
+		case TileType.FloorBottom:
+			return floorBottom;
+		case TileType.FloorLeft:
+			return floorLeft;
+		case TileType.FloorRight:
+			return floorRight;
+		case TileType.FloorBL:
+			return floorBL;
+		case TileType.FloorBR:
+			return floorBR;
+		case TileType.FloorTL:
+			return floorTL;
+		case TileType.FloorTR:
+			return floorTR;
+		default:
+			return grass;
 		}
-		return groundTile;
 	}
 
 }
