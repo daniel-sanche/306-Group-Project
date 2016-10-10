@@ -7,7 +7,7 @@ public class BuidingGenerator : MonoBehaviour {
 
 	public static TileType[,] GenerateBuilding(Vector2 size){
 		RoomNode root = new RoomNode (size);
-		root.GenerateSubtree (0.5, 0.5);
+		root.GenerateSubtree (0.8, 0.5);
 		return GenerateTiles (root);
 	}
 
@@ -107,7 +107,7 @@ public class BuidingGenerator : MonoBehaviour {
 				if (Random.value <= vertProb) {
 					//do a vertical split
 					//find a split point on the x axis that's not an edge
-					int splitPt = (int)(Random.value * (width - 3)) + 1;
+					int splitPt = (int)(Random.value * (width - 4)) + 2;
 					//adjust the child sizes to reflect split
 					firstSize.x = splitPt;
 					secondSize.x = _size.x - splitPt;
@@ -115,7 +115,7 @@ public class BuidingGenerator : MonoBehaviour {
 				} else {
 					//do a horizontal split
 					//find a split point on the y axis that's not an edge
-					int splitPt = (int)(Random.value * (height - 3)) + 1;
+					int splitPt = (int)(Random.value * (height - 4)) + 2;
 					//adjust the child sizes to reflect split
 					firstSize.y = splitPt;
 					secondSize.y = _size.y - splitPt;
