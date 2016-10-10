@@ -4,29 +4,21 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
 
-	/// <summary>
-	/// Number of slots in inventory.
-	/// </summary>
+	// Number of slots in inventory.
 	public int size;
 
-	/// <summary>
-	/// The number of rows (Must be greater than 0).
-	/// </summary>
+	// The number of rows (Must be greater than 0).
 	public int rows;
 
-	/// <summary>
-	/// The X and Y spacing between inventory slots.
-	/// </summary>
+	// The X and Y spacing between inventory slots.
 	public float xSpacing, ySpacing;
 
-	/// <summary>
-	/// Array of item slots.
-	/// </summary>
+	// Array of item slots.
 	public static Slot[] itemSlot;
 
-	/// <summary>
-	/// Prefab of an empty slot for instantiating.
-	/// </summary>
+//	public static Slot weaponSlot;
+
+	// Prefab of an empty slot for instantiating.
 	public GameObject slotPrefab;
 
 
@@ -40,9 +32,14 @@ public class Inventory : MonoBehaviour {
 			curSlot.transform.SetParent(this.transform);								//Set the parent of the slot to be the inventory
 			curSlot.name = "Slot" + x;													//Name the slot with its current array index
 			itemSlot[x] = curSlot.GetComponent<Slot>();									//Assign the new slot to an array index
-
 		}
 
+//		GameObject weapSlot = (GameObject)Instantiate (slotPrefab, new Vector2((size % rows) * xSpacing, (size / rows) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);	
+//
+//		weapSlot.transform.SetParent (this.transform);
+//		weapSlot.name = "Weapon Slot";
+//		weaponSlot = weapSlot.GetComponent<Slot> ();
+//		weaponSlot.GetComponent<Image> ().color = Color.black;
 	}
 
 
@@ -51,9 +48,9 @@ public class Inventory : MonoBehaviour {
 
 	}
 
-	/// <summary>
-	/// Performs a basic bubble sort of the inventory based on the name.
-	/// </summary>
+	/**
+	* Performs a basic bubble sort of the inventory based on the name.
+	**/
 	public static void SortByName(){
 		for (int x = 0; x < itemSlot.Length; x++) {										//For each index
 			for (int y = 0; y < itemSlot.Length; y++) {									//Check each index
@@ -66,10 +63,23 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
-	/// <summary>
-	/// Adds the given item to the first available slot.
-	/// </summary>
-	/// <returns> true if successful, false if inventory is full </returns>
+	/**
+	 * Is the inventory currently full?
+	 **/
+	public static bool isFull(){
+		for (int x = 0; x < itemSlot.Length; x++) {
+			if(itemSlot[x].isEmpty())
+				return false;
+		}
+
+		return true;
+	}
+
+	/**
+	* Adds the given item to the first available slot.
+	*
+	* True if successful, false if inventory is full.
+	**/
 	public static bool AddItem(Item toIns){
 		
 		for (int x = 0; x < itemSlot.Length; x++) {										//Check each slot
@@ -97,5 +107,10 @@ public class Inventory : MonoBehaviour {
 		}
 
 		return null;																	//Returns null if the item could not be found
+	}
+
+
+	public static void EquipItem(){
+		
 	}
 }

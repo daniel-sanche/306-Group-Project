@@ -75,7 +75,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 **/
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		
+		if (eventData.button == PointerEventData.InputButton.Right && !isEmpty()) {
+			getItem().Use ();
+		}
 	}
 
 	/*
@@ -175,7 +177,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		Color invis = GetComponent<Image> ().color;
 
 		if (sprite == null) {
-			invis.a = 100f;
+			invis.a = 255f;
 		} else {
 			invis.a = 100f;
 		}
