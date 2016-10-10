@@ -3,15 +3,11 @@ using System.Collections;
 
 public class Weapon : Item {
 
+	//The weapon's attack speed
 	public float attackSpeed;
 
 	// Use this for initialization
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+		itemType = ItemType.WEAPON;
 	}
 }

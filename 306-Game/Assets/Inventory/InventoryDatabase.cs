@@ -29,8 +29,19 @@ public class InventoryDatabase : MonoBehaviour {
 	/// <param name="toFind">The item to be found.</param>
 	public static Item getItem(string toFind){
 		foreach (GameObject cur in database) {
-			if (cur.name == "toFind" && cur.GetComponent<Item>() != null)
-				return cur.GetComponent<Item>();
+			if (cur.name == "toFind")
+			if (cur.GetComponent<Item> () != null) {
+				return cur.GetComponent<Item> ();
+			}
+			else if (cur.GetComponent<Weapon> () != null) {
+				return (Item) cur.GetComponent<Weapon> ();
+			}
+			else if (cur.GetComponent<Regeneration> () != null) {
+				return (Item) cur.GetComponent<Regeneration> ();
+			}
+			else if (cur.GetComponent<Barricade> () != null) {
+				return (Item) cur.GetComponent<Barricade> ();
+			}
 		}
 
 		return null;												//Returns null if the item could not be found

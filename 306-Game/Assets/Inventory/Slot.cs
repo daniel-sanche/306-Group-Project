@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/**
+ * This class represents an inventory slot that will store and move around items for the player to use.
+ **/
 public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
 	//Currently contained item.
@@ -13,6 +16,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 
 	//The force given to items dropped.
 	public float dropForce;
+
+	//The image for used for displaying the item
+	public Image itemImage;
 
 	// Use this for initialization
 	void Start () {
@@ -84,9 +90,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 * This function is called once the player has released something they are dragging.
 	 **/
 	public void OnEndDrag(PointerEventData eventData){
-		Destroy (hoverImage);													//Destroy the item hover imaage
-		if (eventData.pointerCurrentRaycast.gameObject == null) {				//If we dragged an item over nothing
-			dropItem ();														//Drop the item
+		Destroy (hoverImage);																//Destroy the item hover imaage
+		if (eventData.pointerCurrentRaycast.gameObject == null) {							//If we dragged an item over nothing
+			dropItem ();																	//Drop the item
 		}
 	}
 
@@ -96,16 +102,16 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 **/
 	public void OnDrop(PointerEventData eventData){
 		
-		if (eventData.pointerDrag != null) {									//If the player dragged something
-			if (eventData.pointerDrag.tag == "Slot") {							//If the player dragged from a spot
+		if (eventData.pointerDrag != null) {												//If the player dragged something
+			if (eventData.pointerDrag.tag == "Slot") {										//If the player dragged from a spot
 				Slot dragged = eventData.pointerDrag.GetComponent<Slot>();
 
-				if (!dragged.isEmpty ()) {										//If the slot has an item
-					if (isEmpty ())												//If this slot is empty
-						setItem (dragged.getItem ());							//Give the item to this slot
+				if (!dragged.isEmpty ()) {													//If the slot has an item
+					if (isEmpty ())															//If this slot is empty
+						setItem (dragged.getItem ());										//Give the item to this slot
 					else {
-						Item cur = getItem ();									//Otherwise
-						setItem (dragged.getItem ());							//Swap the two items
+						Item cur = getItem ();												//Otherwise
+						setItem (dragged.getItem ());										//Swap the two items
 						dragged.setItem (cur);
 					}
 				}	
@@ -117,7 +123,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 * This function is called constantly while this slot is dragged by the cursor
 	 **/
 	public void OnDrag(PointerEventData eventData){						
-		if(hoverImage != null)													//Set the hover object's location to the mouse position
+		if(hoverImage != null)																//Set the hover object's location to the mouse position
 			hoverImage.transform.position = eventData.position;
 	}
 
@@ -174,15 +180,15 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 * Gives the sprite renderer a new sprite.
 	 **/
 	private void setSprite(Sprite sprite){
-		Color invis = GetComponent<Image> ().color;
+		Color invis = itemImage.color;															//Creates copy of current image color
 
-		if (sprite == null) {
-			invis.a = 255f;
-		} else {
+		if (sprite == null) {																	//Turns image invisible when there is no item in the slot
+			invis.a = 0f;
+		} else {																				//Otherwise, the item is visible
 			invis.a = 100f;
 		}
 
-		GetComponent<Image> ().sprite = sprite;
-		GetComponent<Image> ().color = invis;
-	}
+		itemImage.sprite = sprite;																//Sets the image sprite to the given sprite
+		itemImage.color = invis;																//Sets the image color to be visible or not
+	}	
 }

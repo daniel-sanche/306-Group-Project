@@ -11,8 +11,8 @@ public class Barricade : Item {
 		itemType = ItemType.BUILDING;
 	}
 
-	// Uses the item for it's given purpose.
-	public virtual void Use(){
-
+	// Uses the barricade
+	public override void Use(){
+		print (name + "\nThis is a building item.");
 	}
 }

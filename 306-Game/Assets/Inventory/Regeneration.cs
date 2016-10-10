@@ -13,13 +13,8 @@ public class Regeneration : Item {
 	void Start () {
 		itemType = ItemType.REGENERATION;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-
+	//Uses the regeneration item
 	public override void Use(){
 		print (name + "\nThis is a regeneration item.");
 	}

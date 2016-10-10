@@ -16,7 +16,7 @@ public class Inventory : MonoBehaviour {
 	// Array of item slots.
 	public static Slot[] itemSlot;
 
-//	public static Slot weaponSlot;
+	public static Slot weaponSlot;
 
 	// Prefab of an empty slot for instantiating.
 	public GameObject slotPrefab;
@@ -34,12 +34,12 @@ public class Inventory : MonoBehaviour {
 			itemSlot[x] = curSlot.GetComponent<Slot>();									//Assign the new slot to an array index
 		}
 
-//		GameObject weapSlot = (GameObject)Instantiate (slotPrefab, new Vector2((size % rows) * xSpacing, (size / rows) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);	
-//
-//		weapSlot.transform.SetParent (this.transform);
-//		weapSlot.name = "Weapon Slot";
-//		weaponSlot = weapSlot.GetComponent<Slot> ();
-//		weaponSlot.GetComponent<Image> ().color = Color.black;
+		GameObject weapSlot = (GameObject)Instantiate (slotPrefab, new Vector2((size % rows) * xSpacing, (size / rows) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);	
+
+		weapSlot.transform.SetParent (this.transform);
+		weapSlot.name = "Weapon Slot";
+		weaponSlot = weapSlot.GetComponent<Slot> ();
+		weaponSlot.GetComponent<Image> ().color = Color.blue;
 	}
 
 
