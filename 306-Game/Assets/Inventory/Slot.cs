@@ -144,21 +144,13 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		}
 	}
 
-	//GameObject that represents the tooltip displayed when hovering over an item
-	private GameObject tooltip;
 
 	/**
 	 * This function is called whenever the pointer enters the slot
 	 **/
 	public void OnPointerEnter(PointerEventData eventData){
 		if (tooltip == null && !isEmpty()) {
-			tooltip = new GameObject ("Tooltip");
-			tooltip.transform.SetParent (GetComponentInParent<Canvas> ().transform);			//Set the parent of the tooltip to be the canvas
-			tooltip.AddComponent<Text> ().text = item.tooltip;									//Set the text of the tooltip to display the current item's tooltip
-			tooltip.transform.position = transform.position;									//Set the tooltip's location
-			tooltip.GetComponent<Text> ().raycastTarget = false;								//Prevents the hover image from being raycasted into
-			tooltip.GetComponent<Text>().font = Font.CreateDynamicFontFromOSFont("Arial", 12);	//Set the font of the tooltip
-			tooltip.GetComponent<Text> ().color = Color.black;									//Set the font color
+			displayTooltip ();
 		}
 	}
 
@@ -175,6 +167,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 // Private/Helper functions
 //****************************************************************************************************************************************************
 
+	//GameObject that represents the tooltip displayed when hovering over an item
+	private GameObject tooltip;
 
 	/*
 	 * Gives the sprite renderer a new sprite.
@@ -191,4 +185,49 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		itemImage.sprite = sprite;																//Sets the image sprite to the given sprite
 		itemImage.color = invis;																//Sets the image color to be visible or not
 	}	
+
+
+	private void displayTooltip(){
+		tooltip = new GameObject ("Tooltip");
+		tooltip.AddComponent<Image> ();
+		tooltip.transform.SetParent (GetComponentInParent<Canvas> ().transform);			//Set the parent of the tooltip to be the canvas
+		tooltip.transform.position = (Vector2) transform.position + Vector2.right * 100;	//Set the tooltip's location
+
+		GameObject tooltipText = new GameObject ("TooltipText");							//Create tooltip text
+		Text desc = tooltipText.AddComponent<Text> ();										//Add the text component to the gameobject
+		tooltipText.transform.SetParent (tooltip.transform);								//Set the text as a child of the tooltip
+		tooltipText.transform.position = tooltip.transform.position;						//Set the transform
+			
+		Color backgroundColor;																//Color for the tooltip background
+
+		desc.text = item.name + "\n\n" + item.tooltip + "\n";								//Displays the name and tooltip
+
+		if (item.itemType == ItemType.REGENERATION) {										//If it is a regeneration item
+			backgroundColor = Color.green;													//Set background color as green
+			Regeneration regen = (Regeneration)item;										//Get regen class from item
+			desc.text += "Health: " + regen.healthRegen + "\nFills: " + regen.hungerRegen;	//Display health and hunger points
+		} 
+		else if (item.itemType == ItemType.BUILDING) {										//If it is a building item
+			backgroundColor = Color.yellow;													//Set background color as yellow
+			Barricade barricade = (Barricade)item;											//Get barricade class from item
+			desc.text += "Barricade restore: " + barricade.barricadeRestore;				//Display barricade points
+		} 
+		else if (item.itemType == ItemType.WEAPON) {										//If it is a building item
+			backgroundColor = Color.red;                                                	//Set background color as red
+			Weapon weapon = (Weapon)item;													//Get regen class from item
+			desc.text += "Attack speded: " + weapon.attackSpeed;							//Display health and hunger points
+		} 
+		else {
+			backgroundColor = Color.white;													//Otherwise, default background to white
+		}
+
+		backgroundColor.a = 10f;
+
+		tooltip.GetComponent<Image> ().color = backgroundColor;
+
+		desc.color = Color.black;																//Set the font color
+
+		tooltipText.GetComponent<Text> ().raycastTarget = false;								//Prevents the hover image from being raycasted into
+		tooltipText.GetComponent<Text>().font = Font.CreateDynamicFontFromOSFont("Arial", 4);	//Set the font of the tooltip
+	}
 }

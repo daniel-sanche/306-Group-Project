@@ -7,8 +7,8 @@ public class Inventory : MonoBehaviour {
 	// Number of slots in inventory.
 	public int size;
 
-	// The number of rows (Must be greater than 0).
-	public int rows;
+	// The number of columns (Must be greater than 0).
+	public int columns;
 
 	// The X and Y spacing between inventory slots.
 	public float xSpacing, ySpacing;
@@ -21,25 +21,25 @@ public class Inventory : MonoBehaviour {
 	// Prefab of an empty slot for instantiating.
 	public GameObject slotPrefab;
 
-
 	// Use this for initialization
 	void Start () {
-	
+		
 		itemSlot = new Slot[size];														//Initialize array
 
 		for (int x = 0; x < size; x++) {												//For each x, instantiate a slot
-			GameObject curSlot = (GameObject)Instantiate (slotPrefab, new Vector2((x % rows) * xSpacing, (x / rows) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);		
+			GameObject curSlot = (GameObject)Instantiate (slotPrefab, new Vector2((x % columns) * xSpacing, (x / columns) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);		
 			curSlot.transform.SetParent(this.transform);								//Set the parent of the slot to be the inventory
 			curSlot.name = "Slot" + x;													//Name the slot with its current array index
 			itemSlot[x] = curSlot.GetComponent<Slot>();									//Assign the new slot to an array index
 		}
 
-		GameObject weapSlot = (GameObject)Instantiate (slotPrefab, new Vector2((size % rows) * xSpacing, (size / rows) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);	
+																						//Instantiate the weapon slot
+		GameObject weapSlot = (GameObject)Instantiate (slotPrefab, new Vector2((size % columns) * xSpacing, (size / columns) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);	
 
-		weapSlot.transform.SetParent (this.transform);
-		weapSlot.name = "Weapon Slot";
-		weaponSlot = weapSlot.GetComponent<Slot> ();
-		weaponSlot.GetComponent<Image> ().color = Color.blue;
+		weapSlot.transform.SetParent (this.transform);									//Set weapon slot as child of inventory
+		weapSlot.name = "Weapon Slot";													//Name the weapon slot
+		weaponSlot = weapSlot.GetComponent<Slot> ();									//Get the slot component
+		weaponSlot.GetComponent<Image> ().color = Color.blue;							//Change the color to blue
 	}
 
 
@@ -107,10 +107,5 @@ public class Inventory : MonoBehaviour {
 		}
 
 		return null;																	//Returns null if the item could not be found
-	}
-
-
-	public static void EquipItem(){
-		
 	}
 }
