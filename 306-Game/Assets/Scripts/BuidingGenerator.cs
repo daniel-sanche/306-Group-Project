@@ -202,16 +202,17 @@ public class BuidingGenerator : MonoBehaviour {
 		double rightProb = initialProb;
 		do {
 			//visit the tiles on the top and bottom edges
+			int height = tileMap.GetLength(1);
 			int width = tileMap.GetLength(0);
 			for (int x=0; x<width; x++){
 				//add doors to the top row
-				if(tileMap[x, width-1] == TileType.FloorTop && Random.value < topProb){
+				if(tileMap[x, height-1] == TileType.FloorTop && Random.value < topProb){
 					//if the random value is passed and it's on a regular wall, add a door
-					tileMap[x, width-1] = TileType.FloorDoorT;
+					tileMap[x, height-1] = TileType.FloorDoorT;
 					//reset probability of next tile being a door to initaial small value
 					topProb = initialProb;
 					doorsAdded++;
-				} else if(tileMap[x, width-1] == TileType.FloorDoorT){
+				} else if(tileMap[x, height-1] == TileType.FloorDoorT){
 					//encountered an old door; reset probability of next tile being a door to initaial small value
 					//this is to avoid adding multiple doors close together
 					topProb = initialProb;
@@ -231,7 +232,6 @@ public class BuidingGenerator : MonoBehaviour {
 				}
 			}
 			//iterate left and right columns
-			int height = tileMap.GetLength(1);
 			for (int y=0; y<height; y++){
 				//add doors to left column
 				if(tileMap[0,y] == TileType.FloorLeft && Random.value < leftProb){
@@ -244,11 +244,11 @@ public class BuidingGenerator : MonoBehaviour {
 					leftProb = leftProb * growthFactor;
 				}
 				//add doors to right column
-				if(tileMap[height-1,y] == TileType.FloorRight && Random.value < rightProb){
-					tileMap[height-1, y] = TileType.FloorDoorR;
+				if(tileMap[width-1,y] == TileType.FloorRight && Random.value < rightProb){
+					tileMap[width-1, y] = TileType.FloorDoorR;
 					rightProb = initialProb;
 					doorsAdded++;
-				} else if(tileMap[height-1, y] == TileType.FloorDoorR){
+				} else if(tileMap[width-1, y] == TileType.FloorDoorR){
 					rightProb = initialProb;
 				} else {
 					rightProb = rightProb * growthFactor;
