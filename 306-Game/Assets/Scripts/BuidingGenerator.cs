@@ -5,19 +5,27 @@ using Random = UnityEngine.Random;
 public class BuidingGenerator : MonoBehaviour {
 
 
-	public static TileType[,] GenerateBuilding(Vector2 size){
+	/**
+	 * Function to generate a building of a requested size
+	 * size = a vector of the size of the building (width/height)
+	 * minDoors = the minimum number of exterior doors the building should have
+	 **/
+	public static TileType[,] GenerateBuilding(Vector2 size, int minDoors=1){
 		RoomNode root = new RoomNode (size);
 		root.GenerateSubtree (0.8, 0.5);
-		return GenerateTiles (root);
-	}
-
-	private static TileType[,] GenerateTiles(RoomNode root){
 		TileType[,] tileMap = GenerateOuterWalls(root);
 		GenerateInnerWalls (root, tileMap);
 		GenerateInteriorDoors (root, tileMap);
-		GenerateExteriorDoors (tileMap);
+		GenerateExteriorDoors (tileMap, minDoors);
 		return tileMap;
 	}
+
+
+	/**
+	 * --------------------------------------------------------------------------------------------------------------------------------------------
+	 * Helper Functions
+	 * --------------------------------------------------------------------------------------------------------------------------------------------
+	 **/
 
 	private static void GenerateExteriorDoors(TileType[,] tileMap, int minDoors=1, double initialProb = 0.05, double growthFactor = 1.1, int maxTries=1000){
 		int doorsAdded = 0;
@@ -195,7 +203,7 @@ public class BuidingGenerator : MonoBehaviour {
 			_size = roomSize;
 		}
 
-		public void GenerateSubtree(double splitProb, double vertProb=0.5){
+		public void GenerateSubtree(double splitProb=0.5, double vertProb=0.5){
 			int height = (int)_size.y;
 			int width = (int)_size.x;
 			//randomly decide whether we're going to split this room into 2. never split small rooms
