@@ -79,10 +79,20 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	/**
 	 * Handles all events involving mouse clicks
 	 **/
-	public void OnPointerClick(PointerEventData eventData)
+	public virtual void OnPointerClick(PointerEventData eventData)
 	{
-		if (eventData.button == PointerEventData.InputButton.Right && !isEmpty()) {
-			getItem().Use ();
+		if (eventData.button == PointerEventData.InputButton.Right && !isEmpty()) {			//If the user right clicks the slot with an item in it
+			if (item.itemType == ItemType.WEAPON) {
+				if (Inventory.weaponSlot.isEmpty ()) {
+					Inventory.weaponSlot.setWeapon ((Weapon) getItem ());
+				} else {
+					Item temp = (Item) Inventory.weaponSlot.getWeapon ();
+					Inventory.weaponSlot.setWeapon ((Weapon) getItem ());
+					setItem (temp);
+				}
+			} else {
+				getItem ().Use ();
+			}
 		}
 	}
 
@@ -205,17 +215,17 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		if (item.itemType == ItemType.REGENERATION) {										//If it is a regeneration item
 			backgroundColor = Color.green;													//Set background color as green
 			Regeneration regen = (Regeneration)item;										//Get regen class from item
-			desc.text += "Health: " + regen.healthRegen + "\nFills: " + regen.hungerRegen;	//Display health and hunger points
+			desc.text += "\nHealth: " + regen.healthRegen + "\nFills: " + regen.hungerRegen;	//Display health and hunger points
 		} 
 		else if (item.itemType == ItemType.BUILDING) {										//If it is a building item
 			backgroundColor = Color.yellow;													//Set background color as yellow
 			Barricade barricade = (Barricade)item;											//Get barricade class from item
-			desc.text += "Barricade restore: " + barricade.barricadeRestore;				//Display barricade points
+			desc.text += "\nBarricade restore: " + barricade.barricadeRestore;				//Display barricade points
 		} 
 		else if (item.itemType == ItemType.WEAPON) {										//If it is a building item
 			backgroundColor = Color.red;                                                	//Set background color as red
 			Weapon weapon = (Weapon)item;													//Get regen class from item
-			desc.text += "Attack speded: " + weapon.attackSpeed;							//Display health and hunger points
+			desc.text += "\nAttack speed: " + weapon.attackSpeed;							//Display health and hunger points
 		} 
 		else {
 			backgroundColor = Color.white;													//Otherwise, default background to white
@@ -228,6 +238,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		desc.color = Color.black;																//Set the font color
 
 		tooltipText.GetComponent<Text> ().raycastTarget = false;								//Prevents the hover image from being raycasted into
-		tooltipText.GetComponent<Text>().font = Font.CreateDynamicFontFromOSFont("Arial", 4);	//Set the font of the tooltip
+		tooltipText.GetComponent<Text>().font = Font.CreateDynamicFontFromOSFont("Arial", 12);		//Set the font of the tooltip
+		tooltipText.GetComponent<Text>().fontSize = 12;
 	}
 }

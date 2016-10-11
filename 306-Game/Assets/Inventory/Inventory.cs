@@ -13,13 +13,20 @@ public class Inventory : MonoBehaviour {
 	// The X and Y spacing between inventory slots.
 	public float xSpacing, ySpacing;
 
+	// The GameObject containing the slots
+	public GameObject overlay;
+
 	// Array of item slots.
 	public static Slot[] itemSlot;
 
-	public static Slot weaponSlot;
+	// Slot for holding the equipped weapon
+	public static WeaponSlot weaponSlot;
 
 	// Prefab of an empty slot for instantiating.
 	public GameObject slotPrefab;
+
+	// Prefab for the weapon slot.
+	public GameObject weaponSlotPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -34,11 +41,11 @@ public class Inventory : MonoBehaviour {
 		}
 
 																						//Instantiate the weapon slot
-		GameObject weapSlot = (GameObject)Instantiate (slotPrefab, new Vector2((size % columns) * xSpacing, (size / columns) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);	
+		GameObject weapSlot = (GameObject)Instantiate (weaponSlotPrefab, new Vector2((size % columns) * xSpacing, (size / columns) *  ySpacing) + (Vector2) transform.position, Quaternion.identity);	
 
 		weapSlot.transform.SetParent (this.transform);									//Set weapon slot as child of inventory
 		weapSlot.name = "Weapon Slot";													//Name the weapon slot
-		weaponSlot = weapSlot.GetComponent<Slot> ();									//Get the slot component
+		weaponSlot = weapSlot.GetComponent<WeaponSlot> ();								//Get the slot component
 		weaponSlot.GetComponent<Image> ().color = Color.blue;							//Change the color to blue
 	}
 
@@ -91,12 +98,9 @@ public class Inventory : MonoBehaviour {
 
 		return false;																	//Return false if not successful
 	}
-
-	/// <summary>
-	/// Finds the item by name, removes it from its slot and returns it
-	/// </summary>
-	/// <returns>The item.</returns>
-	/// <param name="toFind">The item to be found.</param>
+	/**	
+	* Finds the item by name, removes it from its slot and returns it
+	**/
 	public static Item findItem(string toFind){
 		for (int x = 0; x < itemSlot.Length; x++) {										//Check each slot
 			if (!itemSlot [x].isEmpty ()) {												//If the slot is not empty
@@ -107,5 +111,24 @@ public class Inventory : MonoBehaviour {
 		}
 
 		return null;																	//Returns null if the item could not be found
+	}
+	/**
+	* Hides the inventory GUI
+	**/
+	public static void hideInventory(){
+		for (int x = 0; x < itemSlot.Length; x++) {										//For each item slot
+			itemSlot [x].gameObject.SetActive (false);									//Set it as not active
+		}
+
+		weaponSlot.gameObject.SetActive (false);										//Set the weapon slot as not active
+	}
+
+	//Reveals the inventory GUI
+	public static void showInventory(){
+		for (int x = 0; x < itemSlot.Length; x++) {										//For each item slot
+			itemSlot [x].gameObject.SetActive (true);									//Set it as active 
+		}
+
+		weaponSlot.gameObject.SetActive (true);											//Set the weapon slot as active
 	}
 }
