@@ -14,11 +14,72 @@ public class BuidingGenerator : MonoBehaviour {
 	private static TileType[,] GenerateTiles(RoomNode root){
 		TileType[,] tileMap = GenerateOuterWalls(root);
 		GenerateInnerWalls (root, tileMap);
-		GenerateAdditionalDoors (root, tileMap);
+		GenerateInteriorDoors (root, tileMap);
+		GenerateExteriorDoors (tileMap);
 		return tileMap;
 	}
 
-	private static void GenerateAdditionalDoors(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0, double probEmptyDoor=0.5){
+	private static void GenerateExteriorDoors(TileType[,] tileMap, int minDoors=1, double initialProb = 0.05, double growthFactor = 1.1, int maxTries=1000){
+		int doorsAdded = 0;
+		int tries = 0;
+		do {
+			//iterate top and bottom rows
+			double topProb = initialProb;
+			double bottomProb = initialProb;
+			int width = tileMap.GetLength(0);
+			for (int x=0; x<width; x++){
+				//add doors to top row
+				if(tileMap[x, width-1] == TileType.FloorTop && Random.value < topProb){
+					tileMap[x, width-1] = TileType.FloorDoorT;
+					topProb = initialProb;
+					doorsAdded++;
+				} else if(tileMap[x, width-1] == TileType.FloorDoorT){
+					topProb = initialProb;
+				} else {
+					topProb = topProb * growthFactor;
+				}
+				//add doors to bottom row
+				if(tileMap[x, 0] == TileType.FloorBottom && Random.value < bottomProb){
+					tileMap[x, 0] = TileType.FloorDoorB;
+					bottomProb = initialProb;
+					doorsAdded++;
+				} else if(tileMap[x, 0] == TileType.FloorDoorB){
+					bottomProb = initialProb;
+				} else {
+					bottomProb = bottomProb * growthFactor;
+				}
+			}
+			//iterate left and right columns
+			double leftProb = initialProb;
+			double rightProb = initialProb;
+			int height = tileMap.GetLength(1);
+			for (int y=0; y<height; y++){
+				//add doors to left column
+				if(tileMap[0,y] == TileType.FloorLeft && Random.value < leftProb){
+					tileMap[0, y] = TileType.FloorDoorL;
+					leftProb = initialProb;
+					doorsAdded++;
+				} else if(tileMap[0, y] == TileType.FloorDoorL){
+					leftProb = initialProb;
+				} else {
+					leftProb = leftProb * growthFactor;
+				}
+				//add doors to right column
+				if(tileMap[height-1,y] == TileType.FloorRight && Random.value < rightProb){
+					tileMap[height-1, y] = TileType.FloorDoorR;
+					rightProb = initialProb;
+					doorsAdded++;
+				} else if(tileMap[height-1, y] == TileType.FloorDoorR){
+					rightProb = initialProb;
+				} else {
+					rightProb = rightProb * growthFactor;
+				}
+			}
+			tries++;
+		} while(doorsAdded < minDoors && tries < maxTries);
+	}
+
+	private static void GenerateInteriorDoors(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0, double probEmptyDoor=0.5){
 		if (!root._isLeaf) {
 			if (root._verticalSplit) {
 				RoomNode leftSide = root._firstChild;
@@ -38,8 +99,8 @@ public class BuidingGenerator : MonoBehaviour {
 						tileMap [leftWidth + xOffset, doorSpace] = TileType.FloorDoorL;
 					}
 				}
-				GenerateAdditionalDoors (leftSide, tileMap, xOffset, yOffset);
-				GenerateAdditionalDoors (rightSide, tileMap, xOffset + leftWidth, yOffset);
+				GenerateInteriorDoors (leftSide, tileMap, xOffset, yOffset);
+				GenerateInteriorDoors (rightSide, tileMap, xOffset + leftWidth, yOffset);
 			} else {
 				RoomNode bottomSide = root._firstChild;
 				RoomNode topSide = root._secondChild;
@@ -58,8 +119,8 @@ public class BuidingGenerator : MonoBehaviour {
 						tileMap [doorSpace, bottomHeight + yOffset] = TileType.FloorDoorB;
 					}
 				}
-				GenerateAdditionalDoors (bottomSide, tileMap, xOffset, yOffset);
-				GenerateAdditionalDoors (topSide, tileMap, xOffset, yOffset + bottomHeight);
+				GenerateInteriorDoors (bottomSide, tileMap, xOffset, yOffset);
+				GenerateInteriorDoors (topSide, tileMap, xOffset, yOffset + bottomHeight);
 			}
 		}
 	}
