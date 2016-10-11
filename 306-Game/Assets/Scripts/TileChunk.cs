@@ -31,6 +31,10 @@ public class TileChunk : MonoBehaviour {
 	public GameObject floorTR;
 	public GameObject floorBL;
 	public GameObject floorBR;
+	public GameObject floorDoorL;
+	public GameObject floorDoorR;
+	public GameObject floorDoorT;
+	public GameObject floorDoorB;
 
 	public float cacheClearTime = (5f*60f);
 
@@ -165,6 +169,14 @@ public class TileChunk : MonoBehaviour {
 			return floorTL;
 		case TileType.FloorTR:
 			return floorTR;
+		case TileType.FloorDoorB:
+			return floorDoorB;
+		case TileType.FloorDoorT:
+			return floorDoorT;
+		case TileType.FloorDoorL:
+			return floorDoorL;
+		case TileType.FloorDoorR:
+			return floorDoorR;
 		default:
 			return grass;
 		}
