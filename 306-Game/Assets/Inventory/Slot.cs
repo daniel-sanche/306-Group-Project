@@ -84,10 +84,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		if (eventData.button == PointerEventData.InputButton.Right && !isEmpty()) {			//If the user right clicks the slot with an item in it
 			if (item.itemType == ItemType.WEAPON) {
 				if (Inventory.weaponSlot.isEmpty ()) {
-					Inventory.weaponSlot.setWeapon ((Weapon) getItem ());
+					Inventory.weaponSlot.setItem (getItem ());
 				} else {
-					Item temp = (Item) Inventory.weaponSlot.getWeapon ();
-					Inventory.weaponSlot.setWeapon ((Weapon) getItem ());
+					Item temp = (Item) Inventory.weaponSlot.getItem ();
+					Inventory.weaponSlot.setItem (getItem ());
 					setItem (temp);
 				}
 			} else {
@@ -110,7 +110,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	/*
 	 * This function is called when the player drags something onto this slot
 	 **/
-	public void OnDrop(PointerEventData eventData){
+	public virtual void OnDrop(PointerEventData eventData){
 		
 		if (eventData.pointerDrag != null) {												//If the player dragged something
 			if (eventData.pointerDrag.tag == "Slot") {										//If the player dragged from a spot
@@ -224,7 +224,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		} 
 		else if (item.itemType == ItemType.WEAPON) {										//If it is a building item
 			backgroundColor = Color.red;                                                	//Set background color as red
-			Weapon weapon = (Weapon)item;													//Get regen class from item
+			Weapon weapon = (Weapon) item;													//Get regen class from item
 			desc.text += "\nAttack speed: " + weapon.attackSpeed;							//Display health and hunger points
 		} 
 		else {

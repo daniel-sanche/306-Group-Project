@@ -28,6 +28,12 @@ public class Inventory : MonoBehaviour {
 	// Prefab for the weapon slot.
 	public GameObject weaponSlotPrefab;
 
+	//Key used for toggling the inventory
+	public KeyCode toggleKey;
+
+	//Is the inventory visible?
+	public static bool visible;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -46,13 +52,19 @@ public class Inventory : MonoBehaviour {
 		weapSlot.transform.SetParent (this.transform);									//Set weapon slot as child of inventory
 		weapSlot.name = "Weapon Slot";													//Name the weapon slot
 		weaponSlot = weapSlot.GetComponent<WeaponSlot> ();								//Get the slot component
-		weaponSlot.GetComponent<Image> ().color = Color.blue;							//Change the color to blue
+		weaponSlot.GetComponent<Image> ().color = Color.red;							//Change the color to blue
 	}
 
 
 	// Update is called once per frame
 	void Update () {
 
+		if (Input.GetKeyDown (toggleKey)) {
+			if (visible)
+				hideInventory ();
+			else
+				showInventory ();
+		}
 	}
 
 	/**
@@ -121,6 +133,7 @@ public class Inventory : MonoBehaviour {
 		}
 
 		weaponSlot.gameObject.SetActive (false);										//Set the weapon slot as not active
+		visible = false;
 	}
 
 	//Reveals the inventory GUI
@@ -130,5 +143,6 @@ public class Inventory : MonoBehaviour {
 		}
 
 		weaponSlot.gameObject.SetActive (true);											//Set the weapon slot as active
+		visible = true;
 	}
 }

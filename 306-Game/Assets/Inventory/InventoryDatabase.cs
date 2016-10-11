@@ -33,8 +33,8 @@ public class InventoryDatabase : MonoBehaviour {
 			if (cur.GetComponent<Item> () != null) {
 				return cur.GetComponent<Item> ();
 			}
-			else if (cur.GetComponent<Weapon> () != null) {
-				return (Item) cur.GetComponent<Weapon> ();
+			else if (cur.GetComponent<Item> () != null) {
+				return (Item) cur.GetComponent<Item> ();
 			}
 			else if (cur.GetComponent<Regeneration> () != null) {
 				return (Item) cur.GetComponent<Regeneration> ();

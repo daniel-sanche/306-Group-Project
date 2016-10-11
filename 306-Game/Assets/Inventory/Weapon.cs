@@ -10,4 +10,9 @@ public class Weapon : Item {
 	void Start () {
 		itemType = ItemType.WEAPON;
 	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
 }
