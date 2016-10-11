@@ -30,7 +30,7 @@ public class TileGenerator : MonoBehaviour {
 			}
 		}
 		Vector2 buildingSize = new Vector2 (10, 10);
-		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize);
+		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize, roomSplitScaler:2);
 		for (int x = 0; x < buildingSize.x; x++) {
 			for (int y = 0; y < buildingSize.y; y++) {
 				tileMap [x, y] = buildingMap [x, y];

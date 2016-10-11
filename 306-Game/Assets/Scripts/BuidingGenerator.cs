@@ -9,11 +9,13 @@ public class BuidingGenerator : MonoBehaviour {
 	 * Function to generate a building of a requested size
 	 * size = a vector of the size of the building (width/height)
 	 * minDoors = the minimum number of exterior doors the building should have
-	 * roomSplitProb = the probability that any room will split in two
+	 * roomSplitScaler = controls the liklihood of a room dividing into two. Splits are usually calculated by the area_of_the_room / 100,
+	 * 					 but that value will be multiplied by this parameter to make it more or less likely
+	 * 					 Results in more complex, but more interesting rooms
 	 **/
-	public static TileType[,] GenerateBuilding(Vector2 size, int minDoors=1, double roomSplitProb = 0.8){
+	public static TileType[,] GenerateBuilding(Vector2 size, int minDoors=1, double roomSplitScaler=1){
 		RoomNode root = new RoomNode (size);
-		root.GenerateSubtree (roomSplitProb);
+		root.GenerateSubtree(splitProbScaler:roomSplitScaler);
 		TileType[,] tileMap = _InitializeTiles(root);
 		_GenerateInnerWalls (root, tileMap);
 		_GenerateInteriorDoors (root, tileMap);
@@ -284,15 +286,19 @@ public class BuidingGenerator : MonoBehaviour {
 		/**
 		 * Creates the children rooted at this node
 		 * potentially splits the room in half, and then recurses on it's children, potentially splitting them in half
-		 * splitProb = the probability that the current node will split
+		 * The algorithm decides to split a room based on it's area. The bigger it is, the more likly it is to split
+		 * splitProbScaler = controls the liklihood of a split. Splits are usually calculated by the area_of_the_room / 100,
+		 * 					 but that value will be multiplied by this parameter to make it more or less likely
 		 * vertProb = the probability that the split will be a vertical line through the room (otherwise horizontal)
 		 */
-		public void GenerateSubtree(double splitProb=0.5, double vertProb=0.5){
+		public void GenerateSubtree(double splitProbScaler=1.0, double vertProb=0.5){
 			//4 is the smallest value for any dimension, because of the way our tiles are set up. We need to leave a buffer
 			int dimMin = 4;
 			int height = (int)_size.y;
 			int width = (int)_size.x;
-
+			int area = height * width;
+			//find the probability of a split based on the area
+			double splitProb = (area / 100.0) * splitProbScaler;
 			//randomly decide whether we're going to split this room into 2. never split small rooms
 			if (Random.value <= splitProb && (height >= dimMin || width >= dimMin)) {
 				_isLeaf = false;
@@ -302,7 +308,7 @@ public class BuidingGenerator : MonoBehaviour {
 				} else if (width < dimMin) {
 					vertProb = -1;
 				}
-				//calculate whether we're doing a vertical split of a horizontal one
+				//calculate whether we're doing a vertical split or a horizontal one
 				Vector2 firstSize = _size;
 				Vector2 secondSize  = _size;
 				if (Random.value <= vertProb) {
@@ -325,8 +331,8 @@ public class BuidingGenerator : MonoBehaviour {
 				//recurse on children
 				_firstChild = new RoomNode (firstSize);
 				_secondChild = new RoomNode (secondSize);
-				_firstChild.GenerateSubtree (splitProb, vertProb);
-				_secondChild.GenerateSubtree(splitProb, vertProb);
+				_firstChild.GenerateSubtree (splitProbScaler, vertProb);
+				_secondChild.GenerateSubtree(splitProbScaler, vertProb);
 			}
 		}
 	}
