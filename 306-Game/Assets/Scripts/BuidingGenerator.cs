@@ -18,16 +18,13 @@ public class BuidingGenerator : MonoBehaviour {
 		return tileMap;
 	}
 
-	private static void GenerateAdditionalDoors(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0){
+	private static void GenerateAdditionalDoors(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0, double probEmptyDoor=0.5){
 		if (!root._isLeaf) {
 			if (root._verticalSplit) {
 				RoomNode leftSide = root._firstChild;
 				RoomNode rightSide = root._secondChild;
 				int leftWidth = (int)leftSide._size.x;
 				int doorSpace = (int)(Random.value * root._size.y + yOffset);
-				for (int y = yOffset; y < yOffset + root._size.y; y++) {
-					Debug.Log (tileMap [leftWidth + xOffset, y]);
-				}
 				if (tileMap [leftWidth + xOffset, doorSpace] == TileType.FloorTL ||
 				    tileMap [leftWidth + xOffset, doorSpace] == TileType.FloorTR) {
 					tileMap [leftWidth + xOffset, doorSpace] = TileType.FloorTop;
@@ -35,7 +32,11 @@ public class BuidingGenerator : MonoBehaviour {
 				           tileMap [leftWidth + xOffset, doorSpace] == TileType.FloorBR) {
 					tileMap [leftWidth + xOffset, doorSpace] = TileType.FloorBottom;
 				} else {
-					tileMap [leftWidth + xOffset, doorSpace] = TileType.Floor;
+					if (Random.value < probEmptyDoor) {
+						tileMap [leftWidth + xOffset, doorSpace] = TileType.Floor;
+					} else {
+						tileMap [leftWidth + xOffset, doorSpace] = TileType.FloorDoorL;
+					}
 				}
 				GenerateAdditionalDoors (leftSide, tileMap, xOffset, yOffset);
 				GenerateAdditionalDoors (rightSide, tileMap, xOffset + leftWidth, yOffset);
@@ -44,9 +45,6 @@ public class BuidingGenerator : MonoBehaviour {
 				RoomNode topSide = root._secondChild;
 				int bottomHeight = (int)bottomSide._size.y;
 				int doorSpace = (int)(Random.value * root._size.x + xOffset);
-				for (int x = xOffset; x < xOffset + root._size.x; x++) {
-					Debug.Log (tileMap [x, bottomHeight + yOffset]);
-				}
 				if (tileMap[doorSpace, bottomHeight + yOffset] == TileType.FloorTL ||
 					tileMap[doorSpace, bottomHeight + yOffset] == TileType.FloorBL) {
 					tileMap[doorSpace, bottomHeight + yOffset] = TileType.FloorLeft;
@@ -54,7 +52,11 @@ public class BuidingGenerator : MonoBehaviour {
 						   tileMap[doorSpace, bottomHeight + yOffset] == TileType.FloorTR) {
 					tileMap[doorSpace, bottomHeight + yOffset] = TileType.FloorRight;
 				} else {
-					tileMap[doorSpace, bottomHeight + yOffset] = TileType.Floor;
+					if (Random.value < probEmptyDoor) {
+						tileMap [doorSpace, bottomHeight + yOffset] = TileType.Floor;
+					} else {
+						tileMap [doorSpace, bottomHeight + yOffset] = TileType.FloorDoorB;
+					}
 				}
 				GenerateAdditionalDoors (bottomSide, tileMap, xOffset, yOffset);
 				GenerateAdditionalDoors (topSide, tileMap, xOffset, yOffset + bottomHeight);
