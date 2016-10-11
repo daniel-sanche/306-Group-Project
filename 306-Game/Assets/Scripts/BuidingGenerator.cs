@@ -19,70 +19,43 @@ public class BuidingGenerator : MonoBehaviour {
 	}
 
 	private static void GenerateAdditionalDoors(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0){
-		bool hasDoor = false;
-		int topRow = yOffset+(int)root._size.y;
-		if (tileMap.GetLength (1) == topRow) {
-			topRow--;
-		}
-		for (int x = xOffset; x < xOffset + root._size.x; x++) {
-			//look at bottom/top rows
-			if (tileMap [x, yOffset] == TileType.Floor ||
-				tileMap [x, topRow] == TileType.Floor) {
-				hasDoor = true;
-			}
-		}
-		int rightRow = xOffset + (int)root._size.x;
-		if (tileMap.GetLength (0) == rightRow) {
-			rightRow--;
-		}
-		for (int y = yOffset; y < yOffset + root._size.y; y++) {
-			//look at left/right rows
-			if (tileMap [xOffset, y] == TileType.Floor ||
-				tileMap [rightRow, y] == TileType.Floor) {
-				hasDoor = true;
-			}
-		}
-		if(!hasDoor){
-			double sidePicker = Random.value;
-			int x;
-			int y;
-			if (sidePicker < 0.25) {
-				//left side
-				x = xOffset;
-				y = (int)(Random.value * root._size.y-1) + yOffset;
-			} else if (sidePicker < 0.5) {
-				//right side
-				x = rightRow;
-				y = (int)(Random.value * root._size.y-1) + yOffset;
-			} else if (sidePicker < 0.75) {
-				//bottom side
-				x = (int)(Random.value * root._size.x-1) + xOffset;
-				y = yOffset;
-			} else {
-				//top side
-				x = (int)(Random.value * root._size.x-1) + xOffset;
-				y = topRow;
-			}
-			Debug.Log(x+ ","+y);
-			if (tileMap [x, y] != TileType.FloorBL && tileMap [x, y] != TileType.FloorBR &&
-			   tileMap [x, y] != TileType.FloorTL && tileMap [x, y] != TileType.FloorTR) {
-				tileMap [x, y] = TileType.Floor;
-				hasDoor = true;
-			}
-		}
 		if (!root._isLeaf) {
 			if (root._verticalSplit) {
-				//add walls along the vertical wall
 				RoomNode leftSide = root._firstChild;
 				RoomNode rightSide = root._secondChild;
 				int leftWidth = (int)leftSide._size.x;
+				int doorSpace = (int)(Random.value * root._size.y + yOffset);
+				for (int y = yOffset; y < yOffset + root._size.y; y++) {
+					Debug.Log (tileMap [leftWidth + xOffset, y]);
+				}
+				if (tileMap [leftWidth + xOffset, doorSpace] == TileType.FloorTL ||
+				    tileMap [leftWidth + xOffset, doorSpace] == TileType.FloorTR) {
+					tileMap [leftWidth + xOffset, doorSpace] = TileType.FloorTop;
+				} else if (tileMap [leftWidth + xOffset, doorSpace] == TileType.FloorBL ||
+				           tileMap [leftWidth + xOffset, doorSpace] == TileType.FloorBR) {
+					tileMap [leftWidth + xOffset, doorSpace] = TileType.FloorBottom;
+				} else {
+					tileMap [leftWidth + xOffset, doorSpace] = TileType.Floor;
+				}
 				GenerateAdditionalDoors (leftSide, tileMap, xOffset, yOffset);
 				GenerateAdditionalDoors (rightSide, tileMap, xOffset + leftWidth, yOffset);
 			} else {
-				//add walls along the horizontal wall
 				RoomNode bottomSide = root._firstChild;
 				RoomNode topSide = root._secondChild;
 				int bottomHeight = (int)bottomSide._size.y;
+				int doorSpace = (int)(Random.value * root._size.x + xOffset);
+				for (int x = xOffset; x < xOffset + root._size.x; x++) {
+					Debug.Log (tileMap [x, bottomHeight + yOffset]);
+				}
+				if (tileMap[doorSpace, bottomHeight + yOffset] == TileType.FloorTL ||
+					tileMap[doorSpace, bottomHeight + yOffset] == TileType.FloorBL) {
+					tileMap[doorSpace, bottomHeight + yOffset] = TileType.FloorLeft;
+				} else if (tileMap[doorSpace, bottomHeight + yOffset] == TileType.FloorBR ||
+						   tileMap[doorSpace, bottomHeight + yOffset] == TileType.FloorTR) {
+					tileMap[doorSpace, bottomHeight + yOffset] = TileType.FloorRight;
+				} else {
+					tileMap[doorSpace, bottomHeight + yOffset] = TileType.Floor;
+				}
 				GenerateAdditionalDoors (bottomSide, tileMap, xOffset, yOffset);
 				GenerateAdditionalDoors (topSide, tileMap, xOffset, yOffset + bottomHeight);
 			}
