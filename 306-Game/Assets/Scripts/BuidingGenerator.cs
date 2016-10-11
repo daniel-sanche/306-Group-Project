@@ -14,10 +14,84 @@ public class BuidingGenerator : MonoBehaviour {
 	private static TileType[,] GenerateTiles(RoomNode root){
 		TileType[,] tileMap = GenerateOuterWalls(root);
 		GenerateInnerWalls (root, tileMap);
+		GenerateAdditionalDoors (root, tileMap);
 		return tileMap;
 	}
 
-	private static void GenerateInnerWalls(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0, float doorProb=0.5f){
+	private static void GenerateAdditionalDoors(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0){
+		if (!root._isLeaf) {
+			if (root._verticalSplit) {
+				//add walls along the vertical wall
+				RoomNode leftSide = root._firstChild;
+				RoomNode rightSide = root._secondChild;
+				int leftWidth = (int)leftSide._size.x;
+				GenerateAdditionalDoors (leftSide, tileMap, xOffset, yOffset);
+				GenerateAdditionalDoors (rightSide, tileMap, xOffset + leftWidth, yOffset);
+			} else {
+				//add walls along the horizontal wall
+				RoomNode bottomSide = root._firstChild;
+				RoomNode topSide = root._secondChild;
+				int bottomHeight = (int)bottomSide._size.y;
+				GenerateAdditionalDoors (bottomSide, tileMap, xOffset, yOffset);
+				GenerateAdditionalDoors (topSide, tileMap, xOffset, yOffset + bottomHeight);
+			}
+		} else {
+			bool hasDoor = false;
+			int topRow = yOffset+(int)root._size.y;
+			if (tileMap.GetLength (1) == topRow) {
+				topRow--;
+			}
+			for (int x = xOffset; x < xOffset + root._size.x; x++) {
+				//look at bottom/top rows
+				if (tileMap [x, yOffset] == TileType.Floor ||
+					tileMap [x, topRow] == TileType.Floor) {
+					hasDoor = true;
+				}
+			}
+			int rightRow = xOffset + (int)root._size.x;
+			if (tileMap.GetLength (0) == rightRow) {
+				rightRow--;
+			}
+			for (int y = yOffset; y < yOffset + root._size.y; y++) {
+				//look at left/right rows
+				if (tileMap [xOffset, y] == TileType.Floor ||
+					tileMap [rightRow, y] == TileType.Floor) {
+					hasDoor = true;
+				}
+			}
+			while(!hasDoor){
+				double sidePicker = Random.value;
+				int x;
+				int y;
+				if (sidePicker < 0.25) {
+					//left side
+					x = xOffset;
+					y = (int)(Random.value * root._size.y) + yOffset;
+				} else if (sidePicker < 0.5) {
+					//right side
+					x = rightRow;
+					y = (int)(Random.value * root._size.y) + yOffset;
+				} else if (sidePicker < 0.75) {
+					//bottom side
+					x = (int)(Random.value * root._size.x) + xOffset;
+					y = yOffset;
+				} else {
+					//top side
+					x = (int)(Random.value * root._size.x) + xOffset;
+					y = topRow;
+				}
+				if (tileMap [x, y] != TileType.FloorBL && tileMap [x, y] != TileType.FloorBR &&
+				   tileMap [x, y] != TileType.FloorTL && tileMap [x, y] != TileType.FloorTR) {
+					tileMap [x, y] = TileType.Floor;
+					hasDoor = true;
+				}
+				
+
+			}
+		}
+	}
+
+	private static void GenerateInnerWalls(RoomNode root, TileType[,] tileMap, int xOffset=0, int yOffset=0, float doorProb=0f){
 		if (!root._isLeaf) {
 			if (root._verticalSplit) {
 				//add walls along the vertical wall
@@ -51,7 +125,7 @@ public class BuidingGenerator : MonoBehaviour {
 			for(int y=yOffset; y< yOffset+root._size.y; y++){
 				if (tileMap [xOffset, y] == TileType.FloorTop || tileMap [xOffset, y] == TileType.FloorTL) {
 					tileMap [xOffset, y] = TileType.FloorTL;
-				} else if(y - yOffset == bottomDoorIdx){
+				} else if(y - yOffset == leftDoorIdx){
 					tileMap [xOffset, y] = TileType.Floor;
 				} else {
 					tileMap [xOffset, y] = TileType.FloorLeft;
