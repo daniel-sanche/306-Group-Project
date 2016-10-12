@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Character : MonoBehaviour {
+public class HealthEnergy : MonoBehaviour {
 
     [SerializeField]
     Stat health;
@@ -21,7 +21,7 @@ public class Character : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void Awake()
