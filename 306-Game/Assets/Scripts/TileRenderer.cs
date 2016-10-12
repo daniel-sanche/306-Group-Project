@@ -81,7 +81,7 @@ public class TileRenderer : MonoBehaviour {
 	 **/
 	private void InitMap(){
 		heading = new GameObject ("GameBoard").transform;
-		TileType[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y);
+		int[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y);
 		chunkMatrix = ChunksFromTileMap (tileMap, NumChunks, TilesPerChunk);
 	}
 
@@ -93,20 +93,16 @@ public class TileRenderer : MonoBehaviour {
 	 * numTiles = the number of tiles per chunk in the x and y direction
 	 * returns a grid of TileChunks
 	 **/
-		private TileChunk [,] ChunksFromTileMap(TileType[,] combinedMap, Vector2 numChunks, Vector2 numTiles){
-		//initialize empty array to hold out chunks
+	private TileChunk [,] ChunksFromTileMap(int[,] combinedMap, Vector2 numChunks, Vector2 numTiles){
 		TileChunk [,] chunkMat = new TileChunk[(int)numChunks.x, (int)numChunks.y];
-		//iterate over each space in the array, generating a chunk for the position
 		for (int chunkCol = 0; chunkCol < numChunks.x; chunkCol++) {
 			for (int chunkRow = 0; chunkRow < numChunks.y; chunkRow++) {
-				//create an array for the tiles this chunk is responsible for
-				TileType[,] theseTiles = new TileType[(int)numTiles.x, (int)numTiles.y];
-				for (int tileCol = 0; tileCol < numTiles.x; tileCol++) {
-					for (int tileRow = 0; tileRow < numTiles.y; tileRow++) {
-						theseTiles [tileCol, tileRow] = combinedMap [tileCol+chunkCol*(int)numTiles.x, tileRow+chunkRow*(int)numTiles.y];
+				int[,] theseTiles = new int[(int)numTiles.x, (int)numTiles.y];
+				for (int tileRow = 0; tileRow < numTiles.x; tileRow++) {
+					for (int tileCol = 0; tileCol < numTiles.y; tileCol++) {
+						theseTiles [tileRow, tileCol] = combinedMap [tileRow+chunkRow*(int)numTiles.x, tileCol+chunkCol*(int)numTiles.y];
 					}
 				}
-				//create the game object for the chunl
 				GameObject newChunk = Instantiate (tileChunkObj, new Vector3 (chunkCol*TilesPerChunk.x, chunkRow*TilesPerChunk.y, 0), Quaternion.identity) as GameObject;
 				TileChunk chunkScript = newChunk.GetComponent<TileChunk> ();
 				chunkScript.transform.SetParent (TileRenderer.heading);
@@ -125,29 +121,22 @@ public class TileRenderer : MonoBehaviour {
 	 * numChunks = x/y values representing the numbers to expect in chunkArr
 	 **/
 	private static void ConnectChunks(TileChunk [,] chunkArr, Vector2 numChunks) {
-		//iterate over each chunk
 		for(int y=0; y<numChunks.x; y++){
 			for(int x=0; x<numChunks.y; x++){
 				TileChunk newChunk = chunkArr [x, y];
-				//look at every chunk in a 5x5 grid around this chunk
 				for (int i = -2; i <= 2; i++) {
 					for (int j = -2; j <= 0; j++) {
 						int newX = x + i;
 						int newY = y + j;
 						//we want to look behind us and above, to the chunks that have already been visited
-						if (newX >= 0 && newX < numChunks.x && newY >= 0 && newY < numChunks.y && (i != 0 || j != 0) && (newX < x || newY < y)) {
-							//at this point, we know this neighbour is close, a valid chunk, and has already been visited by this function
-							//we will want to hook it up to the current chunk
+						if (newX >= 0 && newX < numChunks.y && newY >= 0 && newY < numChunks.x && (i != 0 || j != 0) && (newX < x || newY < y)) {
 							TileChunk closeChunk = chunkArr [newX, newY];
-							//use abs to find the absolute distance between the chunks
 							float absI = Mathf.Abs (i);
 							float absJ = Mathf.Abs (j);
 							if (absI + absJ == 1 || (absI == absJ && absI == 1)) {
-								//the chunks are direct neighbours. Make them add each other to connected chunks
 								closeChunk.AddConnectedChunk (newChunk);
 								newChunk.AddConnectedChunk (closeChunk);
 							} else {
-								//the chunks are distant neighbours. Make them add each other to distant chunks
 								closeChunk.AddDistantChunk (newChunk);
 								newChunk.AddDistantChunk (closeChunk);
 							}
