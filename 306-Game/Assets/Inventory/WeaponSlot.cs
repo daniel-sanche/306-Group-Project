@@ -4,16 +4,6 @@ using UnityEngine.EventSystems;
 
 public class WeaponSlot : Slot {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 	/**
 	 * Handles all events involving mouse clicks
 	 **/

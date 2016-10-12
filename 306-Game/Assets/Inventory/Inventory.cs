@@ -86,12 +86,12 @@ public class Inventory : MonoBehaviour {
 	 * Is the inventory currently full?
 	 **/
 	public static bool isFull(){
-		for (int x = 0; x < itemSlot.Length; x++) {
-			if(itemSlot[x].isEmpty())
-				return false;
+		for (int x = 0; x < itemSlot.Length; x++) {										//Check each slot
+			if(itemSlot[x].isEmpty())													//If the slot is empty
+				return false;															//The inventory is not full
 		}
 
-		return true;
+		return true;																	//If all slots are occupied, the inventory is full
 	}
 
 	/**

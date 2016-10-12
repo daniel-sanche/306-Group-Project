@@ -3,44 +3,41 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 	
-	/// Public variables
+	//The speed of the player
+	public float speed;				
 
-	public float speed;				///The speed of the player
+	//The player's rigidbody
+	private Rigidbody2D rigidbody;
 
-
-	/// Private variables
-
-	private Rigidbody2D rigidbody;	///The player's rigidbody
-
-	/// Use this for initialization
+	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();	//Initializes the rigidbody variable
 	}
 
 
-	/// Update is called once per frame
+	// Update is called once per frame
 	void Update () {
 		Move ();			//Moves the player
 		Look ();			//Rotates the player
 	}
 		
 
-	/// Moves the player based on input
+	// Moves the player based on input
 	private void Move(){
-		if(Input.GetKey(KeyCode.LeftShift))													//Sets the player's velocity based on input and speed
-			rigidbody.velocity = getInputVector () * speed * 2;								//If shift is held, player sprints
+		if(Input.GetKey(KeyCode.LeftShift))																			//Sets the player's velocity based on input and speed
+			rigidbody.velocity = getInputVector () * speed * 2;														//If shift is held, player sprints
 		else
-			rigidbody.velocity = getInputVector () * speed;									//Otherwise, it is normal speed
+			rigidbody.velocity = getInputVector () * speed;															//Otherwise, it is normal speed
 	}
 		
 
-	/// Returns a Vector3 representing the player's input
+	// Returns a Vector3 representing the player's input
 	private Vector2 getInputVector(){
-		return new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));		//Returns a Vector2 representing the player's input on the x and y axis
+		return new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));									//Returns a Vector2 representing the player's input on the x and y axis
 	}
 
 
-	/// Orients such that the player is looking at the mouse 
+	// Orients such that the player is looking at the mouse 
 	private void Look(){
 		Vector2 relativeMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint (transform.position);		//Gets the position of the mouse in relation to the player;
 
