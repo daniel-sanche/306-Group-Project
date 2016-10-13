@@ -20,6 +20,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	//The image for used for displaying the item
 	public Image itemImage;
 
+	//The font size for tooltips
+	public int fontSize;
+
 	// Use this for initialization
 	void Start () {
 		item = null;							//Initializes the item to null
@@ -239,6 +242,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 
 		tooltipText.GetComponent<Text> ().raycastTarget = false;								//Prevents the hover image from being raycasted into
 		tooltipText.GetComponent<Text>().font = Font.CreateDynamicFontFromOSFont("Arial", 12);		//Set the font of the tooltip
-		tooltipText.GetComponent<Text>().fontSize = 12;
+		tooltipText.GetComponent<Text>().fontSize = fontSize;
 	}
 }
