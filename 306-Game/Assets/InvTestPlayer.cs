@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class InvTestPlayer : MonoBehaviour {
 	
 	//The speed of the player
 	public float speed;				
