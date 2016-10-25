@@ -11,7 +11,7 @@ public class TileChunk : MonoBehaviour {
 	 **/
 
 
-	private TileType [,] terrainMap;
+	private int [,] terrainMap;
 	private List<GameObject> tileList;
 	private Vector2 tilesPerChunk;
 	private bool isCached = false;
@@ -22,19 +22,6 @@ public class TileChunk : MonoBehaviour {
 
 	public GameObject grass;
 	public GameObject gravel;
-	public GameObject floor;
-	public GameObject floorTop;
-	public GameObject floorBottom;
-	public GameObject floorLeft;
-	public GameObject floorRight;
-	public GameObject floorTL;
-	public GameObject floorTR;
-	public GameObject floorBL;
-	public GameObject floorBR;
-	public GameObject floorDoorL;
-	public GameObject floorDoorR;
-	public GameObject floorDoorT;
-	public GameObject floorDoorB;
 
 	public float cacheClearTime = (5f*60f);
 
@@ -44,7 +31,7 @@ public class TileChunk : MonoBehaviour {
 	 * x = the x coordinate of the tile in the overall matrix of tiles
 	 * y = the y coordinate of the tile in the overall matrix of tiles
 	 */
-	public void InitChunk(TileType [,] terrain, int x, int y, Vector2 tilesInChunk){
+	public void InitChunk(int [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
 		tilesPerChunk = tilesInChunk;
 	}
@@ -98,7 +85,7 @@ public class TileChunk : MonoBehaviour {
 			tileList.Clear ();
 			for (int x = 0; x < tilesPerChunk.x; x++) {
 				for (int y = 0; y < tilesPerChunk.y; y++) {
-					TileType code = terrainMap [x, y];
+					int code = terrainMap [x, y];
 					GameObject groundTile = SpriteForCode (code);
 					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
 					tileList.Add (instance);
@@ -144,42 +131,14 @@ public class TileChunk : MonoBehaviour {
 	 * TileGenerator generates a 2D matrix of tile id's, but it's TileRenderer's job to turn them into actual tiles
 	 * code = the id of the tile from the generator
 	 **/
-	public GameObject SpriteForCode(TileType code){
-		switch (code) 
-		{
-		case TileType.Grass:
-			return grass;
-		case TileType.Gravel:
-			return gravel;
-		case TileType.Floor:
-			return floor;
-		case TileType.FloorTop:
-			return floorTop;
-		case TileType.FloorBottom:
-			return floorBottom;
-		case TileType.FloorLeft:
-			return floorLeft;
-		case TileType.FloorRight:
-			return floorRight;
-		case TileType.FloorBL:
-			return floorBL;
-		case TileType.FloorBR:
-			return floorBR;
-		case TileType.FloorTL:
-			return floorTL;
-		case TileType.FloorTR:
-			return floorTR;
-		case TileType.FloorDoorB:
-			return floorDoorB;
-		case TileType.FloorDoorT:
-			return floorDoorT;
-		case TileType.FloorDoorL:
-			return floorDoorL;
-		case TileType.FloorDoorR:
-			return floorDoorR;
-		default:
-			return grass;
+	public GameObject SpriteForCode(int code){
+		GameObject groundTile;
+		if (code == 0) {
+			groundTile = grass;
+		} else {
+			groundTile = gravel;
 		}
+		return groundTile;
 	}
 
 }

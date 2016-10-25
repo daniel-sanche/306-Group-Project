@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public enum TileType {Grass, Gravel, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
-
 public class TileGenerator : MonoBehaviour {
 	/**
 	 * This class is responsible for procedurally generating the island
@@ -18,22 +16,15 @@ public class TileGenerator : MonoBehaviour {
 	 *	ySize = vertical size of map
 	 *	returns an array of numbers where each number represents the terrain at that space
 	**/
-	public static TileType[,] GenerateTileMap(int xSize, int ySize){
-		TileType[,] tileMap = new TileType[xSize, ySize];
+	public static int[,] GenerateTileMap(int xSize, int ySize){
+		int[,] tileMap = new int[xSize, ySize];
 		for(int x=0; x<xSize; x++){
 			for(int y=0; y<ySize; y++){
 				if (Random.value >= 0.15) {
-					tileMap [x, y] = TileType.Grass;
+					tileMap [x, y] = 0;
 				} else {
-					tileMap [x, y] = TileType.Gravel;
+					tileMap [x, y] = 1;
 				}
-			}
-		}
-		Vector2 buildingSize = new Vector2 (10, 10);
-		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize, roomSplitScaler:2);
-		for (int x = 0; x < buildingSize.x; x++) {
-			for (int y = 0; y < buildingSize.y; y++) {
-				tileMap [x, y] = buildingMap [x, y];
 			}
 		}
 		return tileMap;
