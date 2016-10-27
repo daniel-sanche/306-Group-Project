@@ -1,0 +1,493 @@
+fileFormatVersion: 2
+guid: 9c6cbb1a0060f47a0907cef7a055fdf6
+timeCreated: 1475602635
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: hyptosis_tile-art-batch-4_0
+    21300002: hyptosis_tile-art-batch-4_1
+    21300004: hyptosis_tile-art-batch-4_2
+    21300006: hyptosis_tile-art-batch-4_3
+    21300008: hyptosis_tile-art-batch-4_4
+    21300010: hyptosis_tile-art-batch-4_5
+    21300012: hyptosis_tile-art-batch-4_6
+    21300014: hyptosis_tile-art-batch-4_7
+    21300016: hyptosis_tile-art-batch-4_8
+    21300018: hyptosis_tile-art-batch-4_9
+    21300020: hyptosis_tile-art-batch-4_10
+    21300022: hyptosis_tile-art-batch-4_11
+    21300024: hyptosis_tile-art-batch-4_12
+    21300026: hyptosis_tile-art-batch-4_13
+    21300028: hyptosis_tile-art-batch-4_14
+    21300030: hyptosis_tile-art-batch-4_15
+    21300032: hyptosis_tile-art-batch-4_16
+    21300034: hyptosis_tile-art-batch-4_17
+    21300036: hyptosis_tile-art-batch-4_18
+    21300038: hyptosis_tile-art-batch-4_19
+    21300040: hyptosis_tile-art-batch-4_20
+    21300042: hyptosis_tile-art-batch-4_21
+    21300044: hyptosis_tile-art-batch-4_22
+    21300046: hyptosis_tile-art-batch-4_23
+    21300048: hyptosis_tile-art-batch-4_24
+    21300050: hyptosis_tile-art-batch-4_25
+    21300052: hyptosis_tile-art-batch-4_26
+    21300054: hyptosis_tile-art-batch-4_27
+    21300056: hyptosis_tile-art-batch-4_28
+    21300058: hyptosis_tile-art-batch-4_29
+    21300060: hyptosis_tile-art-batch-4_30
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_0
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 355
+        width: 61
+        height: 60
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_1
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 928
+        width: 192
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_2
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 949
+        width: 42
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_3
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 896
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_4
+      rect:
+        serializedVersion: 2
+        x: 736
+        y: 864
+        width: 96
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_5
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 889
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_6
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 864
+        width: 32
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_7
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 449
+        width: 30
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_8
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 427
+        width: 27
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_9
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 429
+        width: 27
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_10
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 420
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_11
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 0
+        width: 233
+        height: 448
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_12
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 432
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_13
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 420
+        width: 54
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_14
+      rect:
+        serializedVersion: 2
+        x: 740
+        y: 422
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_15
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 388
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_16
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 387
+        width: 24
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_17
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 375
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_18
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 361
+        width: 19
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_19
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 337
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_20
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 329
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_21
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 337
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_22
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 326
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_23
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 325
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_24
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 298
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_25
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 292
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_26
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 305
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_27
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 224
+        width: 49
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_28
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 257
+        width: 60
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_29
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 231
+        width: 15
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: hyptosis_tile-art-batch-4_30
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 196
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
