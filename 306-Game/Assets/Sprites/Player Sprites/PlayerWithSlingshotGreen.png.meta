@@ -1,9 +1,36 @@
 fileFormatVersion: 2
 guid: 6b99de5c70f573d48acaa054ffe95294
-timeCreated: 1477429287
+timeCreated: 1477702671
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: PlayerWithSlingshotGreen_0
+    21300002: PlayerWithSlingshotGreen_1
+    21300004: PlayerWithSlingshotGreen_2
+    21300006: PlayerWithSlingshotGreen_3
+    21300008: PlayerWithSlingshotGreen_4
+    21300010: PlayerWithSlingshotGreen_5
+    21300012: PlayerWithSlingshotGreen_6
+    21300014: PlayerWithSlingshotGreen_7
+    21300016: PlayerWithSlingshotGreen_8
+    21300018: PlayerWithSlingshotGreen_9
+    21300020: PlayerWithSlingshotGreen_10
+    21300022: PlayerWithSlingshotGreen_11
+    21300024: PlayerWithSlingshotGreen_12
+    21300026: PlayerWithSlingshotGreen_13
+    21300028: PlayerWithSlingshotGreen_14
+    21300030: PlayerWithSlingshotGreen_15
+    21300032: PlayerWithSlingshotGreen_16
+    21300034: PlayerWithSlingshotGreen_17
+    21300036: PlayerWithSlingshotGreen_18
+    21300038: PlayerWithSlingshotGreen_19
+    21300040: PlayerWithSlingshotGreen_20
+    21300042: PlayerWithSlingshotGreen_21
+    21300044: PlayerWithSlingshotGreen_22
+    21300046: PlayerWithSlingshotGreen_23
+    21300048: PlayerWithSlingshotGreen_24
+    21300050: PlayerWithSlingshotGreen_25
+    21300052: PlayerWithSlingshotGreen_26
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +57,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +65,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -51,7 +78,358 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_1
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_2
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_3
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_4
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_5
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_6
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_7
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_8
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 62
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_10
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_11
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_12
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_13
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_14
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_15
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_16
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_17
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 31
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_19
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_20
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_21
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_22
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_23
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_24
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_25
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: PlayerWithSlingshotGreen_26
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 0
+        width: 22
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 
