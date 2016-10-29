@@ -61,15 +61,8 @@ public class Player : MonoBehaviour {
 	private void Attack(){
 		
 		if (Input.GetMouseButtonDown (0)) {																			//If the player presses the left mouse button
-			float mouseAngle = getMouseAngle ();																	//Get the angle of the mouse
-
-			GameObject[] enemyList = GetEnemyInCone (mouseAngle);													//Get all enemies in a cone relative to the angle
-
-			for (int x = 0; x < enemyList.Length; x++) {															//For each enemy in the cone
-				float enemyAngle = getRelativeAngle (enemyList [x]);												//Get the angle of the enemy relative to the player
-																													//Apply force to the enemy based on relativity
-				enemyList [x].GetComponent<Rigidbody2D> ().AddForce ( new Vector2( forceAmount * Mathf.Cos(enemyAngle), forceAmount * Mathf.Sin(enemyAngle) ) );
-			}
+			if (weapon != null)
+				weapon.Attack ();
 		}
 	}
 

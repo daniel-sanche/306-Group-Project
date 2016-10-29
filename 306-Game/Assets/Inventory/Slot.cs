@@ -93,23 +93,14 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 					Inventory.weaponSlot.setItem (getItem ());
 					setItem (temp);
 				}
+
+				GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ().weapon = (Weapon) Inventory.weaponSlot.item;
 			} else {
 				getItem ().Use ();
 			}
 		}
 	}
-
-	/*
-	 * This function is called once the player has released something they are dragging.
-	 **/
-	public void OnEndDrag(PointerEventData eventData){
-		Destroy (hoverImage);																//Destroy the item hover imaage
-		if (eventData.pointerCurrentRaycast.gameObject == null) {							//If we dragged an item over nothing
-			dropItem ();																	//Drop the item
-		}
-	}
-
-
+		
 	/*
 	 * This function is called when the player drags something onto this slot
 	 **/
@@ -122,6 +113,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 				if (!dragged.isEmpty ()) {													//If the slot has an item
 					if (isEmpty ())															//If this slot is empty
 						setItem (dragged.getItem ());										//Give the item to this slot
+
 					else {
 						Item cur = getItem ();												//Otherwise
 						setItem (dragged.getItem ());										//Swap the two items
@@ -132,16 +124,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		}
 	}
 
-	/*
-	 * This function is called constantly while this slot is dragged by the cursor
-	 **/
-	public void OnDrag(PointerEventData eventData){						
-		if(hoverImage != null)																//Set the hover object's location to the mouse position
-			hoverImage.transform.position = eventData.position;
-	}
 
 	//GameObject that represents the hover image for when items are moved by the player
-	private GameObject hoverImage;
+	protected GameObject hoverImage;
 
 	/**
 	 * This function is called whenever this slot is initially dragged by the cursor
@@ -154,6 +139,24 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 			hoverImage.AddComponent<Image> ().sprite = item.sprite;							//Sets the sprite of the hover object as the item
 			hoverImage.GetComponent<Image> ().raycastTarget = false;						//Prevents the hover image from being raycasted into
 
+		}
+	}
+
+	/*
+	 * This function is called constantly while this slot is dragged by the cursor
+	 **/
+	public void OnDrag(PointerEventData eventData){						
+		if(hoverImage != null)																//Set the hover object's location to the mouse position
+			hoverImage.transform.position = eventData.position;
+	}
+
+	/*
+	 * This function is called once the player has released something they are dragging.
+	 **/
+	public void OnEndDrag(PointerEventData eventData){
+		Destroy (hoverImage);																//Destroy the item hover imaage
+		if (eventData.pointerCurrentRaycast.gameObject == null) {							//If we dragged an item over nothing
+			dropItem ();																	//Drop the item
 		}
 	}
 
