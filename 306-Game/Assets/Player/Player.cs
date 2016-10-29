@@ -7,10 +7,14 @@ public class Player : MonoBehaviour {
 	//The speed of the player
 	public float speed;				
 
-	public GameObject weapon;
+	//The currently equipped weapon
+	public Weapon weapon;
 
 	//The player's rigidbody
 	private Rigidbody2D rigidbody;
+
+	//The player's animator
+	private Animator animator;
 
 	[SerializeField]
 	private int swingAngle;
@@ -24,8 +28,8 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();	//Initializes the rigidbody variable
+		animator = GetComponent<Animator>();		//Initializes the animator variable
 	}
-
 
 	// Update is called once per frame
 	void Update () {
@@ -37,10 +41,20 @@ public class Player : MonoBehaviour {
 
 	// Moves the player based on input
 	private void Move(){
-		if(Input.GetKey(KeyCode.LeftShift))																			//Sets the player's velocity based on input and speed
-			rigidbody.velocity = getInputVector () * speed * 2;														//If shift is held, player sprints
-		else
-			rigidbody.velocity = getInputVector () * speed;															//Otherwise, it is normal speed
+		Vector2 inputVector = getInputVector ();
+
+		if(Input.GetKey(KeyCode.LeftShift))																			//If the player is holding shift 
+			inputVector *= 2;																						//Go twice as fast
+
+		animator.SetFloat ("X", inputVector.x);																		//Set animator X variable
+		animator.SetFloat ("Y", inputVector.y);																		//Set animator Y variable
+
+		if (inputVector.x < 0)																						//If the player moves left
+			GetComponent<SpriteRenderer> ().flipX = true;															//Flip the sprite renderer's x coord
+		if (inputVector.x > 0)																						//If the player moves right
+			GetComponent<SpriteRenderer> ().flipX = false;															//The sprite renderer's x coord will not be flipped
+		
+		rigidbody.velocity = inputVector * speed;																	//Set the velocity of the player based on input and speed
 	}
 
 	//Attacks using the currently equipped weapon
@@ -89,9 +103,22 @@ public class Player : MonoBehaviour {
 
 		float angle = getMouseAngle () * Mathf.Rad2Deg;																//Gets the mouse angle and translate it to degrees
 
-		angle = Mathf.RoundToInt (angle / 90) * 90;																	//Rounds the given angle to the nearest 0, 90, 180, or 270
+		int integerAngle = Mathf.RoundToInt (angle / 90) * 90;														//Rounds the given angle to the nearest 0, 90, 180, or 270
 
-		transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle));											//Looks at the given angle (up, right, down, or left)
+		Vector2 direction = new Vector2(0,0);																		//Initialize direction vector for updating animator
+
+		if (integerAngle == 0)																						//If we are facing right
+			direction = new Vector2(1,0);																			//Set the direction to right
+		else if (integerAngle == 90)																				//Else, if we're facing up
+			direction = new Vector2(0,1);																			//Set the direction to up
+		else if (integerAngle == 180 || integerAngle == -180)														//Else, if we're facing left
+			direction = new Vector2(-1,0);																			//Set the direction to left
+		else if (integerAngle == -90)																				//Else, if we're facing down
+			direction = new Vector2(0,-1);																			//Set the direction to down
+
+		animator.SetFloat ("DirectionX", direction.x);																//Set the x direction in the animator
+		animator.SetFloat ("DirectionY", direction.y);																//Set the y direction in the animator
+		//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, integerAngle));									//Looks at the given angle (up, right, down, or left)
 	}
 
 	//Returns the radian representation of the mouse angle
