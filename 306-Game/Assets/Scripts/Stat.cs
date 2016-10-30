@@ -6,7 +6,7 @@ using System;
 public class Stat {
 
     [SerializeField]
-    private BarScript bar;
+    BarScript bar;
     [SerializeField]
     private float maxVal;
     [SerializeField]
@@ -46,10 +46,19 @@ public class Stat {
         }
     }
 
+    public BarScript Bar
+    {
+        get
+        {
+            return bar;
+        }
+    }
+
     public void Initialize()
     {
         this.MaxVal = maxVal;
         this.CurrentVal = currentVal;
     }
+
 
 }
