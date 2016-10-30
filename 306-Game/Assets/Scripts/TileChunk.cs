@@ -153,6 +153,8 @@ public class TileChunk : MonoBehaviour {
 			return grass;
 		case TileType.Gravel:
 			return gravel;
+		case TileType.Water:
+			return water;
 		case TileType.Floor:
 			return floor;
 		case TileType.FloorTop:

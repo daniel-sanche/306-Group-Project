@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public enum TileType {Grass, Gravel, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
+public enum TileType {Grass, Gravel, Water, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
 
 public class TileGenerator : MonoBehaviour {
 	/**
@@ -11,7 +11,9 @@ public class TileGenerator : MonoBehaviour {
 	 * All functions should be static
 	 **/
 
-
+	//scale impacts how rough the heightmap is. Lower values will create more peaks and calleys
+	public static float heightmapScale = 0.1f;
+	public static float waterThreshold = 0.25f;
 	/**
 	 *	Generates a map of pixels representing the island
 	 *  xSize = horizontal size of map
@@ -22,7 +24,10 @@ public class TileGenerator : MonoBehaviour {
 		TileType[,] tileMap = new TileType[xSize, ySize];
 		for(int x=0; x<xSize; x++){
 			for(int y=0; y<ySize; y++){
-				if (Random.value >= 0.15) {
+				float heightVal = Mathf.PerlinNoise (x/(xSize*heightmapScale), y/(ySize*heightmapScale));
+				if (heightVal < waterThreshold) {
+					tileMap [x, y] = TileType.Water;
+				} else if (Random.value >= 0.15) {
 					tileMap [x, y] = TileType.Grass;
 				} else {
 					tileMap [x, y] = TileType.Gravel;
@@ -38,7 +43,6 @@ public class TileGenerator : MonoBehaviour {
 		}
 		return tileMap;
 	}
-
-
+		
 		
 }
