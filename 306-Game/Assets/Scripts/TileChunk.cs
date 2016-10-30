@@ -22,6 +22,8 @@ public class TileChunk : MonoBehaviour {
 
 	public GameObject grass;
 	public GameObject gravel;
+	public GameObject water;
+
 	public GameObject floor;
 	public GameObject floorTop;
 	public GameObject floorBottom;
