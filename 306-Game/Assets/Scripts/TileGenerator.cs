@@ -14,6 +14,7 @@ public class TileGenerator : MonoBehaviour {
 	//scale impacts how rough the heightmap is. Lower values will create more peaks and calleys
 	public static float heightmapScale = 0.1f;
 	public static float waterThreshold = 0.25f;
+	public static float mountainThreshold = 0.8f;
 	/**
 	 *	Generates a map of pixels representing the island
 	 *  xSize = horizontal size of map
@@ -27,8 +28,10 @@ public class TileGenerator : MonoBehaviour {
 				float heightVal = Mathf.PerlinNoise (x/(xSize*heightmapScale), y/(ySize*heightmapScale));
 				if (heightVal < waterThreshold) {
 					tileMap [x, y] = TileType.Water;
-				} else if (heightVal < waterThreshold + 0.05){
+				} else if (heightVal < waterThreshold + 0.05) {
 					tileMap [x, y] = TileType.Sand;
+				} else if(heightVal > mountainThreshold){
+					tileMap [x, y] = TileType.Mountain;
 				} else if (Random.value >= 0.15) {
 					tileMap [x, y] = TileType.Grass;
 				} else {

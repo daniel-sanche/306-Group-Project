@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 6898ae07c86734054ae7f995e35a28b5
-timeCreated: 1475600346
+timeCreated: 1477864345
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -135,6 +135,19 @@ TextureImporter:
         serializedVersion: 2
         x: 256
         y: 192
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: mountain_landscape_0
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 23
         width: 64
         height: 64
       alignment: 0
