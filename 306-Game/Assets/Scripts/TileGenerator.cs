@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public enum TileType {Grass, Gravel, Water, Sand, Mountain, Tree, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
+public enum TileType {Grass, Gravel, Water, Sand, Rock, Tree, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
 
 public class TileGenerator : MonoBehaviour {
 	/**
@@ -15,10 +15,19 @@ public class TileGenerator : MonoBehaviour {
 	public static float heightmapScale = 0.1f;
 	public static float treemapScale = 0.01f;
 
+	//any point lower than this height will become water
 	public static float waterThreshold = 0.25f;
+	//any point heigher than this point will always be rocks
 	public static float mountainThreshold = 0.8f;
+	//any pount heigher than this height may generate rocks
+	public static float rockThreshold = 0.7f;
+	//liklihood of rocks forming in a rock-friendly region
+	public static float rockGenProb = 0.3f;
+	//any point higher than this may generate trees
 	public static float treeHeightThreshold = 0.4f;
+	//using a sperate tree noise function, any point above this may become trees
 	public static float treeThreshold = 0.6f;
+	//liklihood of genrating a tree in a tree-friendly region
 	public static float treeGenProb = 0.2f;
 	/**
 	 *	Generates a map of pixels representing the island
@@ -38,8 +47,10 @@ public class TileGenerator : MonoBehaviour {
 					tileMap [x, y] = TileType.Water;
 				} else if (heightVal < waterThreshold + 0.05) {
 					tileMap [x, y] = TileType.Sand;
-				} else if(heightVal > mountainThreshold){
-					tileMap [x, y] = TileType.Mountain;
+				} else if (heightVal > mountainThreshold) {
+					tileMap [x, y] = TileType.Rock;
+				} else if (heightVal > rockThreshold && Random.value < rockGenProb){
+					tileMap [x, y] = TileType.Rock;
 				} else {
 					//add trees to middle ground
 					if (treeVal > treeThreshold && heightVal > treeHeightThreshold && Random.value < treeGenProb) {
