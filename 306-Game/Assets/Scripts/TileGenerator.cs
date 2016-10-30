@@ -36,12 +36,33 @@ public class TileGenerator : MonoBehaviour {
 	 *	returns an array of numbers where each number represents the terrain at that space
 	**/
 	public static TileType[,] GenerateTileMap(int xSize, int ySize){
-		float seed = 5.0f;
+
+		TileType[,] tileMap = GenerateTerrain (xSize, ySize, 0);
+
+		Vector2 buildingSize = new Vector2 (10, 10);
+		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize, roomSplitScaler:2);
+		for (int x = 0; x < buildingSize.x; x++) {
+			for (int y = 0; y < buildingSize.y; y++) {
+				tileMap [x, y] = buildingMap [x, y];
+			}
+		}
+		return tileMap;
+	}
+
+	private static TileType[,] GenerateTerrain(int xSize, int ySize, int seed=-1){
+		if (seed != -1) {
+			Random.InitState (seed);
+		}
+		int heightXOffset = Random.Range (0, 1000);
+		int heightYOffset = Random.Range (0, 1000);
+		int treeXOffset = Random.Range (0, 1000);
+		int treeYOffset = Random.Range (0, 1000);
+
 		TileType[,] tileMap = new TileType[xSize, ySize];
 		for(int x=0; x<xSize; x++){
 			for(int y=0; y<ySize; y++){
-				float heightVal = Mathf.PerlinNoise (x/(xSize*heightmapScale), y/(ySize*heightmapScale));
-				float treeVal = Mathf.PerlinNoise (seed+x/(xSize*heightmapScale), seed+y/(ySize*heightmapScale));
+				float heightVal = Mathf.PerlinNoise (heightXOffset+x/(xSize*heightmapScale), heightYOffset+y/(ySize*heightmapScale));
+				float treeVal = Mathf.PerlinNoise (treeXOffset+x/(xSize*heightmapScale), treeXOffset+y/(ySize*heightmapScale));
 				//add mountains, water, and sand based on height information
 				if (heightVal < waterThreshold) {
 					tileMap [x, y] = TileType.Water;
@@ -61,13 +82,6 @@ public class TileGenerator : MonoBehaviour {
 						tileMap [x, y] = TileType.Grass;
 					}
 				}
-			}
-		}
-		Vector2 buildingSize = new Vector2 (10, 10);
-		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize, roomSplitScaler:2);
-		for (int x = 0; x < buildingSize.x; x++) {
-			for (int y = 0; y < buildingSize.y; y++) {
-				tileMap [x, y] = buildingMap [x, y];
 			}
 		}
 		return tileMap;
