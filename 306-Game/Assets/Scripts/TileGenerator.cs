@@ -11,6 +11,9 @@ public class TileGenerator : MonoBehaviour {
 	 * All functions should be static
 	 **/
 
+	//size of unmoveable region on all edges of board
+	public static int borderSize = 20;
+
 	//scale impacts how rough the heightmap is. Lower values will create more peaks and calleys
 	public static float heightmapScale = 0.1f;
 	public static float treemapScale = 0.01f;
@@ -60,26 +63,37 @@ public class TileGenerator : MonoBehaviour {
 
 		TileType[,] tileMap = new TileType[xSize, ySize];
 		for(int x=0; x<xSize; x++){
-			for(int y=0; y<ySize; y++){
-				float heightVal = Mathf.PerlinNoise (heightXOffset+x/(xSize*heightmapScale), heightYOffset+y/(ySize*heightmapScale));
-				float treeVal = Mathf.PerlinNoise (treeXOffset+x/(xSize*heightmapScale), treeXOffset+y/(ySize*heightmapScale));
-				//add mountains, water, and sand based on height information
-				if (heightVal < waterThreshold) {
-					tileMap [x, y] = TileType.Water;
-				} else if (heightVal < waterThreshold + 0.05) {
-					tileMap [x, y] = TileType.Sand;
-				} else if (heightVal > mountainThreshold) {
-					tileMap [x, y] = TileType.Rock;
-				} else if (heightVal > rockThreshold && Random.value < rockGenProb) {
-					tileMap [x, y] = TileType.Rock;
-				} else if (heightVal > rockThreshold+0.01){
-					tileMap [x, y] = TileType.Gravel;
-				} else {
-					//add trees to middle ground
-					if (treeVal > treeThreshold && heightVal > treeHeightThreshold && Random.value < treeGenProb) {
-						tileMap [x, y] = TileType.Tree;
+			for (int y = 0; y < ySize; y++) {
+				float heightVal = Mathf.PerlinNoise (heightXOffset + x / (xSize * heightmapScale), heightYOffset + y / (ySize * heightmapScale));
+				float treeVal = Mathf.PerlinNoise (treeXOffset + x / (xSize * heightmapScale), treeXOffset + y / (ySize * heightmapScale));
+				if (x < borderSize || x > xSize - borderSize ||
+				   y < borderSize || y > ySize - borderSize) {
+					if (heightVal < waterThreshold) {
+						tileMap [x, y] = TileType.Water;
+					} else if (treeVal > treeThreshold && heightVal > treeHeightThreshold) {
+						tileMap [x, y] = tileMap [x, y] = TileType.Tree;
 					} else {
-						tileMap [x, y] = TileType.Grass;
+						tileMap [x, y] = TileType.Rock;
+					}
+				} else {
+					//add mountains, water, and sand based on height information
+					if (heightVal < waterThreshold) {
+						tileMap [x, y] = TileType.Water;
+					} else if (heightVal < waterThreshold + 0.05) {
+						tileMap [x, y] = TileType.Sand;
+					} else if (heightVal > mountainThreshold) {
+						tileMap [x, y] = TileType.Rock;
+					} else if (heightVal > rockThreshold && Random.value < rockGenProb) {
+						tileMap [x, y] = TileType.Rock;
+					} else if (heightVal > rockThreshold + 0.01) {
+						tileMap [x, y] = TileType.Gravel;
+					} else {
+						//add trees to middle ground
+						if (treeVal > treeThreshold && heightVal > treeHeightThreshold && Random.value < treeGenProb) {
+							tileMap [x, y] = TileType.Tree;
+						} else {
+							tileMap [x, y] = TileType.Grass;
+						}
 					}
 				}
 			}
