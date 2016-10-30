@@ -49,8 +49,10 @@ public class TileGenerator : MonoBehaviour {
 					tileMap [x, y] = TileType.Sand;
 				} else if (heightVal > mountainThreshold) {
 					tileMap [x, y] = TileType.Rock;
-				} else if (heightVal > rockThreshold && Random.value < rockGenProb){
+				} else if (heightVal > rockThreshold && Random.value < rockGenProb) {
 					tileMap [x, y] = TileType.Rock;
+				} else if (heightVal > rockThreshold+0.01){
+					tileMap [x, y] = TileType.Gravel;
 				} else {
 					//add trees to middle ground
 					if (treeVal > treeThreshold && heightVal > treeHeightThreshold && Random.value < treeGenProb) {
