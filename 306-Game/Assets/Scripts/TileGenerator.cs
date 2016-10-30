@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public enum TileType {Grass, Gravel, Water, Sand, Mountain, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
+public enum TileType {Grass, Gravel, Water, Sand, Mountain, Tree, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
 
 public class TileGenerator : MonoBehaviour {
 	/**
@@ -13,8 +13,13 @@ public class TileGenerator : MonoBehaviour {
 
 	//scale impacts how rough the heightmap is. Lower values will create more peaks and calleys
 	public static float heightmapScale = 0.1f;
+	public static float treemapScale = 0.01f;
+
 	public static float waterThreshold = 0.25f;
 	public static float mountainThreshold = 0.8f;
+	public static float treeHeightThreshold = 0.4f;
+	public static float treeThreshold = 0.6f;
+	public static float treeGenProb = 0.2f;
 	/**
 	 *	Generates a map of pixels representing the island
 	 *  xSize = horizontal size of map
@@ -22,20 +27,26 @@ public class TileGenerator : MonoBehaviour {
 	 *	returns an array of numbers where each number represents the terrain at that space
 	**/
 	public static TileType[,] GenerateTileMap(int xSize, int ySize){
+		float seed = 5.0f;
 		TileType[,] tileMap = new TileType[xSize, ySize];
 		for(int x=0; x<xSize; x++){
 			for(int y=0; y<ySize; y++){
 				float heightVal = Mathf.PerlinNoise (x/(xSize*heightmapScale), y/(ySize*heightmapScale));
+				float treeVal = Mathf.PerlinNoise (seed+x/(xSize*heightmapScale), seed+y/(ySize*heightmapScale));
+				//add mountains, water, and sand based on height information
 				if (heightVal < waterThreshold) {
 					tileMap [x, y] = TileType.Water;
 				} else if (heightVal < waterThreshold + 0.05) {
 					tileMap [x, y] = TileType.Sand;
 				} else if(heightVal > mountainThreshold){
 					tileMap [x, y] = TileType.Mountain;
-				} else if (Random.value >= 0.15) {
-					tileMap [x, y] = TileType.Grass;
 				} else {
-					tileMap [x, y] = TileType.Gravel;
+					//add trees to middle ground
+					if (treeVal > treeThreshold && heightVal > treeHeightThreshold && Random.value < treeGenProb) {
+						tileMap [x, y] = TileType.Tree;
+					} else {
+						tileMap [x, y] = TileType.Grass;
+					}
 				}
 			}
 		}
