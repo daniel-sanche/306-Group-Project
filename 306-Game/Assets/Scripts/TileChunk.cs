@@ -23,6 +23,8 @@ public class TileChunk : MonoBehaviour {
 	public GameObject grass;
 	public GameObject gravel;
 	public GameObject water;
+	public GameObject sand;
+	public GameObject mountain;
 
 	public GameObject floor;
 	public GameObject floorTop;
@@ -155,6 +157,10 @@ public class TileChunk : MonoBehaviour {
 			return gravel;
 		case TileType.Water:
 			return water;
+		case TileType.Sand:
+			return sand;
+		case TileType.Mountain:
+			return mountain;
 		case TileType.Floor:
 			return floor;
 		case TileType.FloorTop:

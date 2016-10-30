@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public enum TileType {Grass, Gravel, Water, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
+public enum TileType {Grass, Gravel, Water, Sand, Mountain, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
 
 public class TileGenerator : MonoBehaviour {
 	/**
@@ -27,6 +27,8 @@ public class TileGenerator : MonoBehaviour {
 				float heightVal = Mathf.PerlinNoise (x/(xSize*heightmapScale), y/(ySize*heightmapScale));
 				if (heightVal < waterThreshold) {
 					tileMap [x, y] = TileType.Water;
+				} else if (heightVal < waterThreshold + 0.05){
+					tileMap [x, y] = TileType.Sand;
 				} else if (Random.value >= 0.15) {
 					tileMap [x, y] = TileType.Grass;
 				} else {
