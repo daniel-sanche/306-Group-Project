@@ -41,9 +41,11 @@ public class TileGenerator : MonoBehaviour {
 	public static TileType[,] GenerateTileMap(int xSize, int ySize){
 
 		TileType[,] tileMap = GenerateTerrain (xSize, ySize, 0);
-		bool[,] acceptable = FreeBuildingLocations (new Vector2 (5, 5), tileMap);
+		List<Vector2> acceptable = FreeBuildingLocations (new Vector2 (5, 5), tileMap);
+		Debug.Log (acceptable.Count);
 		AddBuilding (new Vector2 (borderSize, borderSize), new Vector2 (5, 5), tileMap);
 		AddBuilding (new Vector2 (borderSize+7, borderSize), new Vector2 (10, 10), tileMap);
+
 		return tileMap;
 	}
 
@@ -105,27 +107,27 @@ public class TileGenerator : MonoBehaviour {
 		}
 	}
 
-	private static bool[,] FreeBuildingLocations(Vector2 buildingSize, TileType[,] tileMap){
+	private static List<Vector2> FreeBuildingLocations(Vector2 buildingSize, TileType[,] tileMap){
 		int sizeX = tileMap.GetLength (0);
 		int sizeY = tileMap.GetLength (1);
 		int lastBlockX = -1;
 		int lastBlockY = -1;
-		bool[,] result = new bool[sizeX,sizeY];
+		//2 is added to building size to ensure no doors are blocked on any side
+		Vector2 buildingSizeBuffered = new Vector2 (buildingSize.x + 2, buildingSize.y + 2);
+		List<Vector2> result = new List<Vector2>();
 		for (int x = sizeX-1; x >= 0; x--) {
 			lastBlockX = -1;
 			for (int y = sizeY-1; y >= 0; y--) {
 				lastBlockY = -1;
 				TileType tile = tileMap [x, y];
-				bool isBlockingTile = !(tile == TileType.Grass || tile == TileType.Gravel || tile == TileType.Sand);
-				lastBlockX = x;
+				bool isBlockingTile = (tile == TileType.Grass || tile == TileType.Gravel || tile == TileType.Sand);
 				if (isBlockingTile) {
 					lastBlockX = x;
 					lastBlockY = y;
 				}
-				if(lastBlockX > (x-buildingSize.x) || lastBlockY > (y-buildingSize.y)){
-					result [x, y] = false;
-				} else {
-					result [x, y] = true;
+				if(!(lastBlockX > (x-buildingSizeBuffered.x) || lastBlockY > (y-buildingSizeBuffered.y))){
+					//add 1 to remove the buffer
+					result.Add(new Vector2(x+1,y+1));
 				}
 			}
 		}
