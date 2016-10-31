@@ -14,7 +14,7 @@ public class TileRenderer : MonoBehaviour {
 
 	public Vector2 NumChunks = new Vector2 ( 30, 30);
 	public Vector2 TilesPerChunk = new Vector2 (15, 10);
-	public int numBuildings = 10;
+	public int numBuildings = 30;
 
 	public GameObject tileChunkObj;
 

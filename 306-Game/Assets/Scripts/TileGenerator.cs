@@ -17,7 +17,7 @@ public class TileGenerator : MonoBehaviour {
 	//max size of buildings (nxn)
 	public static int maxBuildingDim = 12;
 	public static int minBuildingDim = 6;
-	public static float minBuildingRatio = 0.5f;
+	public static float minBuildingRatio = 0.6f;
 
 	//scale impacts how rough the heightmap is. Lower values will create more peaks and calleys
 	public static float heightmapScale = 0.1f;
@@ -54,7 +54,7 @@ public class TileGenerator : MonoBehaviour {
 		int failures = 0;
 		while (buildingsAdded < buildingCount && failures < 100) {
 			int width = Random.Range (minBuildingDim, maxBuildingDim);
-			int height = (int)(width * Random.Range (minBuildingRatio, 1.0f));
+			int height = (int)Mathf.Round(width * Random.Range (minBuildingRatio, 1.0f));
 			Vector2 buildingSize = new Vector2 (width, height);
 			List<Vector2> acceptable = FreeBuildingLocations (buildingSize, tileMap);
 			int numOptions = acceptable.Count;
