@@ -41,6 +41,8 @@ public class TileGenerator : MonoBehaviour {
 	 *	Generates a map of pixels representing the island
 	 *  xSize = horizontal size of map
 	 *	ySize = vertical size of map
+	 *	buildingCount = number of buildings to add to map
+	 *	seed = a seed value to use to recreate the map
 	 *	returns an array of numbers where each number represents the terrain at that space
 	**/
 	public static TileType[,] GenerateTileMap(int xSize, int ySize, int buildingCount, int seed=0){
@@ -52,26 +54,33 @@ public class TileGenerator : MonoBehaviour {
 
 		int buildingsAdded = 0;
 		int failures = 0;
+		//keep generating buildings until we hit our goal, or try too many times
 		while (buildingsAdded < buildingCount && failures < 100) {
 			int width = Random.Range (minBuildingDim, maxBuildingDim);
 			int height = (int)Mathf.Round(width * Random.Range (minBuildingRatio, 1.0f));
 			Vector2 buildingSize = new Vector2 (width, height);
 			List<Vector2> acceptable = FreeBuildingLocations (buildingSize, tileMap);
 			int numOptions = acceptable.Count;
-			Vector2 newPos = acceptable[Random.Range (0, numOptions)];
 			if (numOptions > 0) {
+				Vector2 newPos = acceptable[Random.Range (0, numOptions)];
 				AddBuilding (newPos, buildingSize, tileMap);
 				buildingsAdded++;
 			} else {
 				failures++;
 			}
 		}
-			
-
 		return tileMap;
 	}
 
-	private static TileType[,] GenerateTerrain(int xSize, int ySize, int seed=-1){
+	/**
+	 * Generates the terrain features of the map
+	 * Uses a PerlinNoise heightmap to add water, sand, gravel, and rocks
+	 * Uses a PerlinNoise treemap along with the heightmap to generate forests
+	 * xSize = the width of the map
+	 * ySize = the height of the map
+	 * returns a TileType[xSize,ySize] 2D array representing the terrain
+	 **/
+	private static TileType[,] GenerateTerrain(int xSize, int ySize){
 		int heightXOffset = Random.Range (0, 1000);
 		int heightYOffset = Random.Range (0, 1000);
 		int treeXOffset = Random.Range (0, 1000);
@@ -84,6 +93,7 @@ public class TileGenerator : MonoBehaviour {
 				float treeVal = Mathf.PerlinNoise (treeXOffset + x / (xSize * heightmapScale), treeYOffset + y / (ySize * heightmapScale));
 				if (x < borderSize || x > xSize - borderSize ||
 				   y < borderSize || y > ySize - borderSize) {
+					//add an impassible obstacle (water, trees, rocks) around the border of the map
 					if (heightVal < waterThreshold) {
 						tileMap [x, y] = TileType.Water;
 					} else if (treeVal > treeThreshold && heightVal > treeHeightThreshold) {
@@ -117,6 +127,12 @@ public class TileGenerator : MonoBehaviour {
 		return tileMap;
 	}
 		
+	/**
+	 * Adds a building to the map at the requested position
+	 * bottomLeft = the bottom left coordinates of the new building
+	 * buildingSize = the height and width of the new building
+	 * tileMap = the existing map of tiles
+	 **/
 	private static void AddBuilding(Vector2 bottomLeft, Vector2 buildingSize, TileType[,] tileMap){
 		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize);
 		for (int x = 0; x < buildingSize.x; x++) {
@@ -126,6 +142,13 @@ public class TileGenerator : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * Finds the map positions where a building could be constructed
+	 * Runs in O(n) time where N is the size of the tilemap
+	 * buildingSize = the size of the building to search for
+	 * tileMap = a 2D array of tile positions
+	 * returns a list of coordinates where buildings can be constructed (bottom left corners)
+	 **/
 	private static List<Vector2> FreeBuildingLocations(Vector2 buildingSize, TileType[,] tileMap){
 		int sizeX = tileMap.GetLength (0);
 		int sizeY = tileMap.GetLength (1);
