@@ -38,23 +38,33 @@ public class TileGenerator : MonoBehaviour {
 	 *	ySize = vertical size of map
 	 *	returns an array of numbers where each number represents the terrain at that space
 	**/
-	public static TileType[,] GenerateTileMap(int xSize, int ySize){
+	public static TileType[,] GenerateTileMap(int xSize, int ySize, int buildingCount, int seed=0){
+		if (seed != -1) {
+			Random.InitState (seed);
+		}
 
-		TileType[,] tileMap = GenerateTerrain (xSize, ySize, 0);
+		TileType[,] tileMap = GenerateTerrain (xSize, ySize);
 
-		Vector2 buildingSize = new Vector2 (5, 5);
-		List<Vector2> acceptable = FreeBuildingLocations (buildingSize, tileMap);
-		Debug.Log (acceptable.Count);
-		Vector2 newPos = acceptable[0];
-		AddBuilding (newPos, buildingSize, tileMap);
+		int buildingsAdded = 0;
+		int failures = 0;
+		while (buildingsAdded < buildingCount && failures < 100) {
+			Vector2 buildingSize = new Vector2 (5, 5);
+			List<Vector2> acceptable = FreeBuildingLocations (buildingSize, tileMap);
+			int numOptions = acceptable.Count;
+			Vector2 newPos = acceptable[Random.Range (0, numOptions)];
+			if (numOptions > 0) {
+				AddBuilding (newPos, buildingSize, tileMap);
+				buildingsAdded++;
+			} else {
+				failures++;
+			}
+		}
+			
 
 		return tileMap;
 	}
 
 	private static TileType[,] GenerateTerrain(int xSize, int ySize, int seed=-1){
-		if (seed != -1) {
-			Random.InitState (seed);
-		}
 		int heightXOffset = Random.Range (0, 1000);
 		int heightYOffset = Random.Range (0, 1000);
 		int treeXOffset = Random.Range (0, 1000);
