@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
-public enum TileType {Grass, Gravel, Water, Sand, Rock, Tree, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB};
+public enum TileType {Grass, Gravel, Water, Sand, Rock, Tree, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB, NULL};
 
 public class TileGenerator : MonoBehaviour {
 	/**
