@@ -42,13 +42,8 @@ public class TileGenerator : MonoBehaviour {
 
 		TileType[,] tileMap = GenerateTerrain (xSize, ySize, 0);
 
-		Vector2 buildingSize = new Vector2 (10, 10);
-		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize, roomSplitScaler:2);
-		for (int x = 0; x < buildingSize.x; x++) {
-			for (int y = 0; y < buildingSize.y; y++) {
-				tileMap [x, y] = buildingMap [x, y];
-			}
-		}
+		AddBuilding (new Vector2 (borderSize, borderSize), new Vector2 (5, 5), tileMap);
+		AddBuilding (new Vector2 (borderSize+7, borderSize), new Vector2 (10, 10), tileMap);
 		return tileMap;
 	}
 
@@ -101,5 +96,13 @@ public class TileGenerator : MonoBehaviour {
 		return tileMap;
 	}
 		
+	private static void AddBuilding(Vector2 bottomLeft, Vector2 buildingSize, TileType[,] tileMap){
+		TileType[,] buildingMap = BuidingGenerator.GenerateBuilding (buildingSize);
+		for (int x = 0; x < buildingSize.x; x++) {
+			for (int y = 0; y < buildingSize.y; y++) {
+				tileMap [(int)bottomLeft.x+x, (int)bottomLeft.y+y] = buildingMap [x, y];
+			}
+		}
+	}
 		
 }
