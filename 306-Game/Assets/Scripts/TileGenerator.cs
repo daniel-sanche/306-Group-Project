@@ -14,6 +14,11 @@ public class TileGenerator : MonoBehaviour {
 	//size of unmoveable region on all edges of board
 	public static int borderSize = 20;
 
+	//max size of buildings (nxn)
+	public static int maxBuildingDim = 12;
+	public static int minBuildingDim = 6;
+	public static float minBuildingRatio = 0.5f;
+
 	//scale impacts how rough the heightmap is. Lower values will create more peaks and calleys
 	public static float heightmapScale = 0.1f;
 	public static float treemapScale = 0.01f;
@@ -48,7 +53,9 @@ public class TileGenerator : MonoBehaviour {
 		int buildingsAdded = 0;
 		int failures = 0;
 		while (buildingsAdded < buildingCount && failures < 100) {
-			Vector2 buildingSize = new Vector2 (5, 5);
+			int width = Random.Range (minBuildingDim, maxBuildingDim);
+			int height = (int)(width * Random.Range (minBuildingRatio, 1.0f));
+			Vector2 buildingSize = new Vector2 (width, height);
 			List<Vector2> acceptable = FreeBuildingLocations (buildingSize, tileMap);
 			int numOptions = acceptable.Count;
 			Vector2 newPos = acceptable[Random.Range (0, numOptions)];
