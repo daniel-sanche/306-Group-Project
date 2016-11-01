@@ -231,7 +231,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		else if (item.itemType == ItemType.WEAPON) {										//If it is a building item
 			backgroundColor = Color.red;                                                	//Set background color as red
 			Weapon weapon = (Weapon) item;													//Get regen class from item
-			desc.text += "\nAttack speed: " + weapon.attackSpeed;							//Display health and hunger points
+			desc.text += "\nAttack speed: " + weapon.attackCooldown;						//Display health and hunger points
 		} 
 		else {
 			backgroundColor = Color.white;													//Otherwise, default background to white
