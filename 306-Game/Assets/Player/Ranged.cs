@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Slingshot : Weapon {
+public class Ranged : Weapon {
 
 	//Range of the weapon
 	public float range;
