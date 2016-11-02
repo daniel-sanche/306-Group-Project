@@ -6,17 +6,9 @@ public class Weapon : Item {
 	//The weapon's attack cooldown
 	public float attackCooldown;
 
-	//Timer for keeping track of player attack
-	protected float attackTimer;
-
 	// Use this for initialization
 	void Start () {
 		itemType = ItemType.WEAPON;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public virtual void Attack(){

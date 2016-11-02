@@ -16,15 +16,15 @@ public class WeaponSlot : Slot {
 	 **/
 	public override Item getItem(){
 
-		if (!isEmpty()) {						//If the slot is occupied
-			Item temp = item;
-			player.weapon = null;
-			item = null;
-			setSprite (null);					//Sets the current sprite to null
-			return temp;						//Return the item
+		if (!isEmpty()) {																		//If the slot is occupied
+			Item temp = item;																
+			player.weapon = null;																
+			item = null;																		//The player's weapon is null
+			setSprite (null);																	//Sets the current sprite to null
+			return temp;																		//Return the item
 		}
 
-		return null;							//Return null otherwise
+		return null;																			//Return null otherwise
 	}
 
 
@@ -32,9 +32,9 @@ public class WeaponSlot : Slot {
 	 * Sets the slot's current item.
 	 **/
 	public override void setItem(Item toIns){
-		if (isEmpty ()){						//If the slot is empty
-			item = toIns;						//Add the item
-			setSprite(toIns.sprite);			//Update sprite renderer
+		if (isEmpty ()){																		//If the slot is empty
+			item = toIns;																		//Add the item
+			setSprite(toIns.sprite);															//Update sprite renderer
 			GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ().weapon = (Weapon) toIns;
 		}
 	}

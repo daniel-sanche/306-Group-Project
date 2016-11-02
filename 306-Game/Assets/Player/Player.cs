@@ -25,19 +25,26 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private float forceAmount;
 
+	//The timer for when the player can attack
+	private float attackTimer;
+
 	// Use this for initialization
 	void Start () {
-		rigidbody = GetComponent<Rigidbody2D>();	//Initializes the rigidbody variable
-		animator = GetComponent<Animator>();		//Initializes the animator variable
+		rigidbody = GetComponent<Rigidbody2D>();																	//Initializes the rigidbody variable
+		animator = GetComponent<Animator>();																		//Initializes the animator variable
 	}
 
 	// Update is called once per frame
 	void Update () {
-		Move ();									//Moves the player
-		Look ();									//Rotates the player
-		Attack ();									//Attack using the current weapon
+		Move ();																									//Moves the player
+		Look ();																									//Rotates the player
+		Attack ();																									//Attack using the current weapon
 	}
 
+	void FixedUpdate(){
+		if(attackTimer >= 0)
+			attackTimer -= Time.deltaTime;
+	}
 
 	// Moves the player based on input
 	private void Move(){
@@ -61,8 +68,10 @@ public class Player : MonoBehaviour {
 	private void Attack(){
 		
 		if (Input.GetMouseButtonDown (0)) {																			//If the player presses the left mouse button
-			if (weapon != null)
+			if (weapon != null && attackTimer <= 0) {
 				weapon.Attack ();
+				attackTimer = weapon.attackCooldown;
+			}
 		}
 	}
 
