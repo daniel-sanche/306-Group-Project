@@ -42,7 +42,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		if(attackTimer >= 0)
+		if(attackTimer >= 0)																						//Decrement attack timer if it is greater than zero
 			attackTimer -= Time.deltaTime;
 	}
 
