@@ -40,7 +40,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	/*
 	 * Removes and returns the item from the slot.
 	 **/
-	public Item getItem(){
+	public virtual Item getItem(){
 
 		if (!isEmpty()) {						//If the slot is occupied
 			Item temp = item;
@@ -56,7 +56,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	/*
 	 * Sets the slot's current item.
 	 **/
-	public void setItem(Item toIns){
+	public virtual void setItem(Item toIns){
 		if (isEmpty ()){						//If the slot is empty
 			item = toIns;						//Add the item
 			setSprite(toIns.sprite);			//Update sprite renderer
@@ -66,7 +66,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	/*
 	 * Drops the item based on the current mouse position.
 	 **/
-	public void dropItem(){
+	public virtual void dropItem(){
 		if (!isEmpty ()) {
 			Vector2 relativeMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint (GameObject.FindGameObjectWithTag("Player").transform.position);		//Gets the position of the mouse in relation to the player;
 			Vector2 dropPos = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, 2f);					//Finds the drop position based on the mouse and the player
@@ -110,16 +110,33 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 			if (eventData.pointerDrag.tag == "Slot") {										//If the player dragged from a spot
 				Slot dragged = eventData.pointerDrag.GetComponent<Slot>();
 
-				if (!dragged.isEmpty ()) {													//If the slot has an item
-					if (isEmpty ())															//If this slot is empty
+				if (dragged != null) {
+					if (!dragged.isEmpty ()) {													//If the slot has an item
+						if (isEmpty ())															//If this slot is empty
 						setItem (dragged.getItem ());										//Give the item to this slot
 
 					else {
-						Item cur = getItem ();												//Otherwise
-						setItem (dragged.getItem ());										//Swap the two items
-						dragged.setItem (cur);
-					}
-				}	
+							Item cur = getItem ();												//Otherwise
+							setItem (dragged.getItem ());										//Swap the two items
+							dragged.setItem (cur);
+						}
+					}	
+				}
+
+				dragged = eventData.pointerDrag.GetComponent<WeaponSlot>();
+
+				if (dragged != null) {
+					if (!dragged.isEmpty ()) {													//If the slot has an item
+						if (isEmpty ())															//If this slot is empty
+							setItem (dragged.getItem ());										//Give the item to this slot
+
+						else {
+							Item cur = getItem ();												//Otherwise
+							setItem (dragged.getItem ());										//Swap the two items
+							dragged.setItem (cur);
+						}
+					}	
+				}
 			}
 		}
 	}
@@ -184,12 +201,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 //****************************************************************************************************************************************************
 
 	//GameObject that represents the tooltip displayed when hovering over an item
-	private GameObject tooltip;
+	protected GameObject tooltip;
 
 	/*
 	 * Gives the sprite renderer a new sprite.
 	 **/
-	private void setSprite(Sprite sprite){
+	protected void setSprite(Sprite sprite){
 		Color invis = itemImage.color;															//Creates copy of current image color
 
 		if (sprite == null) {																	//Turns image invisible when there is no item in the slot
@@ -203,7 +220,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	}	
 
 
-	private void displayTooltip(){
+	protected void displayTooltip(){
 		tooltip = new GameObject ("Tooltip");
 		tooltip.AddComponent<Image> ();
 		tooltip.transform.SetParent (GetComponentInParent<Canvas> ().transform);			//Set the parent of the tooltip to be the canvas
