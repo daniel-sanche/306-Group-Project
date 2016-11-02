@@ -11,9 +11,8 @@ public class Weapon : Item {
 		itemType = ItemType.WEAPON;
 	}
 
-	public virtual void Attack(){
-		
-	}
+	//Attack class to be used by all descendants
+	public virtual void Attack(){}
 		
 	//************************
 	//GENERAL HELPER FUNCTIONS

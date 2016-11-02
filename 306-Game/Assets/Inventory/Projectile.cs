@@ -11,11 +11,14 @@ public class Projectile : MonoBehaviour {
 
 	//The direction the projectile travels
 	private Vector2 direction;
-	
+
+	void Start(){
+		Invoke ("Destroy", projectileLifetime);									//Destroys the projectile after the lifetime is up
+	}
+
 	// Update is called once per frame
 	void Update () {
-		GetComponent<Rigidbody2D> ().velocity = direction * speed;
-		Invoke ("Destroy", projectileLifetime);
+		GetComponent<Rigidbody2D> ().velocity = direction * speed;				//Sets the velocity of the projectile of the rigibody based on direction and speed
 	}
 
 	//Initializes projectile with the given speed, direction, and death time

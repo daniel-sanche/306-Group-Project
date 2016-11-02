@@ -14,8 +14,7 @@ public class Slingshot : Weapon {
 
 	// Use this for initialization
 	void Start () {
-		itemType = ItemType.WEAPON;
-		Physics2D.IgnoreCollision (projectile.GetComponent<Collider2D> (), GameObject.FindGameObjectWithTag ("Player").GetComponent<Collider2D> ());
+		itemType = ItemType.WEAPON;																								//Sets the weapon type as weapon
 	}
 
 	//Shoots a projectile with the given range

@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class WeaponSlot : Slot {
 
+	//Contains a reference to the player for equipping/unequipping
 	private Player player;
 
 	void Start(){
-		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();
+		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ();			//Gets the player
 	}
 
 	/*
