@@ -105,7 +105,7 @@ public class WeaponSlot : Slot {
 	/**
 	 * This function is called whenever this slot is initially dragged by the cursor
 	 **/
-	public void OnBeginDrag(PointerEventData eventData){
+	public new void OnBeginDrag(PointerEventData eventData){
 		if (!isEmpty ()) {																	//If there is an item in this slot
 			hoverImage = new GameObject ("Hover Image");									//Create a new hover object
 
@@ -119,7 +119,7 @@ public class WeaponSlot : Slot {
 	/*
 	 * This function is called constantly while this slot is dragged by the cursor
 	 **/
-	public void OnDrag(PointerEventData eventData){						
+	public new void OnDrag(PointerEventData eventData){						
 		if(hoverImage != null)																//Set the hover object's location to the mouse position
 			hoverImage.transform.position = eventData.position;
 	}
@@ -127,7 +127,7 @@ public class WeaponSlot : Slot {
 	/*
 	 * This function is called once the player has released something they are dragging.
 	 **/
-	public void OnEndDrag(PointerEventData eventData){
+	public new void OnEndDrag(PointerEventData eventData){
 		Destroy (hoverImage);																//Destroy the item hover imaage
 		if (eventData.pointerCurrentRaycast.gameObject == null) {							//If we dragged an item over nothing
 			dropItem ();																	//Drop the item

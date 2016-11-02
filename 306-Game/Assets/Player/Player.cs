@@ -11,7 +11,7 @@ public class Player : MonoBehaviour {
 	public Weapon weapon;
 
 	//The player's rigidbody
-	private Rigidbody2D rigidbody;
+	private new Rigidbody2D rigidbody;
 
 	//The player's animator
 	private Animator animator;
