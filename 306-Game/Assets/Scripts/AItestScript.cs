@@ -5,13 +5,16 @@ public class AItestScript : MonoBehaviour {
 
 	public float aggrorange = 30f;
 
-	private DecisionTree ai;
-	private Node testleft = new Node();
-	private Node testright = new Node();
-	private Node testleftright = new Node();
+	public DecisionTree ai;
+	public Node node_lungedecider = new Node();
+	public Node node_moveto = new Node();
+	public Node node_stroll = new Node();
+	public Node node_lunge = new Node();
 	private Vector2 mousepos;
 	private Vector2 myVector;
+	private Rigidbody2D rb;
 
+	private bool lungecd;
 	public object player;
 	void Awake(){
 		ai = new DecisionTree ();
@@ -19,7 +22,8 @@ public class AItestScript : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-
+		lungecd = true;
+		rb = GetComponent<Rigidbody2D> ();
 		BuildDecisionTree ();
 
 
@@ -39,33 +43,44 @@ public class AItestScript : MonoBehaviour {
 		/*ai.root.left.actdel = wentLeft;
 		ai.root.right.actdel = wentRight;
 	*/
-		testleft.value = 25;
-		testleft.decdel = wentLeft;
-		testright.actdel = wentRight;
-		testright.value = 75;
-		testleftright.value = 30;
-		testleftright.actdel = wentLeftRight;
-		ai.Insert (testleft,ai.root);
-		ai.Insert (testright, ai.root);
-		ai.Insert (testleftright, ai.root);
+		node_lungedecider.value = 25;
+		node_lungedecider.decdel = LungeDecider;
+
+		node_lunge.value = 10;
+		node_lunge.actdel = Lunge;
+
+		node_moveto.actdel = MoveTo;
+		node_moveto.value = 30;
+
+		node_stroll.value = 70;
+		node_stroll.actdel = Stroll;
+
+		ai.Insert (node_lungedecider,ai.root);
+
+		ai.Insert (node_moveto, ai.root);
+		ai.Insert (node_lunge, ai.root);
+		ai.Insert (node_stroll, ai.root);
+	
 	}
 
-	public bool wentLeft(){
-		print ("Went Left\n");
-		return false;
+	public void Stroll(){
+		//print ("Strolling\n");
+
 	}
-	public void wentLeftRight(){
-		print ("Went LeftRIght\n");
+	public void MoveTo(){
+		//Debug.Log("MOVING");
 	}
 
-	public void wentRight(){
-		print ("Went Right\n");
+	public void Lunge(){
+		Debug.Log ("LUNGING");
+		lungecd = false;
+		Invoke ("LungeCD", 5);
 	}
 
 
 	public bool RangeCheck(){
 		if (Vector2.Distance(mousepos, myVector) < aggrorange) {
-			Debug.Log ("In range");
+			//Debug.Log ("In range");
 			return true;
 		}
 
@@ -73,12 +88,19 @@ public class AItestScript : MonoBehaviour {
 	}
 	public bool LungeDecider(){
 
+		if (lungecd == true) {
 
-		int foo = Random.Range (0, 20);
-		if (foo > 20) {
-			return true;
+			int foo = Random.Range (0, 20);
+			if (foo >10) {
+
+				return true;
+			}
 		}
+
 		return false;
 	}		
 
+	public void LungeCD(){
+		lungecd = true;
+	}
 }

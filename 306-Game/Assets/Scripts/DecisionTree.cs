@@ -28,8 +28,7 @@ public class DecisionTree : MonoBehaviour {
 	
 		root = new Node();
 		root.value = mid;
-		root.right = new Node ();
-		root.left = new Node ();
+
 
 	}
 
@@ -39,14 +38,14 @@ public class DecisionTree : MonoBehaviour {
 		}
 
 		if (parent.value > newnode.value) {
-			if (parent.left != null) {
+			if (parent.left == null) {
 				parent.left = newnode;
 			} else {
 				Insert (newnode, parent.left);
 			}
 		}
 		else {
-			if (parent.right != null) {
+			if (parent.right == null) {
 				parent.right = newnode;
 			}
 			else {
@@ -70,7 +69,7 @@ public class DecisionTree : MonoBehaviour {
 		}
 
 		/*Perform decision*/
-		if (node.decdel()) {
+		if (node.decdel() == true) {
 			Search(node.left);
 		} 
 		else {
