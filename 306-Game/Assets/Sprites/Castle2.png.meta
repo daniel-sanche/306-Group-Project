@@ -1,10 +1,11 @@
 fileFormatVersion: 2
-guid: 43776b3a7748f4e4aa8019d4e8b6438d
-timeCreated: 1477864229
+guid: 7fc3e3540099d47e880803bc41204dde
+timeCreated: 1477861846
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: hyptosis_tile-art-batch-3_0
+    21300000: Castle2_0
+    21300002: Castle2_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -54,13 +55,26 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hyptosis_tile-art-batch-3_0
+      name: Castle2_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 576
-        width: 64
-        height: 64
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Castle2_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

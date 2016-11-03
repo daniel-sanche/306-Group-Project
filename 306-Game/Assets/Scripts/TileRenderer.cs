@@ -14,6 +14,7 @@ public class TileRenderer : MonoBehaviour {
 
 	public Vector2 NumChunks = new Vector2 ( 30, 30);
 	public Vector2 TilesPerChunk = new Vector2 (15, 10);
+	public int numBuildings = 30;
 
 	public GameObject tileChunkObj;
 
@@ -81,7 +82,7 @@ public class TileRenderer : MonoBehaviour {
 	 **/
 	private void InitMap(){
 		heading = new GameObject ("GameBoard").transform;
-		TileType[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y);
+		TileType[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y, numBuildings);
 		chunkMatrix = ChunksFromTileMap (tileMap, NumChunks, TilesPerChunk);
 	}
 

@@ -13,7 +13,7 @@ public class BuidingGenerator : MonoBehaviour {
 	 * 					 but that value will be multiplied by this parameter to make it more or less likely
 	 * 					 Results in more complex, but more interesting rooms
 	 **/
-	public static TileType[,] GenerateBuilding(Vector2 size, int minDoors=1, double roomSplitScaler=1){
+	public static TileType[,] GenerateBuilding(Vector2 size, int minDoors=1, double roomSplitScaler=2){
 		RoomNode root = new RoomNode (size);
 		root.GenerateSubtree(splitProbScaler:roomSplitScaler);
 		TileType[,] tileMap = _InitializeTiles(root);

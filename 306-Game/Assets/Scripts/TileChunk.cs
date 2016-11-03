@@ -22,6 +22,11 @@ public class TileChunk : MonoBehaviour {
 
 	public GameObject grass;
 	public GameObject gravel;
+	public GameObject water;
+	public GameObject sand;
+	public GameObject rock;
+	public GameObject tree;
+
 	public GameObject floor;
 	public GameObject floorTop;
 	public GameObject floorBottom;
@@ -99,7 +104,21 @@ public class TileChunk : MonoBehaviour {
 			for (int x = 0; x < tilesPerChunk.x; x++) {
 				for (int y = 0; y < tilesPerChunk.y; y++) {
 					TileType code = terrainMap [x, y];
-					GameObject groundTile = SpriteForCode (code);
+					TileType l = TileType.NULL;
+					TileType r = TileType.NULL;
+					TileType t = TileType.NULL;
+					TileType b = TileType.NULL;
+					if (x > 0) {
+						l = terrainMap [x - 1, y];
+					} else if (x < tilesPerChunk.x - 1) {
+						r = terrainMap [x + 1, y];
+					}
+					if (y > 0) {
+						b = terrainMap [x, y-1];
+					} else if (x < tilesPerChunk.x - 1) {
+						t = terrainMap [x, y+1];
+					}
+					GameObject groundTile = SpriteForCode (code, left:l, right:r, top:t, bottom:b);
 					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
 					tileList.Add (instance);
 					instance.transform.SetParent (transform);
@@ -143,14 +162,24 @@ public class TileChunk : MonoBehaviour {
 	 * Converts between tile id's and the actual game objects they represent
 	 * TileGenerator generates a 2D matrix of tile id's, but it's TileRenderer's job to turn them into actual tiles
 	 * code = the id of the tile from the generator
+	 * left,right,top,bottom = the tiles surrounding this one, to use for context information
 	 **/
-	public GameObject SpriteForCode(TileType code){
+	public GameObject SpriteForCode(TileType code,	TileType left=TileType.NULL, TileType right = TileType.NULL, 
+									TileType top = TileType.NULL, TileType bottom = TileType.NULL){
 		switch (code) 
 		{
 		case TileType.Grass:
 			return grass;
 		case TileType.Gravel:
 			return gravel;
+		case TileType.Water:
+			return water;
+		case TileType.Sand:
+			return sand;
+		case TileType.Rock:
+			return rock;
+		case TileType.Tree:
+			return tree;
 		case TileType.Floor:
 			return floor;
 		case TileType.FloorTop:
