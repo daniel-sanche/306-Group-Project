@@ -85,18 +85,18 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	public virtual void OnPointerClick(PointerEventData eventData)
 	{
 		if (eventData.button == PointerEventData.InputButton.Right && !isEmpty()) {			//If the user right clicks the slot with an item in it
-			if (item.itemType == ItemType.WEAPON) {
-				if (Inventory.weaponSlot.isEmpty ()) {
-					Inventory.weaponSlot.setItem (getItem ());
+			if (item.itemType == ItemType.WEAPON) {											//If the item is a weapon
+				if (Inventory.weaponSlot.isEmpty ()) {										//Check if the weapon slot is empty
+					Inventory.weaponSlot.setItem (getItem ());								//Equip this weapon to the weapon slot
 				} else {
-					Item temp = (Item) Inventory.weaponSlot.getItem ();
-					Inventory.weaponSlot.setItem (getItem ());
+					Item temp = (Item) Inventory.weaponSlot.getItem ();						//If the weapon slot is not empty
+					Inventory.weaponSlot.setItem (getItem ());								//Swap this weapon with the current weapon
 					setItem (temp);
 				}
-
+																							//Notify player to equip weapon
 				GameObject.FindGameObjectWithTag ("Player").GetComponent<Player> ().weapon = (Weapon) Inventory.weaponSlot.item;
 			} else {
-				getItem ().Use ();
+				getItem ().Use ();															//Otherwise, "Use" the item
 			}
 		}
 	}
@@ -111,13 +111,13 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 				Slot dragged = eventData.pointerDrag.GetComponent<Slot>();
 
 				if (dragged != null) {
-					if (!dragged.isEmpty ()) {													//If the slot has an item
-						if (isEmpty ())															//If this slot is empty
+					if (!dragged.isEmpty ()) {												//If the slot has an item
+						if (isEmpty ())														//If this slot is empty
 						setItem (dragged.getItem ());										//Give the item to this slot
 
 					else {
-							Item cur = getItem ();												//Otherwise
-							setItem (dragged.getItem ());										//Swap the two items
+							Item cur = getItem ();											//Otherwise
+							setItem (dragged.getItem ());									//Swap the two items
 							dragged.setItem (cur);
 						}
 					}	
@@ -126,13 +126,13 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 				dragged = eventData.pointerDrag.GetComponent<WeaponSlot>();
 
 				if (dragged != null) {
-					if (!dragged.isEmpty ()) {													//If the slot has an item
-						if (isEmpty ())															//If this slot is empty
-							setItem (dragged.getItem ());										//Give the item to this slot
+					if (!dragged.isEmpty ()) {												//If the slot has an item
+						if (isEmpty ())														//If this slot is empty
+							setItem (dragged.getItem ());									//Give the item to this slot
 
 						else {
-							Item cur = getItem ();												//Otherwise
-							setItem (dragged.getItem ());										//Swap the two items
+							Item cur = getItem ();											//Otherwise
+							setItem (dragged.getItem ());									//Swap the two items
 							dragged.setItem (cur);
 						}
 					}	
@@ -183,7 +183,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 **/
 	public void OnPointerEnter(PointerEventData eventData){
 		if (tooltip == null && !isEmpty()) {
-			displayTooltip ();
+			displayTooltip ();																//Displays the tooltip
 		}
 	}
 
@@ -191,8 +191,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 * This function is called whenever the pointer exits the slot
 	 **/
 	public void OnPointerExit(PointerEventData eventData){
-		if (tooltip != null) {																	//Upon moving the mouse out of the sloow
-			Destroy (tooltip);																	//Delete the tooltip
+		if (tooltip != null) {																//Upon moving the mouse out of the sloow
+			Destroy (tooltip);																//Delete the tooltip
 		}
 	}
 
@@ -207,16 +207,16 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 * Gives the sprite renderer a new sprite.
 	 **/
 	protected void setSprite(Sprite sprite){
-		Color invis = itemImage.color;															//Creates copy of current image color
+		Color invis = itemImage.color;														//Creates copy of current image color
 
-		if (sprite == null) {																	//Turns image invisible when there is no item in the slot
+		if (sprite == null) {																//Turns image invisible when there is no item in the slot
 			invis.a = 0f;
-		} else {																				//Otherwise, the item is visible
+		} else {																			//Otherwise, the item is visible
 			invis.a = 100f;
 		}
 
-		itemImage.sprite = sprite;																//Sets the image sprite to the given sprite
-		itemImage.color = invis;																//Sets the image color to be visible or not
+		itemImage.sprite = sprite;															//Sets the image sprite to the given sprite
+		itemImage.color = invis;															//Sets the image color to be visible or not
 	}	
 
 
@@ -245,10 +245,11 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 			Barricade barricade = (Barricade)item;											//Get barricade class from item
 			desc.text += "\nBarricade restore: " + barricade.barricadeRestore;				//Display barricade points
 		} 
-		else if (item.itemType == ItemType.WEAPON) {										//If it is a building item
+		else if (item.itemType == ItemType.WEAPON) {										//If it is a weapon
 			backgroundColor = Color.red;                                                	//Set background color as red
-			Weapon weapon = (Weapon) item;													//Get regen class from item
-			desc.text += "\nAttack speed: " + weapon.attackCooldown;						//Display health and hunger points
+			Weapon weapon = (Weapon) item;													//Get weapon class from item
+			desc.text += "\nAttack speed: " + weapon.attackCooldown;						//Display attack cooldown
+			desc.text += "\nAttack damage: " + weapon.damage;								//Display attack damage
 		} 
 		else {
 			backgroundColor = Color.white;													//Otherwise, default background to white
