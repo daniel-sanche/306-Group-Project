@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DayNightSystem : MonoBehaviour {
 
@@ -14,7 +15,8 @@ public class DayNightSystem : MonoBehaviour {
     float dayLength;
     [SerializeField]
     int numDays;
-
+    [SerializeField]
+    int daysLeft;
 
     bool isDay;
     float timeLimit;
@@ -26,6 +28,7 @@ public class DayNightSystem : MonoBehaviour {
         timeLimit = numDays * 2 * dayLength;
         InvokeRepeating("UpdateTime", 1, 1);
         InvokeRepeating("ChangeTimeType", 0, dayLength);
+        daysLeft = numDays;
     }
 
     // Update is called once per frame
@@ -62,6 +65,11 @@ public class DayNightSystem : MonoBehaviour {
             //Changes from keeping track of how much day is left to how much night is left
             day.Bar.GetComponent<CanvasGroup>().alpha = 0;
             night.Bar.GetComponent<CanvasGroup>().alpha = 1;
+            daysLeft = daysLeft - 1;
+            if (daysLeft == 0)
+            {
+                print("\nThe game should go to a game over screen here");
+            }
         }
         UpdateNPCs();
     }
