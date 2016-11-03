@@ -14,7 +14,8 @@ public class AItestScript : MonoBehaviour {
 	private Vector2 myVector;
 	private Rigidbody2D rb;
 
-	private bool lungecd;
+	bool b = true;
+	private bool lungecd = true;
 	public object player;
 	void Awake(){
 		ai = new DecisionTree ();
@@ -22,7 +23,7 @@ public class AItestScript : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		lungecd = true;
+		
 		rb = GetComponent<Rigidbody2D> ();
 		BuildDecisionTree ();
 
@@ -35,6 +36,7 @@ public class AItestScript : MonoBehaviour {
 		myVector = new Vector2 (transform.position.x, transform.position.y);
 		ai.Search (ai.root);
 		Debug.DrawRay (transform.position, mousepos- myVector, Color.red);
+
 
 	}
 
@@ -88,7 +90,7 @@ public class AItestScript : MonoBehaviour {
 	}
 	public bool LungeDecider(){
 
-		if (lungecd == true) {
+		if (lungecd) {
 
 			int foo = Random.Range (0, 20);
 			if (foo >10) {
