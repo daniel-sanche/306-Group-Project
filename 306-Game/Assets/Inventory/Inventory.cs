@@ -53,6 +53,7 @@ public class Inventory : MonoBehaviour {
 		weapSlot.name = "Weapon Slot";													//Name the weapon slot
 		weaponSlot = weapSlot.GetComponent<WeaponSlot> ();								//Get the slot component
 		weaponSlot.GetComponent<Image> ().color = Color.red;							//Change the color to blue
+
 	}
 
 

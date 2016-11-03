@@ -7,7 +7,7 @@ public class InvTestPlayer : MonoBehaviour {
 	public float speed;				
 
 	//The player's rigidbody
-	private Rigidbody2D rigidbody;
+	private new Rigidbody2D rigidbody;
 
 	// Use this for initialization
 	void Start () {
