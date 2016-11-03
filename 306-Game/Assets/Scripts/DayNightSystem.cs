@@ -15,6 +15,7 @@ public class DayNightSystem : MonoBehaviour {
     [SerializeField]
     int numDays;
 
+
     bool isDay;
     float timeLimit;
 
