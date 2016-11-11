@@ -9,7 +9,6 @@ public class Grid : MonoBehaviour {
 	public Transform player;
 	Node[,] grid;
 
-
 	float nodeDiameter;
 	int gridsizex, gridsizey;
 
@@ -18,6 +17,12 @@ public class Grid : MonoBehaviour {
 		gridsizex = Mathf.RoundToInt (gridWorldSize.x / nodeDiameter);
 		gridsizey = Mathf.RoundToInt (gridWorldSize.y / nodeDiameter);
 		CreateGrid ();
+	}
+
+	public int maxSize {
+		get {
+			return gridsizex * gridsizey;
+		}
 	}
 
 	void CreateGrid(){
@@ -38,6 +43,8 @@ public class Grid : MonoBehaviour {
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
 				if (x == 0 && y == 0) {
+				/* If we want diagonal lines
+				if (x == 0 && y == 0 || Mathf.Abs(x) + Mathf.Abs(y) == 2)﻿{*/
 					continue;
 				}
 				int checkx = node.gridx + x;

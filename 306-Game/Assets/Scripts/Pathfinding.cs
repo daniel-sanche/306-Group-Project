@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Pathfinding : MonoBehaviour {
 	public Transform seeker, target;
@@ -15,11 +16,12 @@ public class Pathfinding : MonoBehaviour {
 		Node startnode = grid.NodeFromWorldPoint (startpos);
 		Node targetnode = grid.NodeFromWorldPoint (targetpos);
 		HashSet<Node> closedset = new HashSet<Node> ();
-		List<Node> openset = new List<Node> ();
+		//List<Node> openset = new List<Node> ();
+		Heap<Node> openset = new Heap<Node> (grid.maxSize);
 
 		openset.Add (startnode);
 		while (openset.Count > 0) {
-			Node currentNode = openset [0];
+			/*Node currentNode = openset [0];
 			for (int i = 1; i < openset.Count; i++) {
 				if (openset [i].fcost < currentNode.fcost || openset[i].fcost == currentNode.fcost && openset[i].hcost<currentNode.hcost) {
 					currentNode = openset [i];
@@ -27,6 +29,8 @@ public class Pathfinding : MonoBehaviour {
 			}
 
 			openset.Remove (currentNode);
+			*/
+			Node currentNode = openset.RemoveFirst ();
 			closedset.Add (currentNode);
 
 			if (currentNode == targetnode) {
@@ -45,8 +49,11 @@ public class Pathfinding : MonoBehaviour {
 				
 					neighbour.parent = currentNode;
 
-					if (!openset.Contains(neighbour)){
-						openset.Add(neighbour);
+					if (!openset.Contains (neighbour)) {
+						openset.Add (neighbour);
+					}
+					else {
+						openset.UpdateItem (neighbour);
 					}
 						 
 				}
