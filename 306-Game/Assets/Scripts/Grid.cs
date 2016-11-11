@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
 	public Vector2 gridWorldSize;
@@ -26,9 +27,28 @@ public class Grid : MonoBehaviour {
 			for (int y = 0; y < gridsizey; y++) {
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x *nodeDiameter + nodeRadius) + Vector3.up * (y* nodeDiameter + nodeRadius);
 				bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkablemask));
-				grid[x,y] = new Node(walkable, worldPoint);
+				grid[x,y] = new Node(walkable, worldPoint, x , y);
 			}
 		}
+	}
+
+	public List<Node> GetNeighbours(Node node){
+		List<Node> neighbours = new List<Node> ();
+
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				if (x == 0 && y == 0) {
+					continue;
+				}
+				int checkx = node.gridx + x;
+				int checky = node.gridy + y;
+				if (checkx >= 0 && checkx < gridsizex && checky >= 0 && checky < gridsizey) {
+					neighbours.Add (grid [checkx, checky]);
+				}
+
+			}
+		}
+		return neighbours;
 	}
 
 	public Node NodeFromWorldPoint(Vector3 worldPosition){
@@ -44,16 +64,24 @@ public class Grid : MonoBehaviour {
 
 	}
 
+	public List<Node> path;
 	void OnDrawGizmos(){
 		Gizmos.DrawWireCube (transform.position, new Vector3 (gridWorldSize.x, gridWorldSize.y,1 ));
 		if (grid != null) {
 			foreach (Node n in grid) {
 				
 				Gizmos.color = (n.walkable) ? Color.white : Color.red;
+
 				Node playerNode = NodeFromWorldPoint(player.position);
 				if (playerNode == n) {
 					Gizmos.color = Color.cyan;
 				} 
+				if (path != null) {
+					if (path.Contains (n)) {
+						Gizmos.color = Color.green;
+					}
+				}
+			
 				Gizmos.DrawCube (n.worldposition, Vector3.one * (nodeDiameter-.01f));
 			}
 	
