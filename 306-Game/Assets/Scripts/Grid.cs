@@ -1,0 +1,63 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class Grid : MonoBehaviour {
+	public Vector2 gridWorldSize;
+	public LayerMask unwalkablemask;
+	public float nodeRadius;
+	public Transform player;
+	Node[,] grid;
+
+
+	float nodeDiameter;
+	int gridsizex, gridsizey;
+
+	void Start(){
+		nodeDiameter = nodeRadius * 2;
+		gridsizex = Mathf.RoundToInt (gridWorldSize.x / nodeDiameter);
+		gridsizey = Mathf.RoundToInt (gridWorldSize.y / nodeDiameter);
+		CreateGrid ();
+	}
+
+	void CreateGrid(){
+		grid = new Node[gridsizex, gridsizey];
+		Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.up * gridWorldSize.y/2;
+		for (int x = 0; x < gridsizex; x++) {
+			for (int y = 0; y < gridsizey; y++) {
+				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x *nodeDiameter + nodeRadius) + Vector3.up * (y* nodeDiameter + nodeRadius);
+				bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkablemask));
+				grid[x,y] = new Node(walkable, worldPoint);
+			}
+		}
+	}
+
+	public Node NodeFromWorldPoint(Vector3 worldPosition){
+		float percentx = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+		float percenty = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
+		percentx = Mathf.Clamp01 (percentx);
+		percenty = Mathf.Clamp01 (percenty);
+
+		int x = Mathf.RoundToInt((gridsizex - 1) * percentx);
+		int y = Mathf.RoundToInt((gridsizey - 1) * percenty);
+
+		return grid [x, y];
+
+	}
+
+	void OnDrawGizmos(){
+		Gizmos.DrawWireCube (transform.position, new Vector3 (gridWorldSize.x, gridWorldSize.y,1 ));
+		if (grid != null) {
+			foreach (Node n in grid) {
+				
+				Gizmos.color = (n.walkable) ? Color.white : Color.red;
+				Node playerNode = NodeFromWorldPoint(player.position);
+				if (playerNode == n) {
+					Gizmos.color = Color.cyan;
+				} 
+				Gizmos.DrawCube (n.worldposition, Vector3.one * (nodeDiameter-.01f));
+			}
+	
+		}
+
+	}
+}

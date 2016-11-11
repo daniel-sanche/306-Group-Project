@@ -6,17 +6,19 @@ public class AItestScript : MonoBehaviour {
 	public float aggrorange = 30f;
 
 	public DecisionTree ai;
-	public Node node_lungedecider = new Node();
-	public Node node_moveto = new Node();
-	public Node node_stroll = new Node();
-	public Node node_lunge = new Node();
+	public DecisionTreeNode node_lungedecider = new DecisionTreeNode();
+	public DecisionTreeNode node_moveto = new DecisionTreeNode();
+	public DecisionTreeNode node_stroll = new DecisionTreeNode();
+	public DecisionTreeNode node_lunge = new DecisionTreeNode();
 	private Vector2 mousepos;
 	private Vector2 myVector;
 	private Rigidbody2D rb;
-
+	private bool isday = true;
 	bool b = true;
 	private bool lungecd = true;
 	public object player;
+
+
 	void Awake(){
 		ai = new DecisionTree ();
 
@@ -40,69 +42,79 @@ public class AItestScript : MonoBehaviour {
 
 	}
 
-	void BuildDecisionTree(){
-		ai.root.decdel = RangeCheck;
-		/*ai.root.left.actdel = wentLeft;
-		ai.root.right.actdel = wentRight;
-	*/
-		node_lungedecider.value = 25;
-		node_lungedecider.decdel = LungeDecider;
 
-		node_lunge.value = 10;
-		node_lunge.actdel = Lunge;
+	public bool NightDayCheck(){
+		if (isday) {
+			return true;
+		}
+		return false;
+	}
 
-		node_moveto.actdel = MoveTo;
-		node_moveto.value = 30;
+	public bool ThreatZoneCheck(){
+		//distance check
+		return false;
+	}
 
-		node_stroll.value = 70;
-		node_stroll.actdel = Stroll;
 
-		ai.Insert (node_lungedecider,ai.root);
+	public bool LOSCheck(){
+		//loscheck
+		return false;
+	}
 
-		ai.Insert (node_moveto, ai.root);
-		ai.Insert (node_lunge, ai.root);
-		ai.Insert (node_stroll, ai.root);
-	
+	public bool RangeCheck(){
+		//distancecheck
+		return false;
+
+	}
+
+	public void Attack(){
+		/*trigger animation
+		 * Adda force if lunging*/
+
+	}
+
+	public void Advance(){
+		//advance to target
+	}
+
+	public bool RandomCheck(){
+		//random check
+		return false;
 	}
 
 	public void Stroll(){
-		//print ("Strolling\n");
-
-	}
-	public void MoveTo(){
-		//Debug.Log("MOVING");
+		//move to random point with pathfinding
 	}
 
-	public void Lunge(){
-		Debug.Log ("LUNGING");
-		lungecd = false;
-		Invoke ("LungeCD", 5);
+	public void Talk(){
+		//Make a talk bubble, play sound effect?
 	}
+		
 
-
-	public bool RangeCheck(){
-		if (Vector2.Distance(mousepos, myVector) < aggrorange) {
-			//Debug.Log ("In range");
-			return true;
-		}
-
+	public bool SpawnRangeCheck(){
+		//spawndistance check
 		return false;
 	}
-	public bool LungeDecider(){
 
-		if (lungecd) {
-
-			int foo = Random.Range (0, 20);
-			if (foo >10) {
-
-				return true;
-			}
-		}
-
+	public bool HaveItemCheck(){
+		//check if has item
 		return false;
-	}		
-
-	public void LungeCD(){
-		lungecd = true;
 	}
+
+	public void DropItem(){
+		//dropitem around this as near player
+	}
+
+	public void Sayhello(){
+		//make a talk bubble, play sound effect?
+	}
+
+
+
+	void BuildDecisionTree(){
+
+
+	}
+
+
 }
