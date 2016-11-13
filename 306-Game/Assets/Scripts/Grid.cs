@@ -8,11 +8,11 @@ public class Grid : MonoBehaviour {
 	public float nodeRadius;
 	public Transform player;
 	Node[,] grid;
-
+	public bool displayGridGizmos;
 	float nodeDiameter;
 	int gridsizex, gridsizey;
 
-	void Start(){
+	void Awake(){
 		nodeDiameter = nodeRadius * 2;
 		gridsizex = Mathf.RoundToInt (gridWorldSize.x / nodeDiameter);
 		gridsizey = Mathf.RoundToInt (gridWorldSize.y / nodeDiameter);
@@ -24,7 +24,6 @@ public class Grid : MonoBehaviour {
 			return gridsizex * gridsizey;
 		}
 	}
-
 	void CreateGrid(){
 		grid = new Node[gridsizex, gridsizey];
 		Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.up * gridWorldSize.y/2;
@@ -71,24 +70,13 @@ public class Grid : MonoBehaviour {
 
 	}
 
-	public List<Node> path;
+
 	void OnDrawGizmos(){
 		Gizmos.DrawWireCube (transform.position, new Vector3 (gridWorldSize.x, gridWorldSize.y,1 ));
-		if (grid != null) {
+		if (grid != null && displayGridGizmos ) {
 			foreach (Node n in grid) {
 				
 				Gizmos.color = (n.walkable) ? Color.white : Color.red;
-
-				Node playerNode = NodeFromWorldPoint(player.position);
-				if (playerNode == n) {
-					Gizmos.color = Color.cyan;
-				} 
-				if (path != null) {
-					if (path.Contains (n)) {
-						Gizmos.color = Color.green;
-					}
-				}
-			
 				Gizmos.DrawCube (n.worldposition, Vector3.one * (nodeDiameter-.01f));
 			}
 	
