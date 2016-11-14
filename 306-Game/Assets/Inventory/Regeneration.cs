@@ -16,6 +16,8 @@ public class Regeneration : Item {
 
 	//Uses the regeneration item
 	public override void Use(){
-		print (name + "\nThis is a regeneration item.");
-	}
+		//print (name + "\nThis is a regeneration item.");
+        GameObject.FindGameObjectWithTag("Player").SendMessage("RecoverHealth", healthRegen);
+        GameObject.FindGameObjectWithTag("Player").SendMessage("RecoverEnergy", hungerRegen);
+    }
 }

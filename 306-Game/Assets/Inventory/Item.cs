@@ -8,7 +8,7 @@ public enum ItemType{
 public class Item : MonoBehaviour {
 
 	// The item's name.
-	public string name;
+	public new string name;
 
 	// The item's tooltip.
 	public string tooltip;
