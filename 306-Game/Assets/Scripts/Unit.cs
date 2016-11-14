@@ -11,6 +11,8 @@ public class Unit : MonoBehaviour {
 	void Start(){
 		PathRequestManager.RequestPath (transform.position, target.position, OnPathFound);
 	}
+
+
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
 		if(pathSuccessful){
 			path = newPath;
@@ -20,7 +22,9 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
+
 	IEnumerator FollowPath(){
+		/*Go to first waypoint*/
 		Vector3 currentWaypoint = path [0];
 
 		while(true){
