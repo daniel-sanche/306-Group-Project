@@ -136,4 +136,22 @@ public class Player : MonoBehaviour {
 
 		return Mathf.Atan2 (relativePos.y, relativePos.x);															//Calculate the angle of the GameObject to the player.
 	}
+
+	public void SwingWeapon(Melee weapon){
+		StartCoroutine ("SwingWeaponRoutine", weapon);
+	}
+
+	private IEnumerator SwingWeaponRoutine(Melee weapon){
+		float inputAngle = getMouseAngle ();
+
+		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;
+
+		for(float f = inputAngle - Mathf.Deg2Rad * weapon.swingAngle; f <= inputAngle + Mathf.Deg2Rad * weapon.swingAngle; f = f + Mathf.Deg2Rad * 1f){
+			print (f);
+			swingObject.transform.position = new Vector2 (transform.position.x + weapon.swingRadius * Mathf.Cos (f), transform.position.y + weapon.swingRadius * Mathf.Sin (f));
+			yield return new WaitForEndOfFrame ();
+		}
+
+		Destroy (swingObject.gameObject);
+	}
 }
