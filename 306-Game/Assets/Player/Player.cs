@@ -5,7 +5,10 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 
 	//The speed of the player
-	public float speed;				
+	public float speed;		
+
+	//The swing speed of the player
+	public float swingSpeed;
 
 	//The currently equipped weapon
 	public Weapon weapon;
@@ -27,6 +30,7 @@ public class Player : MonoBehaviour {
 
 	//The timer for when the player can attack
 	private float attackTimer;
+
 
 	// Use this for initialization
 	void Start () {
@@ -146,12 +150,15 @@ public class Player : MonoBehaviour {
 
 		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;
 
-		for(float f = inputAngle - Mathf.Deg2Rad * weapon.swingAngle; f <= inputAngle + Mathf.Deg2Rad * weapon.swingAngle; f = f + Mathf.Deg2Rad * 1f){
+		animator.SetBool ("Attacking", true);
+
+		for(float f = inputAngle - Mathf.Deg2Rad * weapon.swingAngle; f <= inputAngle + Mathf.Deg2Rad * weapon.swingAngle; f = f + Mathf.Deg2Rad * swingSpeed){
 			print (f);
 			swingObject.transform.position = new Vector2 (transform.position.x + weapon.swingRadius * Mathf.Cos (f), transform.position.y + weapon.swingRadius * Mathf.Sin (f));
 			yield return new WaitForEndOfFrame ();
 		}
 
+		animator.SetBool ("Attacking", false);
 		Destroy (swingObject.gameObject);
 	}
 }
