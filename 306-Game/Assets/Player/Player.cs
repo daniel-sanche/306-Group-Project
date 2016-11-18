@@ -146,15 +146,20 @@ public class Player : MonoBehaviour {
 	}
 
 	private IEnumerator SwingWeaponRoutine(Melee weapon){
+		animator.SetBool ("Attacking", true);
+		Look ();
 		float inputAngle = getMouseAngle ();
+		float curAngle = inputAngle - Mathf.Deg2Rad * weapon.swingAngle;
 
+		print ("lower angle: " + curAngle + " upper angle: " + (inputAngle + Mathf.Deg2Rad * weapon.swingAngle) );
 		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;
 
-		animator.SetBool ("Attacking", true);
-
-		for(float f = inputAngle - Mathf.Deg2Rad * weapon.swingAngle; f <= inputAngle + Mathf.Deg2Rad * weapon.swingAngle; f = f + Mathf.Deg2Rad * swingSpeed){
+		for(float f = 0; f <= swingSpeed; f = f + Time.deltaTime/*(swingSpeed / ( ( (inputAngle + Mathf.Deg2Rad * weapon.swingAngle) - curAngle ) * Mathf.Rad2Deg ) )*/ ){
+			curAngle = curAngle + f;
 			print (f);
-			swingObject.transform.position = new Vector2 (transform.position.x + weapon.swingRadius * Mathf.Cos (f), transform.position.y + weapon.swingRadius * Mathf.Sin (f));
+			Vector2 swingPos = new Vector2 (transform.position.x + weapon.swingRadius * Mathf.Cos (curAngle), transform.position.y + weapon.swingRadius * Mathf.Sin (curAngle));
+			swingObject.transform.position = swingPos;
+			swingObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, getRelativeAngle(swingObject) * Mathf.Rad2Deg ) );
 			yield return new WaitForEndOfFrame ();
 		}
 
