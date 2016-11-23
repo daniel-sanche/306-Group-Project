@@ -8,7 +8,7 @@ public class Unit : MonoBehaviour {
 	Vector3[] path;
 	int targetIndex;
 
-	void FixedUpdate(){
+	void Start(){
 		PathRequestManager.RequestPath (transform.position, target.position, OnPathFound);
 	}
 
@@ -25,8 +25,6 @@ public class Unit : MonoBehaviour {
 
 	IEnumerator FollowPath(){
 		/*Go to first waypoint*/
-
-		//Getting outofrangeExceptions when they get to target
 		Vector3 currentWaypoint = path [0];
 
 		while(true){
