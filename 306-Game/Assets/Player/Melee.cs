@@ -14,7 +14,7 @@ public class Melee : Weapon {
 
 	// Use this for initialization
 	void Start () {
-		itemType = ItemType.WEAPON;
+		itemType = ItemType.MELEE;
 
 	}
 

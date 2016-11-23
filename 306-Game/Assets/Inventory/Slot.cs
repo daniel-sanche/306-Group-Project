@@ -85,7 +85,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	public virtual void OnPointerClick(PointerEventData eventData)
 	{
 		if (eventData.button == PointerEventData.InputButton.Right && !isEmpty()) {			//If the user right clicks the slot with an item in it
-			if (item.itemType == ItemType.WEAPON) {											//If the item is a weapon
+			if (item.itemType == ItemType.RANGED || item.itemType == ItemType.MELEE) {											//If the item is a weapon
 				if (Inventory.weaponSlot.isEmpty ()) {										//Check if the weapon slot is empty
 					Inventory.weaponSlot.setItem (getItem ());								//Equip this weapon to the weapon slot
 				} else {
@@ -245,7 +245,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 			Barricade barricade = (Barricade)item;											//Get barricade class from item
 			desc.text += "\nBarricade restore: " + barricade.barricadeRestore;				//Display barricade points
 		} 
-		else if (item.itemType == ItemType.WEAPON) {										//If it is a weapon
+		else if (item.itemType == ItemType.MELEE || item.itemType == ItemType.RANGED) {		//If it is a weapon
 			backgroundColor = Color.red;                                                	//Set background color as red
 			Weapon weapon = (Weapon) item;													//Get weapon class from item
 			desc.text += "\nAttack speed: " + weapon.attackCooldown;						//Display attack cooldown

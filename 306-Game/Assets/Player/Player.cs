@@ -70,7 +70,13 @@ public class Player : MonoBehaviour {
 
 	//Attacks using the currently equipped weapon
 	private void Attack(){
-		
+		if (weapon != null) {
+			if (weapon.itemType == ItemType.RANGED)
+				animator.SetBool ("Slingshot", true);
+		} else {
+			animator.SetBool ("Slingshot", false);
+		}
+
 		if (Input.GetMouseButtonDown (0)) {																			//If the player presses the left mouse button
 			if (weapon != null && attackTimer <= 0) {
 				weapon.Attack ();
