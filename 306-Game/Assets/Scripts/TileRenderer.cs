@@ -54,6 +54,9 @@ public class TileRenderer : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * returns the matrix of TileChunks
+	 */
 	public TileChunk[,] GetChunkMatrix(){
 		return chunkMatrix;
 	}

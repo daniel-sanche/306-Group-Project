@@ -136,16 +136,16 @@ public class TileChunk : MonoBehaviour {
 		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
 		if (generateNewItems) {
 			generateNewItems = false;
-			List<Vector2> openGround = OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+			List<Vector2> openGround = GetSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
 			AddNewItems (itemProbGround, openGround);
-			List<Vector2> openBuildings = OpenSpaces (new TileType[]{TileType.Floor, TileType.FloorBottom, TileType.FloorTop,
+			List<Vector2> openBuildings = GetSpaces (new TileType[]{TileType.Floor, TileType.FloorBottom, TileType.FloorTop,
 					TileType.FloorLeft, TileType.FloorRight, TileType.FloorBL, TileType.FloorBR, TileType.FloorTL, TileType.FloorTR});
 			AddNewItems (itemProbBuilding, openBuildings);
 		}
 		if (generateNewEnemy) {
 			generateNewEnemy = false;
 			if (Random.value < enemyProb) {
-				List<Vector2> openGround = OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+				List<Vector2> openGround = GetSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
 				AddNewEnemies (Mathf.Max((int)Mathf.Round(enemyProb), 1), openGround);
 			}
 		}
@@ -275,7 +275,10 @@ public class TileChunk : MonoBehaviour {
 		}
 	}
 
-	public List<Vector2> OpenSpaces(TileType[] requestedTileArr){
+	/**
+	 * Finds a list of tiles of a certain type
+	 */
+	public List<Vector2> GetSpaces(TileType[] requestedTileArr){
 		List<Vector2> openList = new List<Vector2> ();
 		for (int x = 0; x < tilesPerChunk.x; x++) {
 			for (int y = 0; y < tilesPerChunk.y; y++) {
@@ -290,6 +293,9 @@ public class TileChunk : MonoBehaviour {
 		return openList;
 	}
 
+	/**
+	 * Returns a random item based on the probabilities assigned to each one
+	 */
 	private GameObject _randomItem(){
 		float[] probArr = new float[] {poisonProb, quickshotProb, healthProb, energyProb, clubProb, malletProb, slingshotProb, swordProb};
 		GameObject[] objArr = new GameObject[] { poison, quickshot, health, energy, club, mallet, slingshot, sword };
@@ -308,6 +314,9 @@ public class TileChunk : MonoBehaviour {
 		return club;
 	}
 
+	/**
+	 * adds new items to the list of spaces passed in, based on the probability passed in
+	 */
 	private void AddNewItems(float itemProb, List<Vector2>availableSpaces){
 		for (int i = 0; i < availableSpaces.Count; i = i + 1) {
 			if (Random.value < itemProb) {
@@ -319,6 +328,10 @@ public class TileChunk : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * Add enemies to the chunk
+	 * Will add numToAdd enemies
+	 */
 	private void AddNewEnemies(int numToAdd, List<Vector2>availableSpaces){
 		int randomIndex = Random.Range(0, availableSpaces.Count);
 		Vector2 point = availableSpaces [randomIndex];

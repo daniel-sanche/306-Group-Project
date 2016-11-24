@@ -38,6 +38,9 @@ public class Player : MonoBehaviour {
 		MoveToSpawn ();
 	}
 
+	/**
+	 * Finds an open spawn point for the player close to the center of the map
+	 */
 	private Vector3 GenerateSpawn(){
 		GameObject camera = GameObject.FindWithTag("MainCamera");
 		TileRenderer renderer = camera.GetComponent<TileRenderer> ();
@@ -48,7 +51,7 @@ public class Player : MonoBehaviour {
 			for (int j = 0; j < i && j < centerY; j++) {
 				TileChunk thisChunk = chunkMat [centerX + i, centerY + j];
 				Vector2 offset = thisChunk.offset;
-				List<Vector2> freeSpaces = thisChunk.OpenSpaces (new TileType[]{ TileType.Grass, TileType.Sand, TileType.Gravel });
+				List<Vector2> freeSpaces = thisChunk.GetSpaces (new TileType[]{ TileType.Grass, TileType.Sand, TileType.Gravel });
 				if (freeSpaces.Count > 0) {
 					Vector2 point2D = freeSpaces [0];
 					return new Vector3 (point2D.x+offset.x, point2D.y+offset.y, 0);
@@ -59,6 +62,9 @@ public class Player : MonoBehaviour {
 		return new Vector3 (0, 0, 0);
 	}
 
+	/**
+	 * moves the player to their spawn point
+	 */
 	private void MoveToSpawn(){
 		this.transform.localPosition = spawnPoint; 
 	}
