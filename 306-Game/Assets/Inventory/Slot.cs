@@ -29,7 +29,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		setSprite (null);						//Ensure the sprite is null
 	}
 
-	/*
+	/**
 	 * Is the slot currently empty?
 	 **/
 	public bool isEmpty(){
@@ -37,7 +37,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	}
 
 		
-	/*
+	/**
 	 * Removes and returns the item from the slot.
 	 **/
 	public virtual Item getItem(){
@@ -53,7 +53,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	}
 
 
-	/*
+	/**
 	 * Sets the slot's current item.
 	 **/
 	public virtual void setItem(Item toIns){
@@ -63,7 +63,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		}
 	}
 
-	/*
+	/**
 	 * Drops the item based on the current mouse position.
 	 **/
 	public virtual void dropItem(){
@@ -71,7 +71,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 			Vector2 relativeMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint (GameObject.FindGameObjectWithTag("Player").transform.position);		//Gets the position of the mouse in relation to the player;
 			Vector2 dropPos = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, 2f);					//Finds the drop position based on the mouse and the player
 			Vector2 itemForce = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, dropForce + 2f);		//Finds the force to apply based on the mouse and player
-
+			
 			GameObject drop = (GameObject)Instantiate (pickupPrefab, dropPos, Quaternion.identity);																	//Drops the item at the given location
 			drop.GetComponent<Rigidbody2D> ().AddForce (itemForce - dropPos);																						//Applies force relative to the player
 			drop.GetComponent<Pickup> ().item = getItem ();																											//Transfers item from this to the pickup item
