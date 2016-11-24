@@ -53,6 +53,10 @@ public class TileRenderer : MonoBehaviour {
 			SetActiveChunk (chunkNumX, chunkNumY);
 		}
 	}
+
+	public TileChunk[,] GetChunkMatrix(){
+		return chunkMatrix;
+	}
 		
 
 	/**

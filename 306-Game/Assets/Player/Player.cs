@@ -28,10 +28,39 @@ public class Player : MonoBehaviour {
 	//The timer for when the player can attack
 	private float attackTimer;
 
+	private Vector3 spawnPoint;
+
 	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();																	//Initializes the rigidbody variable
 		animator = GetComponent<Animator>();																		//Initializes the animator variable
+		spawnPoint = GenerateSpawn ();
+		MoveToSpawn ();
+	}
+
+	private Vector3 GenerateSpawn(){
+		GameObject camera = GameObject.FindWithTag("MainCamera");
+		TileRenderer renderer = camera.GetComponent<TileRenderer> ();
+		TileChunk[,] chunkMat = renderer.GetChunkMatrix ();
+		int centerX = chunkMat.GetLength (0) / 2;
+		int centerY = chunkMat.GetLength (1) / 2;
+		for (int i = 0; i < centerX; i++) {
+			for (int j = 0; j < i && j < centerY; j++) {
+				TileChunk thisChunk = chunkMat [centerX + i, centerY + j];
+				Vector2 offset = thisChunk.offset;
+				List<Vector2> freeSpaces = thisChunk.OpenSpaces (new TileType[]{ TileType.Grass, TileType.Sand, TileType.Gravel });
+				if (freeSpaces.Count > 0) {
+					Vector2 point2D = freeSpaces [0];
+					return new Vector3 (point2D.x+offset.x, point2D.y+offset.y, 0);
+				}
+			}
+		}
+
+		return new Vector3 (0, 0, 0);
+	}
+
+	private void MoveToSpawn(){
+		this.transform.localPosition = spawnPoint; 
 	}
 
 	// Update is called once per frame

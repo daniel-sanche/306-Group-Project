@@ -72,7 +72,7 @@ public class TileChunk : MonoBehaviour {
 
 	private bool generateNewItems = true;
 	private bool generateNewEnemy = true;
-	private Vector2 offset;
+	public Vector2 offset;
 
 	/**
 	 * Creates a new chunk of tiles
@@ -136,16 +136,16 @@ public class TileChunk : MonoBehaviour {
 		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
 		if (generateNewItems) {
 			generateNewItems = false;
-			List<Vector2> openGround = _OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+			List<Vector2> openGround = OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
 			AddNewItems (itemProbGround, openGround);
-			List<Vector2> openBuildings = _OpenSpaces (new TileType[]{TileType.Floor, TileType.FloorBottom, TileType.FloorTop,
+			List<Vector2> openBuildings = OpenSpaces (new TileType[]{TileType.Floor, TileType.FloorBottom, TileType.FloorTop,
 					TileType.FloorLeft, TileType.FloorRight, TileType.FloorBL, TileType.FloorBR, TileType.FloorTL, TileType.FloorTR});
 			AddNewItems (itemProbBuilding, openBuildings);
 		}
 		if (generateNewEnemy) {
 			generateNewEnemy = false;
 			if (Random.value < enemyProb) {
-				List<Vector2> openGround = _OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+				List<Vector2> openGround = OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
 				AddNewEnemies (Mathf.Max((int)Mathf.Round(enemyProb), 1), openGround);
 			}
 		}
@@ -275,7 +275,7 @@ public class TileChunk : MonoBehaviour {
 		}
 	}
 
-	private List<Vector2> _OpenSpaces(TileType[] requestedTileArr){
+	public List<Vector2> OpenSpaces(TileType[] requestedTileArr){
 		List<Vector2> openList = new List<Vector2> ();
 		for (int x = 0; x < tilesPerChunk.x; x++) {
 			for (int y = 0; y < tilesPerChunk.y; y++) {
@@ -287,7 +287,6 @@ public class TileChunk : MonoBehaviour {
 				}
 			}
 		}
-		Debug.Log(openList);
 		return openList;
 	}
 
