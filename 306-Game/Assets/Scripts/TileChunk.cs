@@ -13,6 +13,7 @@ public class TileChunk : MonoBehaviour {
 
 	private TileType [,] terrainMap;
 	private List<GameObject> tileList;
+	private List<GameObject> moveableObjects;
 	private Vector2 tilesPerChunk;
 	private bool isCached = false;
 
@@ -67,6 +68,7 @@ public class TileChunk : MonoBehaviour {
 		terrainMap = terrain;
 		tilesPerChunk = tilesInChunk;
 		offset = new Vector2 (x * tilesPerChunk.x, y * tilesPerChunk.y);
+		moveableObjects = new List<GameObject> ();
 	}
 
 	void Awake(){
@@ -147,10 +149,13 @@ public class TileChunk : MonoBehaviour {
 				}
 			}
 			isCached = true;
-			gameObject.SetActive(true);
-		} else {
-			gameObject.SetActive(true);
 		}
+		foreach (GameObject obj in moveableObjects) {
+			obj.SetActive (true);
+		}
+		moveableObjects.Clear ();
+		gameObject.SetActive(true);
+
 	}
 
 	/**
@@ -160,6 +165,17 @@ public class TileChunk : MonoBehaviour {
 	private void HideTiles () {
 		gameObject.SetActive(false);
 		Invoke ("ClearCache", cacheClearTime);
+		//grab a reference to all moveable objects currently on the tile. 
+		//We will unload them from memory, and reload them if the tile is reactivated
+		Vector2 otherCorner = new Vector2(offset.x+tilesPerChunk.x, offset.y+tilesPerChunk.y);
+		Collider2D[] colliderList = Physics2D.OverlapAreaAll (offset, otherCorner);
+		foreach (Collider2D col in colliderList) {
+			GameObject obj = col.gameObject;
+			if (obj.tag == "Item") {
+				obj.SetActive (false);
+				moveableObjects.Add (obj);
+			}
+		}
 	}
 
 	/**
