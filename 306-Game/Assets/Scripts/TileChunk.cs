@@ -53,7 +53,15 @@ public class TileChunk : MonoBehaviour {
 
 
 	public float cacheClearTime = (5f*60f);
-	public int numItemsPerChunk = 2;
+	public int numItemsPerChunk = 1;
+	public float quickshotProb = 1;
+	public float poisonProb = 1;
+	public float healthProb = 5;
+	public float energyProb = 5;
+	public float clubProb = 1;
+	public float malletProb = 1;
+	public float slingshotProb = 1;
+	public float swordProb = 1;
 
 	private bool generateNewItems = true;
 	private Vector2 offset;
@@ -262,13 +270,31 @@ public class TileChunk : MonoBehaviour {
 		return openList;
 	}
 
+	private GameObject _randomItem(){
+		float[] probArr = new float[] {poisonProb, quickshotProb, healthProb, energyProb, clubProb, malletProb, slingshotProb, swordProb};
+		GameObject[] objArr = new GameObject[] { poison, quickshot, health, energy, club, mallet, slingshot, sword };
+		float sum = 0;
+		foreach (float thisProb in probArr) {
+			sum = sum + thisProb;
+		}
+		float randVal = Random.Range (0, sum);
+		for (int i = 0; i < probArr.GetLength(0); i++) {
+			float thisProb = probArr [i];
+			if (randVal < thisProb) {
+				return objArr [i];
+			}
+			randVal = randVal - thisProb;
+		}
+		return club;
+	}
+
 	private void AddNewItems(int numItems){
 		List<Vector2> openList = _OpenSpaces ();
 		int numFound = 0;
 		while (numFound < numItems && openList.Count > numFound){
 			int randomIndex = Random.Range(0, openList.Count);
 			Vector2 point = openList [randomIndex];
-			GameObject itemInstance = Instantiate (club, Vector3.zero, Quaternion.identity) as GameObject;
+			GameObject itemInstance = Instantiate (_randomItem(), Vector3.zero, Quaternion.identity) as GameObject;
 			tileList.Add (itemInstance);
 			itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
 			numFound = numFound + 2;
