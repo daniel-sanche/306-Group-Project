@@ -34,7 +34,6 @@ public class TileRenderer : MonoBehaviour {
 		maxX = (int)TilesPerChunk.x;
 		maxY = (int)TilesPerChunk.y;
 		InitMap ();
-		SetActiveChunk (0, 0);
 	}
 
 	/**
