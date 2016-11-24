@@ -12,6 +12,7 @@ public class TileChunk : MonoBehaviour {
 
 
 	private TileType [,] terrainMap;
+	private Dictionary<Vector2, PickupType> itemStore;
 	private List<GameObject> tileList;
 	private Vector2 tilesPerChunk;
 	private bool isCached = false;
@@ -41,6 +42,16 @@ public class TileChunk : MonoBehaviour {
 	public GameObject floorDoorT;
 	public GameObject floorDoorB;
 
+	public GameObject quickshot;
+	public GameObject poison;
+	public GameObject health;
+	public GameObject energy;
+	public GameObject club;
+	public GameObject mallet;
+	public GameObject slingshot;
+	public GameObject sword;
+
+
 	public float cacheClearTime = (5f*60f);
 
 	/**
@@ -52,6 +63,12 @@ public class TileChunk : MonoBehaviour {
 	public void InitChunk(TileType [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
 		tilesPerChunk = tilesInChunk;
+		itemStore = new Dictionary<Vector2, PickupType> ();
+		List<Vector2> openList = _OpenSpaces ();
+		for (int i=0; i<openList.Count; i++){
+			Vector2 thisPoint = openList [i];
+			itemStore [thisPoint] = PickupType.Club;
+		}
 	}
 
 	void Awake(){
@@ -123,6 +140,14 @@ public class TileChunk : MonoBehaviour {
 					tileList.Add (instance);
 					instance.transform.SetParent (transform);
 					instance.transform.localPosition = new Vector3 (x, y, 0); 
+
+					if(itemStore.ContainsKey(new Vector2(x, y))){
+						GameObject item = ItemForCode (itemStore [new Vector2 (x, y)]);
+						GameObject itemInstance = Instantiate (item, Vector3.zero, Quaternion.identity) as GameObject;
+						tileList.Add (itemInstance);
+						itemInstance.transform.SetParent (transform);
+						itemInstance.transform.localPosition = new Vector3 (x, y, 0); 
+					}
 				}
 			}
 			isCached = true;
@@ -209,6 +234,25 @@ public class TileChunk : MonoBehaviour {
 		default:
 			return grass;
 		}
+	}
+
+	public GameObject ItemForCode(PickupType code){
+		return club;
+
+	}
+
+	private List<Vector2> _OpenSpaces(){
+		List<Vector2> openList = new List<Vector2> ();
+		for (int x = 0; x < tilesPerChunk.x; x++) {
+			for (int y = 0; y < tilesPerChunk.y; y++) {
+				TileType code = terrainMap [x, y];
+				if (code == TileType.Grass || code == TileType.Gravel || code == TileType.Sand) {
+						openList.Add(new Vector2(x, y));
+				}
+			}
+		}
+		Debug.Log(openList);
+		return openList;
 	}
 
 }
