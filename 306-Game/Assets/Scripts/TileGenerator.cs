@@ -47,7 +47,7 @@ public class TileGenerator : MonoBehaviour {
 	 *	seed = a seed value to use to recreate the map
 	 *	returns an array of numbers where each number represents the terrain at that space
 	**/
-	public static TileType[,] GenerateTileMap(int xSize, int ySize, int buildingCount, int seed = 0){
+	public static TileType[,] GenerateTileMap(int xSize, int ySize, int buildingCount, int seed = -1){
 		if (seed != -1) {
 			Random.InitState (seed);
 		}
