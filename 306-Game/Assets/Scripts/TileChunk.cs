@@ -53,6 +53,9 @@ public class TileChunk : MonoBehaviour {
 
 
 	public float cacheClearTime = (5f*60f);
+	public int numItemsPerChunk = 2;
+
+	private bool generateNewItems = true;
 
 	/**
 	 * Creates a new chunk of tiles
@@ -64,11 +67,6 @@ public class TileChunk : MonoBehaviour {
 		terrainMap = terrain;
 		tilesPerChunk = tilesInChunk;
 		itemStore = new Dictionary<Vector2, PickupType> ();
-		List<Vector2> openList = _OpenSpaces ();
-		for (int i=0; i<openList.Count; i++){
-			Vector2 thisPoint = openList [i];
-			itemStore [thisPoint] = PickupType.Club;
-		}
 	}
 
 	void Awake(){
@@ -116,6 +114,10 @@ public class TileChunk : MonoBehaviour {
 	 * If the tiles were already saved in a cache, just set the chunk as active so they are rendered
 	 **/
 	private void DisplayTiles() {
+		if (generateNewItems) {
+			generateNewItems = false;
+			AddNewItems (numItemsPerChunk);
+		}
 		if (!isCached) {
 			tileList.Clear ();
 			for (int x = 0; x < tilesPerChunk.x; x++) {
@@ -253,6 +255,21 @@ public class TileChunk : MonoBehaviour {
 		}
 		Debug.Log(openList);
 		return openList;
+	}
+
+	private void AddNewItems(int numItems){
+		List<Vector2> openList = _OpenSpaces ();
+		int numFound = 0;
+		int tries = 0;
+		while (numFound < numItems && openList.Count > numFound && tries<tilesPerChunk.x*tilesPerChunk.y){
+			int randomIndex = Random.Range(0, openList.Count);
+			Vector2 point = openList [randomIndex];
+			if (!itemStore.ContainsKey (point)) {
+				itemStore [point] = PickupType.Club;
+				numFound = numFound + 1;
+			}
+			tries = tries + 1;
+		}
 	}
 
 }
