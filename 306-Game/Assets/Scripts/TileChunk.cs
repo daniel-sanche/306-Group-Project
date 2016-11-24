@@ -263,13 +263,15 @@ public class TileChunk : MonoBehaviour {
 		}
 	}
 
-	private List<Vector2> _OpenSpaces(){
+	private List<Vector2> _OpenSpaces(TileType[] requestedTileArr){
 		List<Vector2> openList = new List<Vector2> ();
 		for (int x = 0; x < tilesPerChunk.x; x++) {
 			for (int y = 0; y < tilesPerChunk.y; y++) {
 				TileType code = terrainMap [x, y];
-				if (code == TileType.Grass || code == TileType.Gravel || code == TileType.Sand) {
+				foreach(TileType thisAllowedTile in requestedTileArr){
+					if (code == thisAllowedTile) {
 						openList.Add(new Vector2(x, y));
+					}
 				}
 			}
 		}
@@ -296,7 +298,7 @@ public class TileChunk : MonoBehaviour {
 	}
 
 	private void AddNewItems(int numItems){
-		List<Vector2> openList = _OpenSpaces ();
+		List<Vector2> openList = _OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
 		int numFound = 0;
 		while (numFound < numItems && openList.Count > numFound){
 			int randomIndex = Random.Range(0, openList.Count);
