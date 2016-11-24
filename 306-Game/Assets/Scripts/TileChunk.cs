@@ -53,6 +53,7 @@ public class TileChunk : MonoBehaviour {
 
 	public float cacheClearTime = (5f*60f);
 	public float numItemsPerChunk = 1;
+	public float numBuildingItemsPerChunk = 1;
 	public float quickshotProb = 1;
 	public float poisonProb = 1;
 	public float healthProb = 5;
@@ -127,14 +128,22 @@ public class TileChunk : MonoBehaviour {
 		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
 		if (generateNewItems) {
 			generateNewItems = false;
+			List<Vector2> openGround = _OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
 			if (numItemsPerChunk < 1 && Random.value < numItemsPerChunk) {
 				//if numItemsPerChunk is less than 1, randomly decide whether to 
 				//add one or not based on the probability
-				AddNewItems (1);
+				AddNewItems (1, openGround);
 			} else if (numItemsPerChunk >= 1) {
 				//if numItemsPerChunk is at least 1, add that many items
-				AddNewItems (Mathf.RoundToInt(numItemsPerChunk));
+				AddNewItems (Mathf.RoundToInt(numItemsPerChunk), openGround);
 
+			}
+			List<Vector2> openBuildings = _OpenSpaces (new TileType[]{TileType.Floor, TileType.FloorBottom, TileType.FloorTop,
+				TileType.FloorLeft, TileType.FloorRight, TileType.FloorBL, TileType.FloorBR, TileType.FloorTL, TileType.FloorTR});
+			if (numBuildingItemsPerChunk < 1 && Random.value < numBuildingItemsPerChunk) {
+				AddNewItems (1, openBuildings);
+			} else if (numBuildingItemsPerChunk >= 1) {
+				AddNewItems (Mathf.RoundToInt(numBuildingItemsPerChunk), openBuildings);
 			}
 		}
 		if (!isCached) {
@@ -297,12 +306,11 @@ public class TileChunk : MonoBehaviour {
 		return club;
 	}
 
-	private void AddNewItems(int numItems){
-		List<Vector2> openList = _OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+	private void AddNewItems(int numItems, List<Vector2>availableSpaces){
 		int numFound = 0;
-		while (numFound < numItems && openList.Count > numFound){
-			int randomIndex = Random.Range(0, openList.Count);
-			Vector2 point = openList [randomIndex];
+		while (numFound < numItems && availableSpaces.Count > numFound){
+			int randomIndex = Random.Range(0, availableSpaces.Count);
+			Vector2 point = availableSpaces [randomIndex];
 			GameObject itemInstance = Instantiate (_randomItem(), Vector3.zero, Quaternion.identity) as GameObject;
 			tileList.Add (itemInstance);
 			itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
