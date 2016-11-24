@@ -12,7 +12,6 @@ public class TileChunk : MonoBehaviour {
 
 
 	private TileType [,] terrainMap;
-	private Dictionary<Vector2, PickupType> itemStore;
 	private List<GameObject> tileList;
 	private Vector2 tilesPerChunk;
 	private bool isCached = false;
@@ -56,6 +55,7 @@ public class TileChunk : MonoBehaviour {
 	public int numItemsPerChunk = 2;
 
 	private bool generateNewItems = true;
+	private Vector2 offset;
 
 	/**
 	 * Creates a new chunk of tiles
@@ -66,7 +66,7 @@ public class TileChunk : MonoBehaviour {
 	public void InitChunk(TileType [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
 		tilesPerChunk = tilesInChunk;
-		itemStore = new Dictionary<Vector2, PickupType> ();
+		offset = new Vector2 (x * tilesPerChunk.x, y * tilesPerChunk.y);
 	}
 
 	void Awake(){
@@ -114,6 +114,8 @@ public class TileChunk : MonoBehaviour {
 	 * If the tiles were already saved in a cache, just set the chunk as active so they are rendered
 	 **/
 	private void DisplayTiles() {
+		//add items if necessary
+		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
 		if (generateNewItems) {
 			generateNewItems = false;
 			AddNewItems (numItemsPerChunk);
@@ -133,23 +135,15 @@ public class TileChunk : MonoBehaviour {
 						r = terrainMap [x + 1, y];
 					}
 					if (y > 0) {
-						b = terrainMap [x, y-1];
+						b = terrainMap [x, y - 1];
 					} else if (x < tilesPerChunk.x - 1) {
-						t = terrainMap [x, y+1];
+						t = terrainMap [x, y + 1];
 					}
-					GameObject groundTile = SpriteForCode (code, left:l, right:r, top:t, bottom:b);
+					GameObject groundTile = SpriteForCode (code, left: l, right: r, top: t, bottom: b);
 					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
 					tileList.Add (instance);
 					instance.transform.SetParent (transform);
 					instance.transform.localPosition = new Vector3 (x, y, 0); 
-
-					if(itemStore.ContainsKey(new Vector2(x, y))){
-						GameObject item = ItemForCode (itemStore [new Vector2 (x, y)]);
-						GameObject itemInstance = Instantiate (item, Vector3.zero, Quaternion.identity) as GameObject;
-						tileList.Add (itemInstance);
-						itemInstance.transform.SetParent (transform);
-						itemInstance.transform.localPosition = new Vector3 (x, y, 0); 
-					}
 				}
 			}
 			isCached = true;
@@ -238,11 +232,6 @@ public class TileChunk : MonoBehaviour {
 		}
 	}
 
-	public GameObject ItemForCode(PickupType code){
-		return club;
-
-	}
-
 	private List<Vector2> _OpenSpaces(){
 		List<Vector2> openList = new List<Vector2> ();
 		for (int x = 0; x < tilesPerChunk.x; x++) {
@@ -260,15 +249,13 @@ public class TileChunk : MonoBehaviour {
 	private void AddNewItems(int numItems){
 		List<Vector2> openList = _OpenSpaces ();
 		int numFound = 0;
-		int tries = 0;
-		while (numFound < numItems && openList.Count > numFound && tries<tilesPerChunk.x*tilesPerChunk.y){
+		while (numFound < numItems && openList.Count > numFound){
 			int randomIndex = Random.Range(0, openList.Count);
 			Vector2 point = openList [randomIndex];
-			if (!itemStore.ContainsKey (point)) {
-				itemStore [point] = PickupType.Club;
-				numFound = numFound + 1;
-			}
-			tries = tries + 1;
+			GameObject itemInstance = Instantiate (club, Vector3.zero, Quaternion.identity) as GameObject;
+			tileList.Add (itemInstance);
+			itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
+			numFound = numFound + 2;
 		}
 	}
 
