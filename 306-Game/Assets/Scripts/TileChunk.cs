@@ -51,9 +51,15 @@ public class TileChunk : MonoBehaviour {
 	public GameObject slingshot;
 	public GameObject sword;
 
+	public GameObject enemy;
+
 	public float cacheClearTime = (5f*60f);
+
+	//the probability of an item being added to an individual tile
 	public float itemProbGround = 0.01f;
 	public float itemProbBuilding = 0.2f;
+	//the probability of an enemy being added to a chunk
+	public float enemyProb = 0.1f;
 
 	public float quickshotProb = 1;
 	public float poisonProb = 1;
@@ -65,6 +71,7 @@ public class TileChunk : MonoBehaviour {
 	public float swordProb = 1;
 
 	private bool generateNewItems = true;
+	private bool generateNewEnemy = true;
 	private Vector2 offset;
 
 	/**
@@ -135,6 +142,13 @@ public class TileChunk : MonoBehaviour {
 					TileType.FloorLeft, TileType.FloorRight, TileType.FloorBL, TileType.FloorBR, TileType.FloorTL, TileType.FloorTR});
 			AddNewItems (itemProbBuilding, openBuildings);
 		}
+		if (generateNewEnemy) {
+			generateNewEnemy = false;
+			if (Random.value < enemyProb) {
+				List<Vector2> openGround = _OpenSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+				AddNewEnemies (Mathf.Max((int)Mathf.Round(enemyProb), 1), openGround);
+			}
+		}
 		if (!isCached) {
 			tileList.Clear ();
 			for (int x = 0; x < tilesPerChunk.x; x++) {
@@ -184,7 +198,7 @@ public class TileChunk : MonoBehaviour {
 		Collider2D[] colliderList = Physics2D.OverlapAreaAll (offset, otherCorner);
 		foreach (Collider2D col in colliderList) {
 			GameObject obj = col.gameObject;
-			if (obj.tag == "Item") {
+			if (obj.tag == "Item" || obj.tag == "Enemy") {
 				obj.SetActive (false);
 				moveableObjects.Add (obj);
 			}
@@ -301,10 +315,16 @@ public class TileChunk : MonoBehaviour {
 				int randomIndex = Random.Range(0, availableSpaces.Count);
 				Vector2 point = availableSpaces [randomIndex];
 				GameObject itemInstance = Instantiate (_randomItem(), Vector3.zero, Quaternion.identity) as GameObject;
-				tileList.Add (itemInstance);
 				itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
 			}
 		}
+	}
+
+	private void AddNewEnemies(int numToAdd, List<Vector2>availableSpaces){
+		int randomIndex = Random.Range(0, availableSpaces.Count);
+		Vector2 point = availableSpaces [randomIndex];
+		GameObject itemInstance = Instantiate (enemy, Vector3.zero, Quaternion.identity) as GameObject;
+		itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
 	}
 
 }
