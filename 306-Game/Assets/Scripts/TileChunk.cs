@@ -51,9 +51,8 @@ public class TileChunk : MonoBehaviour {
 	public GameObject slingshot;
 	public GameObject sword;
 
-
 	public float cacheClearTime = (5f*60f);
-	public int numItemsPerChunk = 1;
+	public float numItemsPerChunk = 1;
 	public float quickshotProb = 1;
 	public float poisonProb = 1;
 	public float healthProb = 5;
@@ -128,7 +127,15 @@ public class TileChunk : MonoBehaviour {
 		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
 		if (generateNewItems) {
 			generateNewItems = false;
-			AddNewItems (numItemsPerChunk);
+			if (numItemsPerChunk < 1 && Random.value < numItemsPerChunk) {
+				//if numItemsPerChunk is less than 1, randomly decide whether to 
+				//add one or not based on the probability
+				AddNewItems (1);
+			} else if (numItemsPerChunk >= 1) {
+				//if numItemsPerChunk is at least 1, add that many items
+				AddNewItems (Mathf.RoundToInt(numItemsPerChunk));
+
+			}
 		}
 		if (!isCached) {
 			tileList.Clear ();
