@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public class UnitPath : MonoBehaviour {
 
 	public Transform target;
 	public float speed = 5;
@@ -12,6 +12,12 @@ public class Unit : MonoBehaviour {
 		PathRequestManager.RequestPath (transform.position, target.position, OnPathFound);
 	}
 
+	void RestartPath(){
+		PathRequestManager.RequestPath (transform.position, target.position, OnPathFound);
+		targetIndex = 0;
+		StopCoroutine ("FollowPath");
+		StartCoroutine ("FollowPath");
+	}
 
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
 		if(pathSuccessful){
