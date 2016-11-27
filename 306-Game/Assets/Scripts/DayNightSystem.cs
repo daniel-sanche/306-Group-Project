@@ -68,7 +68,8 @@ public class DayNightSystem : MonoBehaviour {
             daysLeft = daysLeft - 1;
             if (daysLeft == 0)
             {
-                print("\nThe game should go to a game over screen here");
+                //goes to the game win screen
+                SceneManager.LoadScene(2);
             }
         }
         UpdateNPCs();
