@@ -13,11 +13,17 @@ public class Player : MonoBehaviour {
 	//The currently equipped weapon
 	public Weapon weapon;
 
+	//The energy loss rate of the player (doubled when sprinting)
+	public float energyLossRate;
+
 	//The player's rigidbody
 	private new Rigidbody2D rigidbody;
 
 	//The player's animator
 	private Animator animator;
+
+	//The player's health/energy
+	private HealthEnergy healthEnergy;
 
 	[SerializeField]
 	private int swingAngle;
@@ -36,6 +42,7 @@ public class Player : MonoBehaviour {
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();																	//Initializes the rigidbody variable
 		animator = GetComponent<Animator>();																		//Initializes the animator variable
+		healthEnergy = GetComponent<HealthEnergy>();																//Initializes the player's health/energy
 	}
 
 	// Update is called once per frame
@@ -43,6 +50,10 @@ public class Player : MonoBehaviour {
 		Move ();																									//Moves the player
 		Look ();																									//Rotates the player
 		Attack ();																									//Attack using the current weapon
+		handleEnergy();																								//Handles the player's energy decay
+
+		if (Input.GetMouseButtonDown (1))
+			removeHealth (5f);
 	}
 
 	void FixedUpdate(){
@@ -151,32 +162,33 @@ public class Player : MonoBehaviour {
 		StartCoroutine ("SwingWeaponRoutine", weapon);
 	}
 
+	/**
+	 * Swings a melee weapon relative to the player
+	 */
 	private IEnumerator SwingWeaponRoutine(Melee weapon){
-		animator.SetBool ("Attacking", true);
-		Look ();
-		float inputAngle = getMouseAngle ();
-		float lowerAngle = inputAngle - Mathf.Deg2Rad * (weapon.swingAngle / 2f);
-		float upperAngle = inputAngle + Mathf.Deg2Rad * (weapon.swingAngle / 2f);
+		animator.SetBool ("Attacking", true);																		//Tell animator to attack
+		Look ();																									//Look in the current mouse direction
+		float inputAngle = getMouseAngle ();																		//Get the mouse angle relative to the player
+		float lowerAngle = inputAngle - Mathf.Deg2Rad * (weapon.swingAngle / 2f);									//Get the lower swing angle
+		float upperAngle = inputAngle + Mathf.Deg2Rad * (weapon.swingAngle / 2f);									//Get the upper swing angle						
 
-		float difference = Mathf.Abs(upperAngle - lowerAngle);
-		//print ("lower angle: " + curAngle + " upper angle: " + (inputAngle + Mathf.Deg2Rad * weapon.swingAngle) );
-		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;
+		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;							//Creates the swing object using the swing prefab
 
-		float curAngle = lowerAngle;
+		float curAngle = lowerAngle;																				//Current angle to draw at begins at the lower angle
 
+		//If we are facing right, swing from right to left
 		if (GetComponent<SpriteRenderer> ().flipX == false) {
 			for (float f = lowerAngle; f <= upperAngle; f = f + Time.deltaTime * swingSpeed) {
 				curAngle = f;
-				print (f);
 				Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
 				swingObject.transform.position = swingPos;
 				swingObject.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, getRelativeAngle (swingObject) * Mathf.Rad2Deg));
 				yield return new WaitForEndOfFrame ();
 			}
+		//Otherwise, swing from left to right
 		} else {
 			for (float f = upperAngle; f >= lowerAngle; f = f - Time.deltaTime * swingSpeed) {
 				curAngle = f;
-				print (f);
 				Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
 				swingObject.transform.position = swingPos;
 				swingObject.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, getRelativeAngle (swingObject) * Mathf.Rad2Deg));
@@ -184,7 +196,46 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		animator.SetBool ("Attacking", false);
-		Destroy (swingObject.gameObject);
+		animator.SetBool ("Attacking", false);																		//Tell animator attacking is done
+		Destroy (swingObject.gameObject);																			//Destroy swing object
 	}
+
+
+	/** Damages the player for the given amount */
+	public void removeHealth(float amount){
+		healthEnergy.TakeDamage (amount);
+		StartCoroutine ("DamageFlash");
+	}
+
+	/** Heals the player for the given amount */
+	public void addHealth(float amount){
+		healthEnergy.RecoverHealth (amount);
+	}
+
+	/** Damages the player for the given amount */
+	public void removeEnergy(float amount){
+		healthEnergy.TakeDamage (amount);
+	}
+
+	/** Heals the player for the given amount */
+	public void addEnergy(float amount){
+		healthEnergy.RecoverHealth (amount);
+	}
+
+	/** Decrements the player's energy based on energyLossRate */
+	private void handleEnergy(){
+		if (Input.GetKeyDown (KeyCode.LeftShift))
+			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate) / 10f);
+		else
+			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate * 2) / 10f);
+	}
+
+	/** Temporarily flashes red to indicate the player has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+	}
+
+
 }
