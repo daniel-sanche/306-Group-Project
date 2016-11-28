@@ -51,7 +51,7 @@ public class HealthEnergy : MonoBehaviour {
     private void Death()
     {
         isDead = true;
-
+        
         anim.SetTrigger("Die");
     }
 
