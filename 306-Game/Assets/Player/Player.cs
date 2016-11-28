@@ -10,6 +10,12 @@ public class Player : MonoBehaviour {
 	//The currently equipped weapon
 	public Weapon weapon;
 
+	//The player's health and energy
+	public HealthEnergy healthEnergy;
+
+	//The player's rate of energy loss (doubled when sprinting)
+	public float energyLossRate;
+
 	//The player's rigidbody
 	private new Rigidbody2D rigidbody;
 
@@ -22,6 +28,7 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private float swingRadius;
 
+	//The amount of 
 	[SerializeField]
 	private float forceAmount;
 
@@ -32,6 +39,7 @@ public class Player : MonoBehaviour {
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();																	//Initializes the rigidbody variable
 		animator = GetComponent<Animator>();																		//Initializes the animator variable
+		healthEnergy = GetComponent<HealthEnergy>();																//Initializes the healthEnergy variable
 	}
 
 	// Update is called once per frame
@@ -39,6 +47,7 @@ public class Player : MonoBehaviour {
 		Move ();																									//Moves the player
 		Look ();																									//Rotates the player
 		Attack ();																									//Attack using the current weapon
+		handleEnergy ();
 	}
 
 	void FixedUpdate(){
@@ -135,5 +144,33 @@ public class Player : MonoBehaviour {
 		Vector2 relativePos =  relativeObj.transform.position - transform.position;									//Gets the position of the GameObject in relation to the player;
 
 		return Mathf.Atan2 (relativePos.y, relativePos.x);															//Calculate the angle of the GameObject to the player.
+	}
+
+	//Damages the player for the given amount
+	public void removeHealth(float amount){
+		healthEnergy.TakeDamage (amount);
+	}
+
+	//Heals the player for the given amount
+	public void addHealth(float amount){
+		healthEnergy.RecoverHealth (amount);
+	}
+
+	//Damages the player for the given amount
+	public void removeEnergy(float amount){
+		healthEnergy.TakeDamage (amount);
+	}
+
+	//Heals the player for the given amount
+	public void addEnergy(float amount){
+		healthEnergy.RecoverHealth (amount);
+	}
+
+
+	private void handleEnergy(){
+		if (Input.GetKeyDown (KeyCode.LeftShift))
+			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate) / 10f);
+		else
+			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate * 2) / 10f);
 	}
 }

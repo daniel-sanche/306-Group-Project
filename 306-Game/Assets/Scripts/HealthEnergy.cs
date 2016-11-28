@@ -3,26 +3,13 @@ using System.Collections;
 
 public class HealthEnergy : MonoBehaviour {
 
-    [SerializeField]
-    Stat health;
-    [SerializeField]
-    Stat energy;
+    public Stat health;
+
+    public Stat energy;
 
     Animator anim;
     bool isDead;
     bool damaged;
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void Awake()
     {
