@@ -35,6 +35,7 @@ public class TileRenderer : MonoBehaviour {
 		maxY = (int)TilesPerChunk.y;
 		InitMap ();
 		SetActiveChunk (0, 0);
+
 	}
 
 	/**
@@ -81,7 +82,11 @@ public class TileRenderer : MonoBehaviour {
 	 * Calls on TileGenerator to create a map, then generates chunks from the map
 	 **/
 	private void InitMap(){
-		heading = new GameObject ("GameBoard").transform;
+
+		var gameboard = new GameObject ("GameBoard");
+		gameboard.AddComponent("A_");
+		heading = gameboard.transform;
+
 		TileType[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y, numBuildings);
 		chunkMatrix = ChunksFromTileMap (tileMap, NumChunks, TilesPerChunk);
 	}

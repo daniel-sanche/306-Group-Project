@@ -9,7 +9,7 @@ public class UnitPath : MonoBehaviour {
 	int targetIndex;
 
 	void Start(){
-		PathRequestManager.RequestPath (transform.position, target.position, OnPathFound);
+		if (target !=null)PathRequestManager.RequestPath (transform.position, target.position, OnPathFound);
 	}
 
 	void RestartPath(){
@@ -20,7 +20,7 @@ public class UnitPath : MonoBehaviour {
 	}
 
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful){
-		if(pathSuccessful){
+		if (pathSuccessful) {
 			path = newPath;
 			targetIndex = 0;
 			StopCoroutine ("FollowPath");
@@ -31,18 +31,20 @@ public class UnitPath : MonoBehaviour {
 
 	IEnumerator FollowPath(){
 		/*Go to first waypoint*/
-		Vector3 currentWaypoint = path [0];
+		if (path!= null && path.Length > 0) {
+			Vector3 currentWaypoint = path [0];
 
-		while(true){
-			if(transform.position == currentWaypoint){
-				targetIndex++;
-				if(targetIndex>=path.Length){
-					yield break;
+			while (true) {
+				if (transform.position == currentWaypoint) {
+					targetIndex++;
+					if (targetIndex >= path.Length) {
+						yield break;
+					}
+					currentWaypoint = path [targetIndex];
 				}
-				currentWaypoint = path [targetIndex];
+				transform.position = Vector3.MoveTowards (transform.position, currentWaypoint, speed * Time.deltaTime);
+				yield return null;
 			}
-			transform.position = Vector3.MoveTowards (transform.position, currentWaypoint, speed*Time.deltaTime);
-			yield return null;
 		}
 	}
 

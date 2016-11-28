@@ -11,6 +11,7 @@ public class PathRequestManager : MonoBehaviour {
 	static PathRequestManager instance;
 	bool isProcessingPath;
 
+	//awake
 	void Awake(){
 		instance = this;
 		pathfinding = GetComponent<Pathfinding> ();

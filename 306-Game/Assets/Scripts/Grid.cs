@@ -11,7 +11,7 @@ public class Grid : MonoBehaviour {
 	public bool displayGridGizmos;
 	float nodeDiameter;
 	int gridsizex, gridsizey;
-
+	int count = 0;
 	void Awake(){
 		nodeDiameter = nodeRadius * 2;
 		gridsizex = Mathf.RoundToInt (gridWorldSize.x / nodeDiameter);
@@ -19,6 +19,8 @@ public class Grid : MonoBehaviour {
 		CreateGrid ();
 	}
 
+	void Start(){
+	}
 	public int maxSize {
 		get {
 			return gridsizex * gridsizey;
@@ -31,6 +33,11 @@ public class Grid : MonoBehaviour {
 			for (int y = 0; y < gridsizey; y++) {
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x *nodeDiameter + nodeRadius) + Vector3.up * (y* nodeDiameter + nodeRadius);
 				bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkablemask));
+
+				if (!walkable) {
+					walkable = false;
+				}
+
 				grid[x,y] = new Node(walkable, worldPoint, x , y);
 			}
 		}
