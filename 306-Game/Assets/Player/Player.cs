@@ -162,14 +162,26 @@ public class Player : MonoBehaviour {
 		//print ("lower angle: " + curAngle + " upper angle: " + (inputAngle + Mathf.Deg2Rad * weapon.swingAngle) );
 		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;
 
-		float curAngle = upperAngle;
-		for(float f = 0; f <= swingSpeed ; f = f + (difference * Mathf.Deg2Rad / swingSpeed) ){
-			curAngle = upperAngle + f;
-			print (f);
-			Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
-			swingObject.transform.position = swingPos;
-			swingObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, getRelativeAngle(swingObject) * Mathf.Rad2Deg ) );
-			yield return new WaitForEndOfFrame ();
+		float curAngle = lowerAngle;
+
+		if (GetComponent<SpriteRenderer> ().flipX == false) {
+			for (float f = lowerAngle; f <= upperAngle; f = f + Time.deltaTime * swingSpeed) {
+				curAngle = f;
+				print (f);
+				Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
+				swingObject.transform.position = swingPos;
+				swingObject.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, getRelativeAngle (swingObject) * Mathf.Rad2Deg));
+				yield return new WaitForEndOfFrame ();
+			}
+		} else {
+			for (float f = upperAngle; f >= lowerAngle; f = f - Time.deltaTime * swingSpeed) {
+				curAngle = f;
+				print (f);
+				Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
+				swingObject.transform.position = swingPos;
+				swingObject.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, getRelativeAngle (swingObject) * Mathf.Rad2Deg));
+				yield return new WaitForEndOfFrame ();
+			}
 		}
 
 		animator.SetBool ("Attacking", false);
