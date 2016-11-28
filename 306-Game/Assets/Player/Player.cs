@@ -53,7 +53,7 @@ public class Player : MonoBehaviour {
 		handleEnergy();																								//Handles the player's energy decay
 
 		if (Input.GetMouseButtonDown (1))
-			removeHealth (5f);
+			addHealth (5f);
 	}
 
 	void FixedUpdate(){
@@ -210,6 +210,7 @@ public class Player : MonoBehaviour {
 	/** Heals the player for the given amount */
 	public void addHealth(float amount){
 		healthEnergy.RecoverHealth (amount);
+		StartCoroutine ("HealFlash");
 	}
 
 	/** Damages the player for the given amount */
@@ -237,5 +238,11 @@ public class Player : MonoBehaviour {
 		GetComponent<SpriteRenderer> ().color = Color.white;
 	}
 
+	/** Temporarily flashes red to indicate the player has taken damage */
+	private IEnumerator HealFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.green;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+	}
 
 }
