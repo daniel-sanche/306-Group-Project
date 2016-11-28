@@ -4,18 +4,17 @@ using System.Collections.Generic;
 
 public class Melee : Weapon {
 
-	[SerializeField]
-	private int swingAngle;
+	public int swingAngle;
 
-	[SerializeField]
-	private float swingRadius;
+	public GameObject swingPrefab;
 
-	[SerializeField]
-	private float forceAmount;
+	public float swingRadius;
+
+	public float forceAmount;
 
 	// Use this for initialization
 	void Start () {
-		itemType = ItemType.WEAPON;
+		itemType = ItemType.MELEE;
 
 	}
 
@@ -23,7 +22,7 @@ public class Melee : Weapon {
 	public override void Attack(){
 
 		float mouseAngle = getMouseAngle ();																		//Get the angle of the mouse
-
+		GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SwingWeapon(this);
 		GameObject[] enemyList = GetEnemyInCone (mouseAngle);														//Get all enemies in a cone relative to the angle
 
 		for (int x = 0; x < enemyList.Length; x++) {																//For each enemy in the cone
@@ -54,4 +53,6 @@ public class Melee : Weapon {
 
 		return enemyList.ToArray ();																				//Return array of enemies
 	}
+
+
 }

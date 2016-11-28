@@ -14,7 +14,7 @@ public class Ranged : Weapon {
 
 	// Use this for initialization
 	void Start () {
-		itemType = ItemType.WEAPON;																								//Sets the weapon type as weapon
+		itemType = ItemType.RANGED;																								//Sets the weapon type as weapon
 	}
 
 	//Shoots a projectile with the given range

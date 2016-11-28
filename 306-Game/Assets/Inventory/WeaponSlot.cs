@@ -84,7 +84,7 @@ public class WeaponSlot : Slot {
 				Slot dragged = eventData.pointerDrag.GetComponent<Slot>();
 
 				if (!dragged.isEmpty ()) {													//If the slot has an item
-					if (dragged.item.itemType == ItemType.WEAPON) {
+					if (dragged.item.itemType == ItemType.MELEE || dragged.item.itemType == ItemType.RANGED) {
 						Item draggedItem = dragged.getItem ();								//The dragged item
 
 						if (isEmpty ()){													//If this slot is empty

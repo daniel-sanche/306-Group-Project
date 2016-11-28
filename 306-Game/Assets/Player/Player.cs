@@ -5,16 +5,13 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 
 	//The speed of the player
-	public float speed;				
+	public float speed;		
+
+	//The swing speed of the player
+	public float swingSpeed;
 
 	//The currently equipped weapon
 	public Weapon weapon;
-
-	//The player's health and energy
-	public HealthEnergy healthEnergy;
-
-	//The player's rate of energy loss (doubled when sprinting)
-	public float energyLossRate;
 
 	//The player's rigidbody
 	private new Rigidbody2D rigidbody;
@@ -28,18 +25,17 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private float swingRadius;
 
-	//The amount of 
 	[SerializeField]
 	private float forceAmount;
 
 	//The timer for when the player can attack
 	private float attackTimer;
 
+
 	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();																	//Initializes the rigidbody variable
 		animator = GetComponent<Animator>();																		//Initializes the animator variable
-		healthEnergy = GetComponent<HealthEnergy>();																//Initializes the healthEnergy variable
 	}
 
 	// Update is called once per frame
@@ -47,7 +43,6 @@ public class Player : MonoBehaviour {
 		Move ();																									//Moves the player
 		Look ();																									//Rotates the player
 		Attack ();																									//Attack using the current weapon
-		handleEnergy ();
 	}
 
 	void FixedUpdate(){
@@ -75,7 +70,13 @@ public class Player : MonoBehaviour {
 
 	//Attacks using the currently equipped weapon
 	private void Attack(){
-		
+		if (weapon != null) {
+			if (weapon.itemType == ItemType.RANGED)
+				animator.SetBool ("Slingshot", true);
+		} else {
+			animator.SetBool ("Slingshot", false);
+		}
+
 		if (Input.GetMouseButtonDown (0)) {																			//If the player presses the left mouse button
 			if (weapon != null && attackTimer <= 0) {
 				weapon.Attack ();
@@ -132,7 +133,7 @@ public class Player : MonoBehaviour {
 		//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, integerAngle));									//Looks at the given angle (up, right, down, or left)
 	}
 
-	//Returns the radian representation of the mouse angle
+	/** Returns the radian representation of the mouse angle */
 	private float getMouseAngle(){
 		Vector2 relativeMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint (transform.position);		//Gets the position of the mouse in relation to the player;
 
@@ -146,31 +147,32 @@ public class Player : MonoBehaviour {
 		return Mathf.Atan2 (relativePos.y, relativePos.x);															//Calculate the angle of the GameObject to the player.
 	}
 
-	//Damages the player for the given amount
-	public void removeHealth(float amount){
-		healthEnergy.TakeDamage (amount);
+	public void SwingWeapon(Melee weapon){
+		StartCoroutine ("SwingWeaponRoutine", weapon);
 	}
 
-	//Heals the player for the given amount
-	public void addHealth(float amount){
-		healthEnergy.RecoverHealth (amount);
-	}
+	private IEnumerator SwingWeaponRoutine(Melee weapon){
+		animator.SetBool ("Attacking", true);
+		Look ();
+		float inputAngle = getMouseAngle ();
+		float lowerAngle = inputAngle - Mathf.Deg2Rad * (weapon.swingAngle / 2f);
+		float upperAngle = inputAngle + Mathf.Deg2Rad * (weapon.swingAngle / 2f);
 
-	//Damages the player for the given amount
-	public void removeEnergy(float amount){
-		healthEnergy.TakeDamage (amount);
-	}
+		float difference = Mathf.Abs(upperAngle - lowerAngle);
+		//print ("lower angle: " + curAngle + " upper angle: " + (inputAngle + Mathf.Deg2Rad * weapon.swingAngle) );
+		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;
 
-	//Heals the player for the given amount
-	public void addEnergy(float amount){
-		healthEnergy.RecoverHealth (amount);
-	}
+		float curAngle = upperAngle;
+		for(float f = 0; f <= swingSpeed ; f = f + (difference * Mathf.Deg2Rad / swingSpeed) ){
+			curAngle = upperAngle + f;
+			print (f);
+			Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
+			swingObject.transform.position = swingPos;
+			swingObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, getRelativeAngle(swingObject) * Mathf.Rad2Deg ) );
+			yield return new WaitForEndOfFrame ();
+		}
 
-
-	private void handleEnergy(){
-		if (Input.GetKeyDown (KeyCode.LeftShift))
-			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate) / 10f);
-		else
-			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate * 2) / 10f);
+		animator.SetBool ("Attacking", false);
+		Destroy (swingObject.gameObject);
 	}
 }

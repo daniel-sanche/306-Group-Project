@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour {
 	private Vector2 direction;
 
 	void Start(){
+		Physics2D.IgnoreCollision (GetComponent<Collider2D> (), GameObject.FindWithTag ("Player").GetComponent<Collider2D> ());
 		Invoke ("Destroy", projectileLifetime);									//Destroys the projectile after the lifetime is up
 	}
 
@@ -29,6 +30,14 @@ public class Projectile : MonoBehaviour {
 
 	//Destroys this projectile
 	private void Destroy(){
+		Destroy (gameObject);
+	}
+
+	//If we collide with something
+	void OnCollisionEnter2D(Collision2D col){
+		if(col.gameObject.tag == "NPC")
+			col.rigidbody.AddForce (direction * speed);
+
 		Destroy (gameObject);
 	}
 }
