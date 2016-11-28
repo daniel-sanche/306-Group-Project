@@ -51,9 +51,6 @@ public class Player : MonoBehaviour {
 		Look ();																									//Rotates the player
 		Attack ();																									//Attack using the current weapon
 		handleEnergy();																								//Handles the player's energy decay
-
-		if (Input.GetMouseButtonDown (1))
-			addHealth (5f);
 	}
 
 	void FixedUpdate(){
@@ -215,12 +212,12 @@ public class Player : MonoBehaviour {
 
 	/** Damages the player for the given amount */
 	public void removeEnergy(float amount){
-		healthEnergy.TakeDamage (amount);
+		healthEnergy.LoseEnergy(amount);
 	}
 
 	/** Heals the player for the given amount */
 	public void addEnergy(float amount){
-		healthEnergy.RecoverHealth (amount);
+		healthEnergy.RecoverEnergy (amount);
 	}
 
 	/** Decrements the player's energy based on energyLossRate */

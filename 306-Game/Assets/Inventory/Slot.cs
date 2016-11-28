@@ -238,7 +238,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 		if (item.itemType == ItemType.REGENERATION) {										//If it is a regeneration item
 			backgroundColor = Color.green;													//Set background color as green
 			Regeneration regen = (Regeneration)item;										//Get regen class from item
-			desc.text += "\nHealth: " + regen.healthRegen + "\nFills: " + regen.hungerRegen;	//Display health and hunger points
+			desc.text += "\nHealth: " + regen.healthRegen + "\nEnergy: " + regen.energyRegen;//Display health and hunger points
 		} 
 		else if (item.itemType == ItemType.BUILDING) {										//If it is a building item
 			backgroundColor = Color.yellow;													//Set background color as yellow
