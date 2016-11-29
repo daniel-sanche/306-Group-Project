@@ -12,6 +12,8 @@ public class TileRenderer : MonoBehaviour {
 	 * breaks it into manageable chunks, and activates the chunks when needed
 	 **/
 
+	/*Nick change for pathfinding*/
+	public Grid A_;
 	public Vector2 NumChunks = new Vector2 ( 30, 30);
 	public Vector2 TilesPerChunk = new Vector2 (15, 10);
 	public int numBuildings = 30;
@@ -26,7 +28,7 @@ public class TileRenderer : MonoBehaviour {
 	private int maxX = 0;
 	private int minY = 0;
 	private int maxY = 0;
-
+	private int countframes;
 	/**
 	 * Called when the script is first initialized
 	 **/
@@ -42,7 +44,14 @@ public class TileRenderer : MonoBehaviour {
 	 * Called on a continuous loop
 	 * Will check the current position of the camera, and render new chunks if necessary
 	 **/
+	Grid astar;
 	void Update(){
+		/* Nick Change, the astar needs to be activated after the gameboard appears.*/
+		if (countframes ==10) {
+			Grid astar = (Grid)Instantiate (A_);
+
+		}
+		countframes++;
 		Vector3 newPos = this.transform.position;
 		if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
 			//changing active chunk of tiles
@@ -84,7 +93,6 @@ public class TileRenderer : MonoBehaviour {
 	private void InitMap(){
 
 		var gameboard = new GameObject ("GameBoard");
-		gameboard.AddComponent("A_");
 		heading = gameboard.transform;
 
 		TileType[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y, numBuildings);
