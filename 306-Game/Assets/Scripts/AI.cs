@@ -324,22 +324,36 @@ public class AI : MonoBehaviour {
 	public LayerMask losmask;
 	public Vector2 lastknown = Vector2.zero;
 	public bool LOSCheck(){
-		RaycastHit2D hit;
+		
 		Vector2 raydir = player.position - transform.position;
 
 
 
 		if (Physics2D.Raycast (transform.position, raydir, losmask)== null) {
-			lastknown = new Vector2 (player.position.x, player.position.y);
-			unitpath.target = player;
+		lastknown = new Vector2 (player.position.x, player.position.y);
+			//unitpath.target = player;
 			return true;
 		}
 		else {
+	/*		var lktrans = new GameObject ().transform;
+			lktrans.position = lastknown;
+			unitpath.target = lktrans;
+	*/		return false;
+		
+
+		}
+
+	
+	}
+
+	public void MoveToLastKnown(){
+		if (!attacking && !newpathcd && lastknown!=null) {
 			var lktrans = new GameObject ().transform;
 			lktrans.position = lastknown;
 			unitpath.target = lktrans;
-			return false;
 		}
 
 	}
+
+
 }
