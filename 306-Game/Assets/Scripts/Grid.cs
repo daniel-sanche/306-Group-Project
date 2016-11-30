@@ -32,9 +32,11 @@ public class Grid : MonoBehaviour {
 		for (int x = 0; x < gridsizex; x++) {
 			for (int y = 0; y < gridsizey; y++) {
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x *nodeDiameter + nodeRadius) + Vector3.up * (y* nodeDiameter + nodeRadius);
-				bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkablemask));
+				//bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkablemask));
+				bool walkable = true;
+				Collider2D collider = Physics2D.OverlapCircle (worldPoint, nodeRadius, unwalkablemask);
 
-				if (!walkable) {
+				if (collider != null) {
 					walkable = false;
 				}
 

@@ -66,4 +66,10 @@ public class HealthEnergy : MonoBehaviour {
     {
         energy.CurrentVal -= amount;
     }
+	/*Nick change November 29
+	 * Take tamage from enemies*/
+	public void ApplyDamage(string amount){
+		health.CurrentVal -= float.Parse(amount);
+
+	}
 }

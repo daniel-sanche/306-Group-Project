@@ -27,7 +27,7 @@ public class AI : MonoBehaviour {
 	private Rigidbody2D rb;
 	private Animator anime;
 	private SpriteRenderer sprite;
-
+	private Grid grid;
 
 
 	private DecisionTree ai = new DecisionTree();
@@ -41,6 +41,7 @@ public class AI : MonoBehaviour {
 	private DecisionTreeNode node_attack = new DecisionTreeNode();
 	private DecisionTreeNode node_attackcheck = new DecisionTreeNode();
 	private DecisionTreeNode node_idle = new DecisionTreeNode();
+	private DecisionTreeNode node_ampumpkin = new DecisionTreeNode();
 
 
 	private void NewPathCd(){
@@ -69,7 +70,9 @@ public class AI : MonoBehaviour {
 
 		node_monstercheck.decdel = MonsterCheck;
 		node_monstercheck.left = node_agrocheck;
-		node_monstercheck.right = node_movetorandom;
+		node_monstercheck.right = node_ampumpkin;
+
+		node_ampumpkin.actdel = AmPumpkin;
 
 		node_agrocheck.decdel = AgroRangeCheck;
 		node_agrocheck.left = node_attackcheck;
@@ -110,31 +113,41 @@ public class AI : MonoBehaviour {
 	private Vector2 target;
 	private bool playside, playback;
 	float diffx, diffy;
+
 	void Update(){
+		ai.Search (ai.root);
+	}
+
+	void AmPumpkin(){
+		unitpath.StopAllCoroutines();
+		anime.SetBool ("ampumpkin", !monster);
+
+	}
+
+
+	void LateUpdate(){
 		me = transform.position;
 		target = (Vector2) unitpath.target.position;
-		ai.Search(ai.root);
 		anime.SetBool ("playSide", playside); 
 		anime.SetBool ("playBack", playback);
 
 		diffx = me.x - target.x;
 		diffy = me.y - target.y;
+
 		if (Mathf.Abs (diffx) > Mathf.Abs (diffy)) {
-			
+
 			playside = true;
 
 			if (diffx > 0) {
-				if (attacking) {
-					anime.SetTrigger ("playSideAtk");
-				}
-				else if (!flip) {
+
+				if (!flip && !attacking) {
 					transform.Rotate (Vector3.up, 180);
 					flip = true;
 				}//transform.localScale = new Vector3 (-scalex, transform.localScale.y, transform.localScale.z);
 			}
 			else {
-					//transform.localScale = new Vector3 (scalex, transform.localScale.y, transform.localScale.z);
-				if (flip) {
+				//transform.localScale = new Vector3 (scalex, transform.localScale.y, transform.localScale.z);
+				if (flip&& !attacking) {
 					transform.Rotate (Vector3.up, 180);
 					flip = false;
 				}
@@ -145,35 +158,29 @@ public class AI : MonoBehaviour {
 			playside = false;
 
 			if (diffy < 0) {
-				
+
 				playback = true;
-				if (attacking) {
-					anime.SetTrigger ("playBackAtk");
-				}
 
 			}
 			else {
-				
+
 				playback = false;
-				if (attacking) {
-					anime.SetTrigger ("playFrontAtk");	
-				}
+
 			}
 		}
-
-
 	}
 
 
-
-
 	/* During day/night night/day transition the DayNightSystem script sends s message. This handles thate message*/
-	void ChangeForm(){
+	public void ChangeForm(){
 		if (monster) {
 			monster = false;
 		}
 		else {
+
 			monster = true;
+			anime.SetBool ("ampumpkin", !monster);
+
 		}
 
 	}
@@ -192,14 +199,20 @@ public class AI : MonoBehaviour {
 
 	/* Move ai to random point in vicinity of where I am now*/
 	public void MoveToRandom(){
-		if (!newpathcd) {
+		if (!newpathcd && !attacking) {
 			float x, y;
 			Vector2 pos;
-		;
-			var randompoint = new GameObject().transform;
-			x = transform.position.x +Random.Range(-randompointlimit,randompointlimit);
-			y = transform.position.y +Random.Range (-randompointlimit, randompointlimit);
-			pos = new Vector2 (x, y);
+			var randompoint = new GameObject ().transform;
+			Grid grid =(Grid) GameObject.FindGameObjectWithTag ("A_").GetComponent ("Grid");
+			do {
+				
+				x = transform.position.x + Random.Range (-randompointlimit, randompointlimit);
+				y = transform.position.y + Random.Range (-randompointlimit, randompointlimit);
+				pos = new Vector2 (x, y);
+			
+
+			} while (grid.NodeFromWorldPoint ((Vector3)pos).walkable != true) ;
+
 			randompoint.position = pos;
 			unitpath.target = randompoint;
 			ChangePath ();
@@ -212,7 +225,7 @@ public class AI : MonoBehaviour {
 	/* Move Ai to player()*/
 	public void MoveToPlayer(){
 		/* Only want to change path every so often as it is expensive*/
-		if (!newpathcd) {
+		if (!newpathcd && !attacking) {
 			unitpath.target = player;
 			ChangePath ();
 			newpathcd = true;
@@ -237,9 +250,23 @@ public class AI : MonoBehaviour {
 
 	public void Attack(){
 		if (!attacking) {
+			unitpath.StopAllCoroutines ();
+
+			if (Mathf.Abs (diffx) > Mathf.Abs (diffy)) {
+				anime.SetTrigger ("playSideAtk");
+			}
+			else {
+				if (playback == true) {
+					anime.SetTrigger ("playBackAtk");
+				}
+				else {
+					anime.SetTrigger ("playFrontAtk");
+				}
+			
+			}
+
 			attacking = true;
 			newpathcd = true;
-			unitpath.StopAllCoroutines ();
 
 			Invoke ("AttackCD", 6f);
 		}
@@ -290,6 +317,29 @@ public class AI : MonoBehaviour {
 			return true;
 		}
 		return false;
+
+	}
+
+
+	public LayerMask losmask;
+	public Vector2 lastknown = Vector2.zero;
+	public bool LOSCheck(){
+		RaycastHit2D hit;
+		Vector2 raydir = player.position - transform.position;
+
+
+
+		if (Physics2D.Raycast (transform.position, raydir, losmask)== null) {
+			lastknown = new Vector2 (player.position.x, player.position.y);
+			unitpath.target = player;
+			return true;
+		}
+		else {
+			var lktrans = new GameObject ().transform;
+			lktrans.position = lastknown;
+			unitpath.target = lktrans;
+			return false;
+		}
 
 	}
 }
