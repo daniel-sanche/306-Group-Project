@@ -51,11 +51,32 @@ public class Player : MonoBehaviour {
 		Look ();																									//Rotates the player
 		Attack ();																									//Attack using the current weapon
 		handleEnergy();																								//Handles the player's energy decay
+
+		if (Input.GetKeyDown (KeyCode.P))
+			Inventory.SortByName ();
 	}
 
 	void FixedUpdate(){
 		if(attackTimer >= 0)																						//Decrement attack timer if it is greater than zero
 			attackTimer -= Time.deltaTime;
+
+		if (healthEnergy.health.CurrentVal <= 0)
+			Die ();
+	}
+
+	/** Drops this enemy's dropList items and kills the enemy */
+	private void Die(){
+		GameObject curDrop;
+
+		for (int i = 0; i < Inventory.itemSlot.Length; i++) {
+			curDrop = GameObject.Instantiate (Inventory.itemSlot[i].pickupPrefab, transform.position, Quaternion.identity) as GameObject;
+			curDrop.GetComponent<Pickup> ().item = Inventory.itemSlot[i].getItem();
+			Vector2 randomPoint = Random.insideUnitCircle * 50 + (Vector2)transform.position;
+			Vector2 itemForce = Vector2.MoveTowards((Vector2)transform.position, randomPoint, 50f);		//Finds the force to apply based on the mouse and player
+			curDrop.GetComponent<Rigidbody2D> ().AddForce( itemForce - (Vector2)transform.position);	//Add the force to the 
+		}
+
+		Destroy (gameObject);
 	}
 
 	// Moves the player based on input
