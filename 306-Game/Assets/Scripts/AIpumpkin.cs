@@ -217,11 +217,12 @@ public class AIpumpkin : MonoBehaviour {
 	public void ChangeForm(){
 		if (monster) {
 			monster = false;
-		}
+            anime.SetBool("ampumpkin", !monster);
+        }
 		else {
 
 			monster = true;
-			anime.SetBool ("ampumpkin", !monster);
+			//anime.SetBool ("ampumpkin", !monster);
 
 		}
 
