@@ -578,8 +578,8 @@ public class AIbanana : MonoBehaviour {
 		}
 	}
 
-	public string damage;
-	public float force;
+	public string damage="5";
+	public float force=1000f;
 
 	void OnCollisionEnter2D(Collision2D col){
 

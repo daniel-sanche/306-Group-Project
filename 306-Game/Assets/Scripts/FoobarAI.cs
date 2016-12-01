@@ -38,6 +38,8 @@ public class FoobarAI : MonoBehaviour {
 
 
     private DecisionTree ai = new DecisionTree();
+	private DecisionTreeNode node_donothingcheck = new DecisionTreeNode ();
+	private DecisionTreeNode node_donothing = new DecisionTreeNode();
     private DecisionTreeNode node_monstercheck = new DecisionTreeNode();
     private DecisionTreeNode node_spawnrangecheck = new DecisionTreeNode();
     private DecisionTreeNode node_inrangecheck = new DecisionTreeNode();
@@ -48,10 +50,15 @@ public class FoobarAI : MonoBehaviour {
     private DecisionTreeNode node_attack = new DecisionTreeNode();
     private DecisionTreeNode node_attackcheck = new DecisionTreeNode();
     private DecisionTreeNode node_idle = new DecisionTreeNode();
-    private DecisionTreeNode node_ampumpkin = new DecisionTreeNode();
-    private DecisionTreeNode node_isitpumpkin = new DecisionTreeNode();
     private DecisionTreeNode node_isintalkingrange = new DecisionTreeNode();
     private DecisionTreeNode node_sayphrase = new DecisionTreeNode();
+
+	private DecisionTreeNode node_loscheck = new DecisionTreeNode();
+	private DecisionTreeNode node_lastknowncheck = new DecisionTreeNode ();
+	private DecisionTreeNode node_movetolastknown = new DecisionTreeNode ();
+	private DecisionTreeNode node_checkforbox = new DecisionTreeNode();
+	private DecisionTreeNode node_attackbox = new DecisionTreeNode();
+
 
     private void NewPathCd()
     {
@@ -76,23 +83,55 @@ public class FoobarAI : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player").transform;
        // InvokeRepeating("ChoosePhrase", 0, 30);
     }
+	public void DoNothing(){
+		/* do nothing so we dont calculate anything the player is to far from*/
+	}
 
+	public float donothingdist = 30f;
+	public bool DoNothingCheck(){
+		if (Vector2.Distance(transform.position, player.position) > donothingdist ){
+			return true;
+		}
+		return false;
+	}
     /* Build my decision tree at spawn in start (awake?)*/
     void BuildDecisionTree()
     {
-        ai.root = node_monstercheck;
+		ai.root = node_donothingcheck;
+
+		node_donothingcheck.decdel = DoNothingCheck;
+		node_donothingcheck.right = node_monstercheck;
+		node_donothingcheck.left = node_donothing;
+
+		node_donothing.actdel = DoNothing;
 
         node_monstercheck.decdel = MonsterCheck;
         node_monstercheck.left = node_agrocheck;
-        node_monstercheck.right = node_isitpumpkin;
+		node_monstercheck.right = node_isintalkingrange;
 
         node_agrocheck.decdel = AgroRangeCheck;
-        node_agrocheck.left = node_attackcheck;
+        node_agrocheck.left = node_loscheck;
         node_agrocheck.right = node_randomstrolloridlecheck;
+	
+		node_checkforbox.decdel = CheckForBox;
+		node_checkforbox.left = node_attackbox;
+		node_checkforbox.right = node_randomstrolloridlecheck;
 
-        node_isitpumpkin.decdel = IsItPumpkin;
-        node_isitpumpkin.left = node_ampumpkin;
-        node_isitpumpkin.right = node_isintalkingrange;
+		node_attackbox.actdel = AttackBox;
+
+
+		node_loscheck.decdel = LOSCheck;
+		node_loscheck.left = node_attackcheck;
+		node_loscheck.right = node_lastknowncheck;
+
+		node_lastknowncheck.decdel = LastKnownCheck;
+		node_lastknowncheck.left = node_movetolastknown;
+		node_lastknowncheck.right = node_checkforbox;
+
+		node_movetolastknown.actdel = MoveToLastKnown;
+
+
+
 
         node_attackcheck.decdel = AttackRangeCheck;
         node_attackcheck.left = node_attack;
@@ -102,7 +141,7 @@ public class FoobarAI : MonoBehaviour {
         node_randomstrolloridlecheck.left = node_movetorandom;
         node_randomstrolloridlecheck.right = node_idle;
 
-        node_ampumpkin.actdel = AmPumpkin;
+        
 
         node_isintalkingrange.decdel = TalkRangeCheck;
         node_isintalkingrange.left = node_sayphrase;
@@ -213,13 +252,13 @@ public class FoobarAI : MonoBehaviour {
         if (monster)
         {
             monster = false;
-            anime.SetBool("isEvil", false);
+			anime.SetBool("isEvil", monster);
         }
         else
         {
 
             monster = true;
-            anime.SetBool("isEvil", true);
+			anime.SetBool("isEvil",monster);
             //anime.SetBool("ampumpkin", !monster);
 
         }
@@ -323,7 +362,7 @@ public class FoobarAI : MonoBehaviour {
             attacking = true;
             newpathcd = true;
 
-            Invoke("AttackCD", 6f);
+            Invoke("AttackCD", 3f);
         }
 
     }
@@ -387,18 +426,6 @@ public class FoobarAI : MonoBehaviour {
 
     }
 
-    //checks if it is a pumpkin
-    /*
-     * 
-     * 
-     * Currently returns FALSE for testing
-     * 
-     * 
-     */
-    public bool IsItPumpkin()
-    {
-        return false;
-    }
 
     // Checks if the player is within a talking range
     public bool TalkRangeCheck()
@@ -415,28 +442,72 @@ public class FoobarAI : MonoBehaviour {
 
     public LayerMask losmask;
     public Vector2 lastknown = Vector2.zero;
-    public bool LOSCheck()
-    {
-        RaycastHit2D hit;
-        Vector2 raydir = player.position - transform.position;
+	public bool LOSCheck(){
+
+		Vector2 raydir = player.position - transform.position;
+
+		RaycastHit2D hit = Physics2D.Raycast (transform.position,raydir, 20f,losmask);
+
+		Debug.DrawRay (transform.position, raydir, Color.red);
+		if (hit.collider==null) {
+			lastknown = new Vector2 (player.position.x, player.position.y);
+
+			return true;
+		}
+		return false;
+
+
+	}
+
+
+	public bool LastKnownCheck(){
+		target = lastknown;
+		if ((Vector2.Distance(lastknown, (Vector2)transform.position)>.5)) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	/*shaky cuz of circle may be better to make an x*/
+	public bool CheckForBox(){
+		Collider2D coll = Physics2D.OverlapCircle (transform.position, 2);
+		if (coll!=null && coll.tag == "BOX"){
+			return true;
+		}
+		else{
+			return false;
+		}
+
+
+	}
+
+	public void AttackBox(){
+		Collider2D coll = Physics2D.OverlapCircle (transform.position, 1);
+		target = coll.transform.position;
+		diffx = me.x - target.x;
+		diffy = me.y - target.y;
+		Attack ();
+
+	}	
 
 
 
-        if (Physics2D.Raycast(transform.position, raydir, losmask) == null)
-        {
-            lastknown = new Vector2(player.position.x, player.position.y);
-            unitpath.target = player;
-            return true;
-        }
-        else
-        {
-            var lktrans = new GameObject().transform;
-            lktrans.position = lastknown;
-            unitpath.target = lktrans;
-            return false;
-        }
 
-    }
+	public void MoveToLastKnown(){
+
+		if(!attacking && !newpathcd) {
+			var lktrans = new GameObject ().transform;
+			lktrans.position = lastknown;
+			unitpath.target = lktrans;
+
+			ChangePath ();
+			newpathcd = true;
+			Invoke ("NewPathCd", 3f);
+		}
+
+	}
 
 	private bool sayphrasecd = false;
     //Selects the phrase that the AI should say
@@ -471,5 +542,24 @@ public class FoobarAI : MonoBehaviour {
 	private void SayPhraseCD(){
 		textballoon.enabled = false;
 		sayphrasecd = false;
+	}
+
+	public string damage="5";
+	public float force=1000f;
+
+	void OnCollisionEnter2D(Collision2D col){
+
+
+		if (col.gameObject.tag == "Player" || col.gameObject.tag =="BOX") {
+			Vector2 direction = transform.position - col.transform.position;
+
+			col.gameObject.GetComponent<Rigidbody2D> ().AddForce (-direction * force);
+
+			if (monster) {
+				col.gameObject.SendMessage ("ApplyDamage", damage);
+			}
+
+			AttackCD ();
+		}
 	}
 }
