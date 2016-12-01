@@ -550,7 +550,7 @@ public class FoobarAI : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col){
 
 
-		if (col.gameObject.tag == "Player" || col.gameObject.tag =="BOX") {
+		if (col.gameObject.tag == "Player") {
 			Vector2 direction = transform.position - col.transform.position;
 
 			col.gameObject.GetComponent<Rigidbody2D> ().AddForce (-direction * force);
@@ -560,6 +560,31 @@ public class FoobarAI : MonoBehaviour {
 			}
 
 			AttackCD ();
+		}
+	}
+
+	public Item[] dropList;
+
+	private void Die(){
+
+		GameObject dropPrefab = Resources.Load ("Pickup") as GameObject;
+		GameObject curDrop;
+
+		for (int i = 0; i < dropList.Length; i++) {
+			curDrop = GameObject.Instantiate (dropPrefab, transform.position, Quaternion.identity) as GameObject;
+			curDrop.GetComponent<Pickup> ().item = dropList [i];
+		}
+
+
+		Destroy (gameObject);
+	}
+
+	public int hp = 5;
+	private void TakeDamage(int dmg){
+		hp -= dmg;
+
+		if (hp <= 0) {
+			Die ();	
 		}
 	}
 }

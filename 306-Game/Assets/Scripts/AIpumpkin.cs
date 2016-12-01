@@ -435,5 +435,45 @@ public class AIpumpkin : MonoBehaviour {
 		}
 
 	}
+	public Item[] dropList;
 
+	private void Die(){
+
+		GameObject dropPrefab = Resources.Load ("Pickup") as GameObject;
+		GameObject curDrop;
+
+		for (int i = 0; i < dropList.Length; i++) {
+			curDrop = GameObject.Instantiate (dropPrefab, transform.position, Quaternion.identity) as GameObject;
+			curDrop.GetComponent<Pickup> ().item = dropList [i];
+		}
+
+
+		Destroy (gameObject);
+	}
+	public string damage="5";
+	public float force=1000f;
+	void OnCollisionEnter2D(Collision2D col){
+
+
+		if (col.gameObject.tag == "Player") {
+			Vector2 direction = transform.position - col.transform.position;
+
+			col.gameObject.GetComponent<Rigidbody2D> ().AddForce (-direction * force);
+
+			if (monster) {
+				col.gameObject.SendMessage ("ApplyDamage", damage);
+			}
+
+			AttackCD ();
+		}
+	}
+
+	public int hp = 5;
+	private void TakeDamage(int dmg){
+		hp -= dmg;
+
+		if (hp <= 0) {
+			Die ();	
+		}
+	}
 }
