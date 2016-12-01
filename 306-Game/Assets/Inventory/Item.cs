@@ -2,7 +2,7 @@
 using System.Collections;
 
 public enum ItemType{
-	TESTING, WEAPON, BUILDING, REGENERATION
+	TESTING, RANGED, MELEE, BUILDING, REGENERATION
 }
 
 public class Item : MonoBehaviour {
