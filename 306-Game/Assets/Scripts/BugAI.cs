@@ -368,5 +368,13 @@ public class BugAI : MonoBehaviour {
 	/** Takes damage */
 	public void damage(int toTake){
 		health -= toTake;
+		StartCoroutine ("DamageFlash");
+	}
+
+	/** Temporarily flashes red to indicate the player has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
 	}
 }

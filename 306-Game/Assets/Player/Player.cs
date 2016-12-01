@@ -136,4 +136,11 @@ public class Player : MonoBehaviour {
 
 		return Mathf.Atan2 (relativePos.y, relativePos.x);															//Calculate the angle of the GameObject to the player.
 	}
+
+	/** Temporarily flashes red to indicate the player has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+	}
 }
