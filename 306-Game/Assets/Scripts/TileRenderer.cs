@@ -14,6 +14,7 @@ public class TileRenderer : MonoBehaviour {
 
 	/*Nick change for pathfinding*/
 	public Grid A_;
+
 	public Vector2 NumChunks = new Vector2 ( 30, 30);
 	public Vector2 TilesPerChunk = new Vector2 (15, 10);
 	public int numBuildings = 30;
@@ -47,7 +48,7 @@ public class TileRenderer : MonoBehaviour {
 	Grid astar;
 	void Update(){
 		/* Nick Change, the astar needs to be activated after the gameboard appears.*/
-		if (countframes ==10) {
+		if (countframes ==30) {
 			Grid astar = (Grid)Instantiate (A_);
 
 		}

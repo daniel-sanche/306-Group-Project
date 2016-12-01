@@ -14,6 +14,7 @@ public class UnitPath : MonoBehaviour {
 
 	void RestartPath(){
 		PathRequestManager.RequestPath (transform.position, target.position, OnPathFound);
+
 		targetIndex = 0;
 		StopCoroutine ("FollowPath");
 		StartCoroutine ("FollowPath");
@@ -42,6 +43,7 @@ public class UnitPath : MonoBehaviour {
 					}
 					currentWaypoint = path [targetIndex];
 				}
+
 				transform.position = Vector3.MoveTowards (transform.position, currentWaypoint, speed * Time.deltaTime);
 				yield return null;
 			}

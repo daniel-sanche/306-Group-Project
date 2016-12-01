@@ -80,9 +80,12 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 
 			if ((item.itemType == ItemType.BUILDING)) {
 				//Physics2D.IgnoreCollision (drop.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>());
+				drop.AddComponent<BoxCollider2D>();
 
-				drop.GetComponent<Collider2D> ().isTrigger = false;
+				//drop.GetComponent<BoxCollider2D> ().isTrigger = false;
+				drop.GetComponent<CircleCollider2D> ().isTrigger = false;
 				drop.GetComponent<Rigidbody2D> ().isKinematic = true;
+				drop.tag = "BOX";
 			
 			}
 
