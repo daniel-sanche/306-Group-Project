@@ -23,7 +23,7 @@ public class AIpumpkin : MonoBehaviour {
 	bool newpathcd;
 	private bool attacking = false;
 	//change to false when ready for release
-	bool monster = false;
+	bool monster = true;
 	Vector2 spawnpos;
 	private Rigidbody2D rb;
 	private Animator anime;

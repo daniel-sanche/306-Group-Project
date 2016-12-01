@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class AIbanana : MonoBehaviour {
 
@@ -11,6 +12,13 @@ public class AIbanana : MonoBehaviour {
 	public int randombal_strolloridle = 50;
 	public float agrorange = 10f;
 	public float attackrange = 5f;
+
+	public Canvas textballoon;
+	public Text theText;
+
+	private string phrase;
+	private float shouldISay;
+
 
 	public float speed =5;
 
@@ -52,6 +60,12 @@ public class AIbanana : MonoBehaviour {
 	private DecisionTreeNode node_movetolastknown = new DecisionTreeNode ();
 	private DecisionTreeNode node_checkforbox = new DecisionTreeNode();
 	private DecisionTreeNode node_attackbox = new DecisionTreeNode();
+	private DecisionTreeNode node_haveitemcheck = new DecisionTreeNode ();
+	private DecisionTreeNode node_dropItem = new DecisionTreeNode();
+	private DecisionTreeNode node_droprangecheck = new DecisionTreeNode();
+	private DecisionTreeNode node_friendlyagrorangecheck = new DecisionTreeNode();
+	private DecisionTreeNode node_isintalkingrange = new DecisionTreeNode();
+	private DecisionTreeNode node_sayphrase = new DecisionTreeNode();
 
 	private void NewPathCd(){
 		newpathcd = false;
@@ -98,8 +112,21 @@ public class AIbanana : MonoBehaviour {
 
 		node_monstercheck.decdel = MonsterCheck;
 		node_monstercheck.left = node_agrocheck;
-		node_monstercheck.right = node_randomstrolloridlecheck;
+		node_monstercheck.right = node_friendlyagrorangecheck;
 
+		node_friendlyagrorangecheck.decdel = FriendlyAgroRangeCheck;
+		node_friendlyagrorangecheck.left = node_haveitemcheck;
+		node_friendlyagrorangecheck.right = node_randomstrolloridlecheck;
+
+		node_haveitemcheck.decdel = HaveItemCheck;
+		node_haveitemcheck.left = node_droprangecheck;
+		node_haveitemcheck.right = node_isintalkingrange;
+
+		node_droprangecheck.decdel = DropRangeCheck ;
+		node_droprangecheck.left = node_dropItem;
+		node_droprangecheck.right = node_movetoplayer;
+
+		node_dropItem.actdel = DropItem;
 
 		node_agrocheck.decdel = AgroRangeCheck;
 		node_agrocheck.left = node_loscheck;
@@ -123,6 +150,8 @@ public class AIbanana : MonoBehaviour {
 		node_movetolastknown.actdel = MoveToLastKnown;
 	
 
+
+
 		node_attackcheck.decdel = AttackRangeCheck;
 		node_attackcheck.left = node_attack;
 		node_attackcheck.right = node_movetoplayer;
@@ -139,6 +168,12 @@ public class AIbanana : MonoBehaviour {
 		node_movetoplayer.actdel = MoveToPlayer;
 
 		node_movetorandom.actdel =MoveToRandom;
+
+		node_isintalkingrange.decdel = TalkRangeCheck;
+		node_isintalkingrange.left = node_sayphrase;
+		node_isintalkingrange.right = node_randomstrolloridlecheck;
+
+		node_sayphrase.actdel = SayPhrase;
 
 	}
 
@@ -157,11 +192,13 @@ public class AIbanana : MonoBehaviour {
 
 
 	void Update(){
+
 		ai.Search (ai.root);
 		me = transform.position;
 		//target = new Vector2(unitpath.target.position.x, unitpath.target.position.y);
 		anime.SetBool ("playSide", playside); 
 		anime.SetBool ("playBack", playback);
+
 
 		diffx = me.x - target.x;
 		diffy = me.y - target.y;
@@ -175,6 +212,7 @@ public class AIbanana : MonoBehaviour {
 				if (!flip && !attacking) {
 					transform.Rotate (Vector3.up, 180);
 					flip = true;
+					textballoon.transform.Rotate(Vector3.up, 180);
 				}//transform.localScale = new Vector3 (-scalex, transform.localScale.y, transform.localScale.z);
 			}
 			else {
@@ -182,6 +220,7 @@ public class AIbanana : MonoBehaviour {
 				if (flip&& !attacking) {
 					transform.Rotate (Vector3.up, 180);
 					flip = false;
+					textballoon.transform.Rotate(Vector3.up, 180);
 				}
 			}
 
@@ -190,6 +229,7 @@ public class AIbanana : MonoBehaviour {
 			playside = false;
 
 			if (diffy < 0) {
+				anime.SetBool ("isBack", playback);
 
 				playback = true;
 
@@ -207,16 +247,18 @@ public class AIbanana : MonoBehaviour {
 		
 	}
 
-
 	/* During day/night night/day transition the DayNightSystem script sends s message. This handles thate message*/
 	public void ChangeForm(){
+
+
 		if (monster) {
+			anime.SetBool ("isEvil", !monster);
 			monster = false;
+
 		}
 		else {
-
+			anime.SetBool ("isEvil", !monster);
 			monster = true;
-			anime.SetBool ("ampumpkin", !monster);
 
 		}
 
@@ -431,20 +473,71 @@ public class AIbanana : MonoBehaviour {
 		
 		GameObject dropPrefab = Resources.Load ("Pickup") as GameObject;
 		GameObject curDrop;
+	
 		for (int i = 0; i < dropList.Length; i++) {
 			curDrop = GameObject.Instantiate (dropPrefab, transform.position, Quaternion.identity) as GameObject;
 			curDrop.GetComponent<Pickup> ().item = dropList [i];
 		}
 
+
 		Destroy (gameObject);
 	}
 
+	private bool droppedbefore = false;
+	private bool HaveItemCheck(){
+		if (dropList.Length > 0 && !droppedbefore) {
+			
+			return true;
+		}
+		return false;
+	}
 
+	public float friendlyagrorange = 5f;
+	private bool FriendlyAgroRangeCheck(){
+		if (Vector2.Distance ((Vector2)player.position, transform.position)<friendlyagrorange) {
+			return true;
+		}
+		return false;
+	}
+
+	public float droprange=1.5f;
+	private bool DropRangeCheck(){
+		if (Vector2.Distance ((Vector2)player.position, transform.position)<droprange) {
+			return true;
+		}
+		return false;
+	}
+
+
+	private void DropItem(){
+		GameObject dropPrefab = Resources.Load ("Pickup") as GameObject;
+		GameObject curDrop;
+		droppedbefore = true;
+
+		curDrop = GameObject.Instantiate (dropPrefab, transform.position, Quaternion.identity) as GameObject;
+		curDrop.GetComponent<Pickup> ().item = dropList [dropList.Length-1];
+
+	}
 
 	private bool sayphrasecd = false;
 	//Selects the phrase that the AI should say
 	//Shows the text bubble with text on the screen
-	/*public void SayPhrase()
+
+	public float talkrange = 2f;
+
+	public bool TalkRangeCheck()
+	{
+		dist = Vector2.Distance((Vector2)player.position, (Vector2)transform.position);
+		if (dist < talkrange)
+		{
+			return true;
+		}
+		textballoon.enabled = false;
+		return false;
+
+	}
+
+	public void SayPhrase()
 	{
 		if (!sayphrasecd) {
 			shouldISay = Random.Range (0f, 3f);
@@ -474,7 +567,7 @@ public class AIbanana : MonoBehaviour {
 		sayphrasecd = false;
 	}
 
-*/
+
 
 	/* Take damage from player attack*/
 	private void TakeDamage(int dmg){
@@ -485,7 +578,23 @@ public class AIbanana : MonoBehaviour {
 		}
 	}
 
+	public string damage;
+	public float force;
+
+	void OnCollisionEnter2D(Collision2D col){
 
 
+			if (col.gameObject.tag == "Player") {
+				Vector2 direction = transform.position - col.transform.position;
 
+				col.gameObject.GetComponent<Rigidbody2D> ().AddForce (-direction * force);
+				
+				if (monster) {
+					col.gameObject.SendMessage ("ApplyDamage", damage);
+				}
+
+			AttackCD ();
+			}
+	}
+		
 }

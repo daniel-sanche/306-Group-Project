@@ -119,9 +119,7 @@ public class FoobarAI : MonoBehaviour {
         /*node_movetorandom.actdel = MoveToRandom;
 		node_movetorandom.decdel = RandomCheckSpawnRange;*/
         node_movetorandom.actdel = MoveToRandom;
-
-
-
+	
 
     }
 
@@ -140,6 +138,7 @@ public class FoobarAI : MonoBehaviour {
 
     void Update()
     {
+	
         ai.Search(ai.root);
     }
 
