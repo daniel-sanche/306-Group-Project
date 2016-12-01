@@ -34,7 +34,6 @@ public class TileRenderer : MonoBehaviour {
 		maxX = (int)TilesPerChunk.x;
 		maxY = (int)TilesPerChunk.y;
 		InitMap ();
-		SetActiveChunk (0, 0);
 	}
 
 	/**
@@ -53,6 +52,13 @@ public class TileRenderer : MonoBehaviour {
 			maxY = (chunkNumY+1) * (int)TilesPerChunk.y;
 			SetActiveChunk (chunkNumX, chunkNumY);
 		}
+	}
+
+	/**
+	 * returns the matrix of TileChunks
+	 */
+	public TileChunk[,] GetChunkMatrix(){
+		return chunkMatrix;
 	}
 		
 

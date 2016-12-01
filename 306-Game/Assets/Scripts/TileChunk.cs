@@ -13,6 +13,7 @@ public class TileChunk : MonoBehaviour {
 
 	private TileType [,] terrainMap;
 	private List<GameObject> tileList;
+	private List<GameObject> moveableObjects;
 	private Vector2 tilesPerChunk;
 	private bool isCached = false;
 
@@ -41,7 +42,37 @@ public class TileChunk : MonoBehaviour {
 	public GameObject floorDoorT;
 	public GameObject floorDoorB;
 
+	public GameObject quickshot;
+	public GameObject poison;
+	public GameObject health;
+	public GameObject energy;
+	public GameObject club;
+	public GameObject mallet;
+	public GameObject slingshot;
+	public GameObject sword;
+
+	public GameObject enemy;
+
 	public float cacheClearTime = (5f*60f);
+
+	//the probability of an item being added to an individual tile
+	public float itemProbGround = 0.01f;
+	public float itemProbBuilding = 0.2f;
+	//the probability of an enemy being added to a chunk
+	public float enemyProb = 0.1f;
+
+	public float quickshotProb = 1;
+	public float poisonProb = 1;
+	public float healthProb = 5;
+	public float energyProb = 5;
+	public float clubProb = 1;
+	public float malletProb = 1;
+	public float slingshotProb = 1;
+	public float swordProb = 1;
+
+	private bool generateNewItems = true;
+	private bool generateNewEnemy = true;
+	public Vector2 offset;
 
 	/**
 	 * Creates a new chunk of tiles
@@ -52,6 +83,8 @@ public class TileChunk : MonoBehaviour {
 	public void InitChunk(TileType [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
 		tilesPerChunk = tilesInChunk;
+		offset = new Vector2 (x * tilesPerChunk.x, y * tilesPerChunk.y);
+		moveableObjects = new List<GameObject> ();
 	}
 
 	void Awake(){
@@ -99,6 +132,23 @@ public class TileChunk : MonoBehaviour {
 	 * If the tiles were already saved in a cache, just set the chunk as active so they are rendered
 	 **/
 	private void DisplayTiles() {
+		//add items if necessary
+		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
+		if (generateNewItems) {
+			generateNewItems = false;
+			List<Vector2> openGround = GetSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+			AddNewItems (itemProbGround, openGround);
+			List<Vector2> openBuildings = GetSpaces (new TileType[]{TileType.Floor, TileType.FloorBottom, TileType.FloorTop,
+					TileType.FloorLeft, TileType.FloorRight, TileType.FloorBL, TileType.FloorBR, TileType.FloorTL, TileType.FloorTR});
+			AddNewItems (itemProbBuilding, openBuildings);
+		}
+		if (generateNewEnemy) {
+			generateNewEnemy = false;
+			if (Random.value < enemyProb) {
+				List<Vector2> openGround = GetSpaces (new TileType[]{TileType.Grass, TileType.Sand, TileType.Gravel});
+				AddNewEnemies (Mathf.Max((int)Mathf.Round(enemyProb), 1), openGround);
+			}
+		}
 		if (!isCached) {
 			tileList.Clear ();
 			for (int x = 0; x < tilesPerChunk.x; x++) {
@@ -114,11 +164,11 @@ public class TileChunk : MonoBehaviour {
 						r = terrainMap [x + 1, y];
 					}
 					if (y > 0) {
-						b = terrainMap [x, y-1];
+						b = terrainMap [x, y - 1];
 					} else if (x < tilesPerChunk.x - 1) {
-						t = terrainMap [x, y+1];
+						t = terrainMap [x, y + 1];
 					}
-					GameObject groundTile = SpriteForCode (code, left:l, right:r, top:t, bottom:b);
+					GameObject groundTile = SpriteForCode (code, left: l, right: r, top: t, bottom: b);
 					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
 					tileList.Add (instance);
 					instance.transform.SetParent (transform);
@@ -126,10 +176,13 @@ public class TileChunk : MonoBehaviour {
 				}
 			}
 			isCached = true;
-			gameObject.SetActive(true);
-		} else {
-			gameObject.SetActive(true);
 		}
+		foreach (GameObject obj in moveableObjects) {
+			obj.SetActive (true);
+		}
+		moveableObjects.Clear ();
+		gameObject.SetActive(true);
+
 	}
 
 	/**
@@ -139,6 +192,17 @@ public class TileChunk : MonoBehaviour {
 	private void HideTiles () {
 		gameObject.SetActive(false);
 		Invoke ("ClearCache", cacheClearTime);
+		//grab a reference to all moveable objects currently on the tile. 
+		//We will unload them from memory, and reload them if the tile is reactivated
+		Vector2 otherCorner = new Vector2(offset.x+tilesPerChunk.x, offset.y+tilesPerChunk.y);
+		Collider2D[] colliderList = Physics2D.OverlapAreaAll (offset, otherCorner);
+		foreach (Collider2D col in colliderList) {
+			GameObject obj = col.gameObject;
+			if (obj.tag == "Item" || obj.tag == "Enemy") {
+				obj.SetActive (false);
+				moveableObjects.Add (obj);
+			}
+		}
 	}
 
 	/**
@@ -209,6 +273,70 @@ public class TileChunk : MonoBehaviour {
 		default:
 			return grass;
 		}
+	}
+
+	/**
+	 * Finds a list of tiles of a certain type
+	 */
+	public List<Vector2> GetSpaces(TileType[] requestedTileArr){
+		List<Vector2> openList = new List<Vector2> ();
+		for (int x = 0; x < tilesPerChunk.x; x++) {
+			for (int y = 0; y < tilesPerChunk.y; y++) {
+				TileType code = terrainMap [x, y];
+				foreach(TileType thisAllowedTile in requestedTileArr){
+					if (code == thisAllowedTile) {
+						openList.Add(new Vector2(x, y));
+					}
+				}
+			}
+		}
+		return openList;
+	}
+
+	/**
+	 * Returns a random item based on the probabilities assigned to each one
+	 */
+	private GameObject _randomItem(){
+		float[] probArr = new float[] {poisonProb, quickshotProb, healthProb, energyProb, clubProb, malletProb, slingshotProb, swordProb};
+		GameObject[] objArr = new GameObject[] { poison, quickshot, health, energy, club, mallet, slingshot, sword };
+		float sum = 0;
+		foreach (float thisProb in probArr) {
+			sum = sum + thisProb;
+		}
+		float randVal = Random.Range (0, sum);
+		for (int i = 0; i < probArr.GetLength(0); i++) {
+			float thisProb = probArr [i];
+			if (randVal < thisProb) {
+				return objArr [i];
+			}
+			randVal = randVal - thisProb;
+		}
+		return club;
+	}
+
+	/**
+	 * adds new items to the list of spaces passed in, based on the probability passed in
+	 */
+	private void AddNewItems(float itemProb, List<Vector2>availableSpaces){
+		for (int i = 0; i < availableSpaces.Count; i = i + 1) {
+			if (Random.value < itemProb) {
+				int randomIndex = Random.Range(0, availableSpaces.Count);
+				Vector2 point = availableSpaces [randomIndex];
+				GameObject itemInstance = Instantiate (_randomItem(), Vector3.zero, Quaternion.identity) as GameObject;
+				itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
+			}
+		}
+	}
+
+	/**
+	 * Add enemies to the chunk
+	 * Will add numToAdd enemies
+	 */
+	private void AddNewEnemies(int numToAdd, List<Vector2>availableSpaces){
+		int randomIndex = Random.Range(0, availableSpaces.Count);
+		Vector2 point = availableSpaces [randomIndex];
+		GameObject itemInstance = Instantiate (enemy, Vector3.zero, Quaternion.identity) as GameObject;
+		itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
 	}
 
 }

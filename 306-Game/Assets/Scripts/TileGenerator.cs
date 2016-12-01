@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public enum TileType {Grass, Gravel, Water, Sand, Rock, Tree, Floor, FloorTop, FloorBottom, FloorLeft, FloorRight, FloorTL, FloorTR, FloorBL, FloorBR, FloorDoorL, FloorDoorR, FloorDoorT, FloorDoorB, NULL};
 
+
 public class TileGenerator : MonoBehaviour {
 	/**
 	 * This class is responsible for procedurally generating the island
@@ -46,7 +47,7 @@ public class TileGenerator : MonoBehaviour {
 	 *	seed = a seed value to use to recreate the map
 	 *	returns an array of numbers where each number represents the terrain at that space
 	**/
-	public static TileType[,] GenerateTileMap(int xSize, int ySize, int buildingCount, int seed = 0){
+	public static TileType[,] GenerateTileMap(int xSize, int ySize, int buildingCount, int seed = -1){
 		if (seed != -1) {
 			Random.InitState (seed);
 		}
