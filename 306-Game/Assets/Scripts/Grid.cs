@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/* Credit is due to Sebastian Lague's tutorial on https://www.youtube.com/watch?v=-L-WgKMFuhE&t=2s*/
+
 public class Grid : MonoBehaviour {
 	public Vector2 gridWorldSize;
 	public LayerMask unwalkablemask;
