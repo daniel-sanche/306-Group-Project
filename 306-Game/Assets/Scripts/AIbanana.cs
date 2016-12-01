@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AI : MonoBehaviour {
+public class AIbanana : MonoBehaviour {
 
 	UnitPath unitpath;
 
@@ -11,6 +11,8 @@ public class AI : MonoBehaviour {
 	public int randombal_strolloridle = 50;
 	public float agrorange = 10f;
 	public float attackrange = 5f;
+
+	public float speed =5;
 
 	Transform player;
 
@@ -22,16 +24,20 @@ public class AI : MonoBehaviour {
 	bool flip = false;
 	bool newpathcd;
 	private bool attacking = false;
+	//change to false when ready for release
 	bool monster = true;
 	Vector2 spawnpos;
 	private Rigidbody2D rb;
 	private Animator anime;
 	private SpriteRenderer sprite;
-	private Grid grid;
 
 
 	private DecisionTree ai = new DecisionTree();
+
+
 	private DecisionTreeNode node_monstercheck = new DecisionTreeNode ();
+	private DecisionTreeNode node_donothingcheck = new DecisionTreeNode ();
+	private DecisionTreeNode node_donothing = new DecisionTreeNode();
 	private DecisionTreeNode node_spawnrangecheck = new DecisionTreeNode();
 	private DecisionTreeNode node_inrangecheck= new DecisionTreeNode();
 	private DecisionTreeNode node_movetoplayer = new DecisionTreeNode();
@@ -41,8 +47,11 @@ public class AI : MonoBehaviour {
 	private DecisionTreeNode node_attack = new DecisionTreeNode();
 	private DecisionTreeNode node_attackcheck = new DecisionTreeNode();
 	private DecisionTreeNode node_idle = new DecisionTreeNode();
-	private DecisionTreeNode node_ampumpkin = new DecisionTreeNode();
-
+	private DecisionTreeNode node_loscheck = new DecisionTreeNode();
+	private DecisionTreeNode node_lastknowncheck = new DecisionTreeNode ();
+	private DecisionTreeNode node_movetolastknown = new DecisionTreeNode ();
+	private DecisionTreeNode node_checkforbox = new DecisionTreeNode();
+	private DecisionTreeNode node_attackbox = new DecisionTreeNode();
 
 	private void NewPathCd(){
 		newpathcd = false;
@@ -55,7 +64,7 @@ public class AI : MonoBehaviour {
 	}
 	void Start () {
 		unitpath = GetComponent<UnitPath> ();
-		unitpath.target = GameObject.FindGameObjectWithTag ("Player").transform;
+		//unitpath.target = GameObject.FindGameObjectWithTag ("Player").transform;
 		rb = GetComponent<Rigidbody2D> ();
 		BuildDecisionTree ();
 		anime = gameObject.GetComponent<Animator> ();
@@ -64,24 +73,59 @@ public class AI : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag ("Player").transform;
 	}
 
+	public void DoNothing(){
+		/* do nothing so we dont calculate anything the player is to far from*/
+	}
+
+	public float donothingdist = 30f;
+	public bool DoNothingCheck(){
+		if (Vector2.Distance(transform.position, player.position) > donothingdist ){
+			return true;
+		}
+		return false;
+	}
+
 	/* Build my decision tree at spawn in start (awake?)*/
 	void BuildDecisionTree(){
-		ai.root = node_monstercheck;
+
+		ai.root = node_donothingcheck;
+
+		node_donothingcheck.decdel = DoNothingCheck;
+		node_donothingcheck.right = node_monstercheck;
+		node_donothingcheck.left = node_donothing;
+
+		node_donothing.actdel = DoNothing;
 
 		node_monstercheck.decdel = MonsterCheck;
 		node_monstercheck.left = node_agrocheck;
-		node_monstercheck.right = node_ampumpkin;
+		node_monstercheck.right = node_randomstrolloridlecheck;
 
-		node_ampumpkin.actdel = AmPumpkin;
 
 		node_agrocheck.decdel = AgroRangeCheck;
-		node_agrocheck.left = node_attackcheck;
-		node_agrocheck.right = node_randomstrolloridlecheck;
+		node_agrocheck.left = node_loscheck;
+		node_agrocheck.right = node_checkforbox;
+
+		node_checkforbox.decdel = CheckForBox;
+		node_checkforbox.left = node_attackbox;
+		node_checkforbox.right = node_randomstrolloridlecheck;
+
+		node_attackbox.actdel = AttackBox;
+
+
+		node_loscheck.decdel = LOSCheck;
+		node_loscheck.left = node_attackcheck;
+		node_loscheck.right = node_lastknowncheck;
+
+		node_lastknowncheck.decdel = LastKnownCheck;
+		node_lastknowncheck.left = node_movetolastknown;
+		node_lastknowncheck.right = node_checkforbox;
+
+		node_movetolastknown.actdel = MoveToLastKnown;
+	
 
 		node_attackcheck.decdel = AttackRangeCheck;
 		node_attackcheck.left = node_attack;
 		node_attackcheck.right = node_movetoplayer;
-
 
 		node_randomstrolloridlecheck.decdel = RandomStrollorIdleCheck;
 		node_randomstrolloridlecheck.left = node_movetorandom;
@@ -93,18 +137,15 @@ public class AI : MonoBehaviour {
 
 
 		node_movetoplayer.actdel = MoveToPlayer;
-		/*node_movetorandom.actdel = MoveToRandom;
-		node_movetorandom.decdel = RandomCheckSpawnRange;*/
+
 		node_movetorandom.actdel =MoveToRandom;
-
-
-
 
 	}
 
 	/* Changes the path in UnitPath script*/
 
 	void ChangePath(){
+
 		unitpath.SendMessage ("RestartPath");
 	}
 
@@ -114,20 +155,11 @@ public class AI : MonoBehaviour {
 	private bool playside, playback;
 	float diffx, diffy;
 
+
 	void Update(){
 		ai.Search (ai.root);
-	}
-
-	void AmPumpkin(){
-		unitpath.StopAllCoroutines();
-		anime.SetBool ("ampumpkin", !monster);
-
-	}
-
-
-	void LateUpdate(){
 		me = transform.position;
-		target = (Vector2) unitpath.target.position;
+		//target = new Vector2(unitpath.target.position.x, unitpath.target.position.y);
 		anime.SetBool ("playSide", playside); 
 		anime.SetBool ("playBack", playback);
 
@@ -168,6 +200,11 @@ public class AI : MonoBehaviour {
 
 			}
 		}
+	}
+
+
+	void LateUpdate(){
+		
 	}
 
 
@@ -215,6 +252,7 @@ public class AI : MonoBehaviour {
 
 			randompoint.position = pos;
 			unitpath.target = randompoint;
+			target = randompoint.position;
 			ChangePath ();
 			newpathcd = true;
 
@@ -228,6 +266,7 @@ public class AI : MonoBehaviour {
 		if (!newpathcd && !attacking) {
 			unitpath.target = player;
 			ChangePath ();
+			target = player.position;
 			newpathcd = true;
 			Invoke ("NewPathCd", 1f);
 		
@@ -242,39 +281,34 @@ public class AI : MonoBehaviour {
 		var randompoint = new GameObject().transform;
 		randompoint.position = spawnpos;
 		unitpath.target = randompoint;
+		target = randompoint.position;
 		ChangePath ();
 		newpathcd = true;
 		Invoke ("NewPathCd", 1f);
 
 	}
-
+	private float oldspeed;
 	public void Attack(){
 		if (!attacking) {
-			unitpath.StopAllCoroutines ();
+			var point = new GameObject ().transform;
+			point.position = target;
 
-			if (Mathf.Abs (diffx) > Mathf.Abs (diffy)) {
-				anime.SetTrigger ("playSideAtk");
-			}
-			else {
-				if (playback == true) {
-					anime.SetTrigger ("playBackAtk");
-				}
-				else {
-					anime.SetTrigger ("playFrontAtk");
-				}
-			
-			}
+			oldspeed = unitpath.speed;
+			unitpath.target = point;
+			unitpath.speed = speed;
+			ChangePath ();
 
 			attacking = true;
 			newpathcd = true;
 
-			Invoke ("AttackCD", 6f);
+			Invoke ("AttackCD", 2f);
 		}
 
 	}
 
 
 	private void AttackCD(){
+		unitpath.speed = oldspeed;
 		attacking = false;
 		Invoke ("NewPathCd",0f);
 
@@ -322,38 +356,72 @@ public class AI : MonoBehaviour {
 
 
 	public LayerMask losmask;
-	public Vector2 lastknown = Vector2.zero;
+	public Vector2 lastknown = new Vector2();
 	public bool LOSCheck(){
 		
 		Vector2 raydir = player.position - transform.position;
 
+		RaycastHit2D hit = Physics2D.Raycast (transform.position,raydir, 20f,losmask);
 
-
-		if (Physics2D.Raycast (transform.position, raydir, losmask)== null) {
-		lastknown = new Vector2 (player.position.x, player.position.y);
-			//unitpath.target = player;
+		Debug.DrawRay (transform.position, raydir, Color.red);
+		if (hit.collider==null) {
+			lastknown = new Vector2 (player.position.x, player.position.y);
+		
 			return true;
 		}
-		else {
-	/*		var lktrans = new GameObject ().transform;
-			lktrans.position = lastknown;
-			unitpath.target = lktrans;
-	*/		return false;
-		
-
-		}
+ 		return false;
 
 	
 	}
 
-	public void MoveToLastKnown(){
-		if (!attacking && !newpathcd && lastknown!=null) {
-			var lktrans = new GameObject ().transform;
-			lktrans.position = lastknown;
-			unitpath.target = lktrans;
+
+	public bool LastKnownCheck(){
+		target = lastknown;
+		if ((Vector2.Distance(lastknown, (Vector2)transform.position)>.5)) {
+			return true;
 		}
+
+		return false;
 
 	}
 
+	/*shaky cuz of circle may be better to make an x*/
+	public bool CheckForBox(){
+		Collider2D coll = Physics2D.OverlapCircle (transform.position, 2);
+		if (coll!=null && coll.tag == "BOX"){
+				return true;
+			}
+			else{
+				return false;
+			}
+			    
+			
+	}
+	
+	public void AttackBox(){
+		Collider2D coll = Physics2D.OverlapCircle (transform.position, 1);
+		target = coll.transform.position;
+		diffx = me.x - target.x;
+		diffy = me.y - target.y;
+		Attack ();
+
+	}	
+
+
+
+
+	public void MoveToLastKnown(){
+		
+		 if(!attacking && !newpathcd) {
+			var lktrans = new GameObject ().transform;
+			lktrans.position = lastknown;
+			unitpath.target = lktrans;
+
+			ChangePath ();
+			newpathcd = true;
+			Invoke ("NewPathCd", 3f);
+		}
+
+	}
 
 }
