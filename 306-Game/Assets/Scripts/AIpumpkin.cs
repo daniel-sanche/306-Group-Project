@@ -120,7 +120,7 @@ public class AIpumpkin : MonoBehaviour {
 		node_lastknowncheck.right = node_checkforbox;
 
 		node_movetolastknown.actdel = MoveToLastKnown;
-	
+
 
 		node_attackcheck.decdel = AttackRangeCheck;
 		node_attackcheck.left = node_attack;
@@ -209,7 +209,7 @@ public class AIpumpkin : MonoBehaviour {
 
 
 	void LateUpdate(){
-		
+
 	}
 
 
@@ -217,12 +217,12 @@ public class AIpumpkin : MonoBehaviour {
 	public void ChangeForm(){
 		if (monster) {
 			monster = false;
-            anime.SetBool("ampumpkin", !monster);
-        }
+			anime.SetBool("ampumpkin", !monster);
+		}
 		else {
 
 			monster = true;
-			//anime.SetBool ("ampumpkin", !monster);
+			anime.SetBool ("ampumpkin", !monster);
 
 		}
 
@@ -230,7 +230,7 @@ public class AIpumpkin : MonoBehaviour {
 
 	/* check if currently am a monster*/
 	public bool MonsterCheck(){
-		
+
 		if (monster) {
 			/* I am a monster*/
 			return true;
@@ -248,11 +248,11 @@ public class AIpumpkin : MonoBehaviour {
 			var randompoint = new GameObject ().transform;
 			Grid grid =(Grid) GameObject.FindGameObjectWithTag ("A_").GetComponent ("Grid");
 			do {
-				
+
 				x = transform.position.x + Random.Range (-randompointlimit, randompointlimit);
 				y = transform.position.y + Random.Range (-randompointlimit, randompointlimit);
 				pos = new Vector2 (x, y);
-			
+
 
 			} while (grid.NodeFromWorldPoint ((Vector3)pos).walkable != true) ;
 
@@ -275,7 +275,7 @@ public class AIpumpkin : MonoBehaviour {
 			target = player.position;
 			newpathcd = true;
 			Invoke ("NewPathCd", 1f);
-		
+
 		}
 
 	}
@@ -308,7 +308,7 @@ public class AIpumpkin : MonoBehaviour {
 				else {
 					anime.SetTrigger ("playFrontAtk");
 				}
-			
+
 			}
 
 			attacking = true;
@@ -370,7 +370,7 @@ public class AIpumpkin : MonoBehaviour {
 	public LayerMask losmask;
 	public Vector2 lastknown = new Vector2();
 	public bool LOSCheck(){
-		
+
 		Vector2 raydir = player.position - transform.position;
 
 		RaycastHit2D hit = Physics2D.Raycast (transform.position,raydir, 20f,losmask);
@@ -378,12 +378,12 @@ public class AIpumpkin : MonoBehaviour {
 		Debug.DrawRay (transform.position, raydir, Color.red);
 		if (hit.collider==null) {
 			lastknown = new Vector2 (player.position.x, player.position.y);
-		
+
 			return true;
 		}
- 		return false;
+		return false;
 
-	
+
 	}
 
 
@@ -401,15 +401,15 @@ public class AIpumpkin : MonoBehaviour {
 	public bool CheckForBox(){
 		Collider2D coll = Physics2D.OverlapCircle (transform.position, 2);
 		if (coll!=null && coll.tag == "BOX"){
-				return true;
-			}
-			else{
-				return false;
-			}
-			    
-			
+			return true;
+		}
+		else{
+			return false;
+		}
+
+
 	}
-	
+
 	public void AttackBox(){
 		Collider2D coll = Physics2D.OverlapCircle (transform.position, 1);
 		target = coll.transform.position;
@@ -423,8 +423,8 @@ public class AIpumpkin : MonoBehaviour {
 
 
 	public void MoveToLastKnown(){
-		
-		 if(!attacking && !newpathcd) {
+
+		if(!attacking && !newpathcd) {
 			var lktrans = new GameObject ().transform;
 			lktrans.position = lastknown;
 			unitpath.target = lktrans;

@@ -229,7 +229,7 @@ public class AIbanana : MonoBehaviour {
 			playside = false;
 
 			if (diffy < 0) {
-				anime.SetBool ("isBack", playback);
+				//anime.SetBool ("playBack", playback);
 
 				playback = true;
 
