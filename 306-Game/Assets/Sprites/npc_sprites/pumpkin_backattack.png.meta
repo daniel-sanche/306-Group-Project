@@ -1,0 +1,199 @@
+fileFormatVersion: 2
+guid: 0eef98a9346b7fc4ca492324ff4bff8c
+timeCreated: 1480386438
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: pumpkin_backattack_0
+    21300002: pumpkin_backattack_1
+    21300004: pumpkin_backattack_2
+    21300006: pumpkin_backattack_3
+    21300008: pumpkin_backattack_4
+    21300010: pumpkin_backattack_5
+    21300012: pumpkin_backattack_6
+    21300014: pumpkin_backattack_7
+    21300016: pumpkin_backattack_8
+    21300018: pumpkin_backattack_9
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: pumpkin_backattack_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 89
+        width: 34
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_1
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 89
+        width: 31
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_2
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 89
+        width: 31
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_3
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 89
+        width: 35
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_4
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 90
+        width: 31
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_5
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 89
+        width: 32
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_6
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 89
+        width: 32
+        height: 43
+      alignment: 9
+      pivot: {x: 0.51073265, y: 0.4361063}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_7
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 39
+        width: 32
+        height: 46
+      alignment: 9
+      pivot: {x: 0.51073235, y: 0.40294257}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_8
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 41
+        width: 33
+        height: 46
+      alignment: 9
+      pivot: {x: 0.52081436, y: 0.42534122}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: pumpkin_backattack_9
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 41
+        width: 33
+        height: 46
+      alignment: 9
+      pivot: {x: 0.50000024, y: 0.41040868}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

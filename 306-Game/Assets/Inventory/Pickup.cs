@@ -8,6 +8,8 @@ public class Pickup : MonoBehaviour {
 	/// </summary>
 	public Item item;
 
+	public int hp = 2;
+
 	void Update(){
 		if (item != null) {
 			GetComponent<SpriteRenderer> ().sprite = item.sprite;
@@ -19,5 +21,12 @@ public class Pickup : MonoBehaviour {
 			if (Inventory.AddItem (item))						//Attempt to add the item to the inventory
 				Destroy (this.gameObject);						//Delete this object if successful
 		}
+	}
+
+	void ApplyDamage (string dmg){
+		hp -= int.Parse (dmg);
+
+		if (hp == 0)
+			Destroy (this);
 	}
 }
