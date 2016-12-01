@@ -128,8 +128,8 @@ public class BugAI : MonoBehaviour {
 	void LateUpdate(){
 		me = transform.position;
 		target = (Vector2) unitpath.target.position;
-	//	anime.SetBool ("playSide", playside); 
-	//	anime.SetBool ("playBack", playback);
+		anime.SetBool ("playSide", playside); 
+		anime.SetBool ("playBack", playback);
 
 		diffx = me.x - target.x;
 		diffy = me.y - target.y;
