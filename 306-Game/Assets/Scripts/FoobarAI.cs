@@ -74,7 +74,7 @@ public class FoobarAI : MonoBehaviour {
         sprite = gameObject.GetComponent<SpriteRenderer>();
         localscalex = transform.localScale;
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        InvokeRepeating("ChoosePhrase", 0, 30);
+       // InvokeRepeating("ChoosePhrase", 0, 30);
     }
 
     /* Build my decision tree at spawn in start (awake?)*/
@@ -346,12 +346,7 @@ public class FoobarAI : MonoBehaviour {
         }
     }
 
-    //Shows the text bubble with text on the screen
-    public void SayPhrase()
-    {
-        textballoon.enabled = true;
-        theText.text = phrase;     
-    }
+  
 
     /* This provieds generic random node use. Use randombal as a balance point as to where*/
     public bool RandomCheckSpawnRange()
@@ -442,26 +437,41 @@ public class FoobarAI : MonoBehaviour {
 
     }
 
+	private bool sayphrasecd = false;
     //Selects the phrase that the AI should say
     private void ChoosePhrase()
     {
-        shouldISay = Random.Range(0f, 3f);
-
-        if (shouldISay <= 1)
-        {
-            phrase = "Hello, how are you doing?";
-        }
-        else if (shouldISay <= 2)
-        {
-            phrase = "Food is great at healing your health and energy.";
-        }
-        else if (shouldISay <= 3)
-        {
-            phrase = "I once found a club just laying on the ground.";
-        }
-        else
-        {
-            phrase = "This is the default system.";
-        }
+    
     }
+
+	//Shows the text bubble with text on the screen
+	public void SayPhrase()
+	{
+		if (!sayphrasecd) {
+			shouldISay = Random.Range (0f, 3f);
+
+			if (shouldISay <= 1) {
+				phrase = "Hello, how are you doing?";
+			}
+			else if (shouldISay <= 2) {
+				phrase = "Food is great at healing your health and energy.";
+			}
+			else if (shouldISay <= 3) {
+				phrase = "I once found a club just laying on the ground.";
+			}
+			else {
+				phrase = "This is the default system.";
+			}
+			sayphrasecd = true;
+			textballoon.enabled = true;
+			theText.text = phrase; 
+			Invoke ("SayPhraseCD", 5);
+
+		}
+	}
+
+	private void SayPhraseCD(){
+		textballoon.enabled = false;
+		sayphrasecd = false;
+	}
 }
