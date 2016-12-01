@@ -5,7 +5,7 @@ public class AIbanana : MonoBehaviour {
 
 	UnitPath unitpath;
 
-
+	public int hp = 5;
 	public float randompointlimit = 20f;
 	public int randombal_spawn = 50;
 	public int randombal_strolloridle = 50;
@@ -423,5 +423,69 @@ public class AIbanana : MonoBehaviour {
 		}
 
 	}
+
+	public Item[] dropList;
+
+	/** Drops this enemy's dropList items and kills the enemy */
+	private void Die(){
+		
+		GameObject dropPrefab = Resources.Load ("Pickup") as GameObject;
+		GameObject curDrop;
+		for (int i = 0; i < dropList.Length; i++) {
+			curDrop = GameObject.Instantiate (dropPrefab, transform.position, Quaternion.identity) as GameObject;
+			curDrop.GetComponent<Pickup> ().item = dropList [i];
+		}
+
+		Destroy (gameObject);
+	}
+
+
+
+	private bool sayphrasecd = false;
+	//Selects the phrase that the AI should say
+	//Shows the text bubble with text on the screen
+	/*public void SayPhrase()
+	{
+		if (!sayphrasecd) {
+			shouldISay = Random.Range (0f, 3f);
+
+			if (shouldISay <= 1) {
+				phrase = "B-A-N-A-N-A!";
+			}
+			else if (shouldISay <= 2) {
+				phrase = "Find a range weapon to keep your distance!";
+			}
+			else if (shouldISay <= 3) {
+				phrase = "I'm not the same banana at night...";
+			}
+			else {
+				phrase = "This is the default system.";
+			}
+			sayphrasecd = true;
+			textballoon.enabled = true;
+			theText.text = phrase; 
+			Invoke ("SayPhraseCD", 5);
+
+		}
+	}
+
+	private void SayPhraseCD(){
+		textballoon.enabled = false;
+		sayphrasecd = false;
+	}
+
+*/
+
+	/* Take damage from player attack*/
+	private void TakeDamage(int dmg){
+		hp -= dmg;
+
+		if (hp <= 0) {
+			Die ();	
+		}
+	}
+
+
+
 
 }

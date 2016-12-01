@@ -439,10 +439,7 @@ public class FoobarAI : MonoBehaviour {
 
 	private bool sayphrasecd = false;
     //Selects the phrase that the AI should say
-    private void ChoosePhrase()
-    {
-    
-    }
+  
 
 	//Shows the text bubble with text on the screen
 	public void SayPhrase()
