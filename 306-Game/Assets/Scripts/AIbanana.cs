@@ -584,7 +584,7 @@ public class AIbanana : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D col){
 
 
-			if (col.gameObject.tag == "Player") {
+		if (col.gameObject.tag == "Player" || col.gameObject.tag =="BOX") {
 				Vector2 direction = transform.position - col.transform.position;
 
 				col.gameObject.GetComponent<Rigidbody2D> ().AddForce (-direction * force);
