@@ -177,10 +177,8 @@ public class AI : MonoBehaviour {
 			monster = false;
 		}
 		else {
-
 			monster = true;
 			anime.SetBool ("ampumpkin", !monster);
-
 		}
 
 	}

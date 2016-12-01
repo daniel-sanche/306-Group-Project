@@ -247,7 +247,7 @@ public class FoobarAI : MonoBehaviour {
             float x, y;
             Vector2 pos;
             var randompoint = new GameObject().transform;
-            Grid grid = (Grid)GameObject.FindGameObjectWithTag("A_").GetComponent("Grid");
+            Grid grid = (Grid)GameObject.FindGameObjectWithTag("A*").GetComponent("Grid");
             do
             {
 

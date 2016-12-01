@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/**
+ * Specialized weapon that gets enemies in a cone for it's attack.
+ * 
+ */
 public class Melee : Weapon {
 
 	[SerializeField]
