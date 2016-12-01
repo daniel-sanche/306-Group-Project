@@ -26,10 +26,9 @@ public class Melee : Weapon {
 		GameObject[] enemyList = GetEnemyInCone (mouseAngle);														//Get all enemies in a cone relative to the angle
 
 		for (int x = 0; x < enemyList.Length; x++) {																//For each enemy in the cone
-			float enemyAngle = getRelativeAngle (enemyList [x]);													//Get the angle of the enemy relative to the player
 
 			//Apply force to the enemy based on relativity
-			enemyList [x].GetComponent<Rigidbody2D> ().AddForce ( new Vector2( forceAmount * Mathf.Cos(enemyAngle), forceAmount * Mathf.Sin(enemyAngle) ) );
+			enemyList [x].SendMessage("TakeDamage", Mathf.RoundToInt(damage));
 		}
 
 	}
