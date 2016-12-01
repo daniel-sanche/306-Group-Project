@@ -34,6 +34,7 @@ public class FoobarAI : MonoBehaviour {
     private SpriteRenderer sprite;
     private Grid grid;
     private string phrase;
+    private float shouldISay;
 
 
     private DecisionTree ai = new DecisionTree();
@@ -345,6 +346,7 @@ public class FoobarAI : MonoBehaviour {
         }
     }
 
+    //Shows the text bubble with text on the screen
     public void SayPhrase()
     {
         textballoon.enabled = true;
@@ -389,11 +391,20 @@ public class FoobarAI : MonoBehaviour {
 
     }
 
+    //checks if it is a pumpkin
+    /*
+     * 
+     * 
+     * Currently returns FALSE for testing
+     * 
+     * 
+     */
     public bool IsItPumpkin()
     {
         return false;
     }
 
+    // Checks if the player is within a talking range
     public bool TalkRangeCheck()
     {
         dist = Vector2.Distance((Vector2)player.position, (Vector2)transform.position);
@@ -431,21 +442,26 @@ public class FoobarAI : MonoBehaviour {
 
     }
 
+    //Selects the phrase that the AI should say
     private void ChoosePhrase()
     {
-        int shouldISay = Random.Range(1, 4);
-        switch(shouldISay){
-            case 1:
-                phrase = "Hello, how are you doing?";
-                break;
-            case 2:
-                phrase = "Food is great at healing your health and energy.";
-                break;
-            case 3:
-                phrase = "I once found a club just laying on the ground.";
-                break;
-            default:
-                break;
+        shouldISay = Random.Range(0f, 3f);
+
+        if (shouldISay <= 1)
+        {
+            phrase = "Hello, how are you doing?";
+        }
+        else if (shouldISay <= 2)
+        {
+            phrase = "Food is great at healing your health and energy.";
+        }
+        else if (shouldISay <= 3)
+        {
+            phrase = "I once found a club just laying on the ground.";
+        }
+        else
+        {
+            phrase = "This is the default system.";
         }
     }
 }
