@@ -51,6 +51,8 @@ public class TileChunk : MonoBehaviour {
 	public GameObject slingshot;
 	public GameObject sword;
 
+	public GameObject[] itemPrefabs;
+	public float[] itemSpawnChances;
 	public GameObject enemy;
 
 	public float cacheClearTime = (5f*60f);
@@ -297,14 +299,14 @@ public class TileChunk : MonoBehaviour {
 	 * Returns a random item based on the probabilities assigned to each one
 	 */
 	private GameObject _randomItem(){
-		float[] probArr = new float[] {poisonProb, quickshotProb, healthProb, energyProb, clubProb, malletProb, slingshotProb, swordProb};
-		GameObject[] objArr = new GameObject[] { poison, quickshot, health, energy, club, mallet, slingshot, sword };
+		float[] probArr = itemSpawnChances;
+		GameObject[] objArr = itemPrefabs;
 		float sum = 0;
 		foreach (float thisProb in probArr) {
 			sum = sum + thisProb;
 		}
 		float randVal = Random.Range (0, sum);
-		for (int i = 0; i < probArr.GetLength(0); i++) {
+		for (int i = 0; i < probArr.Length; i++) {
 			float thisProb = probArr [i];
 			if (randVal < thisProb) {
 				return objArr [i];
@@ -322,7 +324,9 @@ public class TileChunk : MonoBehaviour {
 			if (Random.value < itemProb) {
 				int randomIndex = Random.Range(0, availableSpaces.Count);
 				Vector2 point = availableSpaces [randomIndex];
-				GameObject itemInstance = Instantiate (_randomItem(), Vector3.zero, Quaternion.identity) as GameObject;
+				GameObject pickUpPrefab = Resources.Load ("Pickup") as GameObject;
+				pickUpPrefab.GetComponent<Pickup> ().item = _randomItem ().GetComponent<Item>();
+				GameObject itemInstance = Instantiate (pickUpPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 				itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
 			}
 		}
