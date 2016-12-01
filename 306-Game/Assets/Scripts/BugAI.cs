@@ -360,23 +360,13 @@ public class BugAI : MonoBehaviour {
 			player.GetComponent<HealthEnergy>().TakeDamage(5f);
 		}
 
+	}
 
-		float angle = getRelativeAngle ();
-		float leftSide = angle - (30 * Mathf.Deg2Rad);														//Calculates upper angle of cone
-		float rightSide = angle + (30 * Mathf.Deg2Rad);														//Calculates lower angle of cone
+	/** The enemy's health */
+	public int health;
 
-		Collider2D[] colliderList = Physics2D.OverlapCircleAll ( (Vector2) player.transform.position, 1.25f);	//Performs a circle overlap using swingRadius
-		List<GameObject> enemyList = new List<GameObject>();														//Creates a list for holding enemies
-		float objectAngle = getRelativeAngle ();																//Get the angle of it to the player
-
-		for (int x = 0; x < colliderList.Length; x++) {																//For each collider from the overlap circle
-			
-
-			if (colliderList [x].tag == "Player" && objectAngle > leftSide && objectAngle < rightSide) {				//If the collider is an enemy within the cone
-				player.GetComponent<HealthEnergy>().TakeDamage(5f);
-			}
-		}
-
-		return;
+	/** Takes damage */
+	public void damage(int toTake){
+		health -= toTake;
 	}
 }
