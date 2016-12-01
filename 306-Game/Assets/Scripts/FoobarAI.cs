@@ -214,11 +214,13 @@ public class FoobarAI : MonoBehaviour {
         if (monster)
         {
             monster = false;
+            anime.SetBool("isEvil", false);
         }
         else
         {
 
             monster = true;
+            anime.SetBool("isEvil", true);
             //anime.SetBool("ampumpkin", !monster);
 
         }
