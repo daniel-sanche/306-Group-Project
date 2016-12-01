@@ -8,7 +8,7 @@ public class HealthEnergy : MonoBehaviour {
     public Stat energy;
 
     Animator anim;
-    bool isDead;
+    public bool isDead;
     bool damaged;
 
     void Awake()
@@ -39,7 +39,7 @@ public class HealthEnergy : MonoBehaviour {
     {
         isDead = true;
 
-        anim.SetTrigger("Die");
+        anim.SetTrigger("Dead");
     }
 
     //increases the character's energy by "amount"
