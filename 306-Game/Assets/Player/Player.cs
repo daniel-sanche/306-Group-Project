@@ -5,16 +5,25 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 
 	//The speed of the player
-	public float speed;				
+	public float speed;		
+
+	//The swing speed of the player
+	public float swingSpeed;
 
 	//The currently equipped weapon
 	public Weapon weapon;
+
+	//The energy loss rate of the player (doubled when sprinting)
+	public float energyLossRate;
 
 	//The player's rigidbody
 	private new Rigidbody2D rigidbody;
 
 	//The player's animator
 	private Animator animator;
+
+	//The player's health/energy
+	private HealthEnergy healthEnergy;
 
 	[SerializeField]
 	private int swingAngle;
@@ -28,10 +37,12 @@ public class Player : MonoBehaviour {
 	//The timer for when the player can attack
 	private float attackTimer;
 
+
 	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody2D>();																	//Initializes the rigidbody variable
 		animator = GetComponent<Animator>();																		//Initializes the animator variable
+		healthEnergy = GetComponent<HealthEnergy>();																//Initializes the player's health/energy
 	}
 
 	// Update is called once per frame
@@ -39,6 +50,7 @@ public class Player : MonoBehaviour {
 		Move ();																									//Moves the player
 		Look ();																									//Rotates the player
 		Attack ();																									//Attack using the current weapon
+		handleEnergy();																								//Handles the player's energy decay
 	}
 
 	void FixedUpdate(){
@@ -66,7 +78,13 @@ public class Player : MonoBehaviour {
 
 	//Attacks using the currently equipped weapon
 	private void Attack(){
-		
+		if (weapon != null) {
+			if (weapon.itemType == ItemType.RANGED)
+				animator.SetBool ("Slingshot", true);
+		} else {
+			animator.SetBool ("Slingshot", false);
+		}
+
 		if (Input.GetMouseButtonDown (0)) {																			//If the player presses the left mouse button
 			if (weapon != null && attackTimer <= 0) {
 				weapon.Attack ();
@@ -123,7 +141,7 @@ public class Player : MonoBehaviour {
 		//transform.rotation = Quaternion.Euler (new Vector3 (0, 0, integerAngle));									//Looks at the given angle (up, right, down, or left)
 	}
 
-	//Returns the radian representation of the mouse angle
+	/** Returns the radian representation of the mouse angle */
 	private float getMouseAngle(){
 		Vector2 relativeMousePos = Input.mousePosition - Camera.main.WorldToScreenPoint (transform.position);		//Gets the position of the mouse in relation to the player;
 
@@ -136,4 +154,92 @@ public class Player : MonoBehaviour {
 
 		return Mathf.Atan2 (relativePos.y, relativePos.x);															//Calculate the angle of the GameObject to the player.
 	}
+
+	public void SwingWeapon(Melee weapon){
+		StartCoroutine ("SwingWeaponRoutine", weapon);
+	}
+
+	/**
+	 * Swings a melee weapon relative to the player
+	 */
+	private IEnumerator SwingWeaponRoutine(Melee weapon){
+		animator.SetBool ("Attacking", true);																		//Tell animator to attack
+		Look ();																									//Look in the current mouse direction
+		float inputAngle = getMouseAngle ();																		//Get the mouse angle relative to the player
+		float lowerAngle = inputAngle - Mathf.Deg2Rad * (weapon.swingAngle / 2f);									//Get the lower swing angle
+		float upperAngle = inputAngle + Mathf.Deg2Rad * (weapon.swingAngle / 2f);									//Get the upper swing angle						
+
+		GameObject swingObject = GameObject.Instantiate (weapon.swingPrefab) as GameObject;							//Creates the swing object using the swing prefab
+
+		float curAngle = lowerAngle;																				//Current angle to draw at begins at the lower angle
+
+		//If we are facing right, swing from right to left
+		if (GetComponent<SpriteRenderer> ().flipX == false) {
+			for (float f = lowerAngle; f <= upperAngle; f = f + Time.deltaTime * swingSpeed) {
+				curAngle = f;
+				Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
+				swingObject.transform.position = swingPos;
+				swingObject.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, getRelativeAngle (swingObject) * Mathf.Rad2Deg));
+				yield return new WaitForEndOfFrame ();
+			}
+		//Otherwise, swing from left to right
+		} else {
+			for (float f = upperAngle; f >= lowerAngle; f = f - Time.deltaTime * swingSpeed) {
+				curAngle = f;
+				Vector2 swingPos = new Vector2 (transform.position.x + 1.25f * Mathf.Cos (curAngle), transform.position.y + 1.25f * Mathf.Sin (curAngle));
+				swingObject.transform.position = swingPos;
+				swingObject.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, getRelativeAngle (swingObject) * Mathf.Rad2Deg));
+				yield return new WaitForEndOfFrame ();
+			}
+		}
+
+		animator.SetBool ("Attacking", false);																		//Tell animator attacking is done
+		Destroy (swingObject.gameObject);																			//Destroy swing object
+	}
+
+
+	/** Damages the player for the given amount */
+	public void removeHealth(float amount){
+		healthEnergy.TakeDamage (amount);
+		StartCoroutine ("DamageFlash");
+	}
+
+	/** Heals the player for the given amount */
+	public void addHealth(float amount){
+		healthEnergy.RecoverHealth (amount);
+		StartCoroutine ("HealFlash");
+	}
+
+	/** Damages the player for the given amount */
+	public void removeEnergy(float amount){
+		healthEnergy.LoseEnergy(amount);
+	}
+
+	/** Heals the player for the given amount */
+	public void addEnergy(float amount){
+		healthEnergy.RecoverEnergy (amount);
+	}
+
+	/** Decrements the player's energy based on energyLossRate */
+	private void handleEnergy(){
+		if (Input.GetKeyDown (KeyCode.LeftShift))
+			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate) / 10f);
+		else
+			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate * 2) / 10f);
+	}
+
+	/** Temporarily flashes red to indicate the player has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+	}
+
+	/** Temporarily flashes red to indicate the player has taken damage */
+	private IEnumerator HealFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.green;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+	}
+
 }
