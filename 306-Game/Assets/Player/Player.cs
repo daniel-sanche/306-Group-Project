@@ -63,7 +63,7 @@ public class Player : MonoBehaviour {
 		if(attackTimer >= 0)																						//Decrement attack timer if it is greater than zero
 			attackTimer -= Time.deltaTime;
 
-		if (healthEnergy.isDead )
+		if (healthEnergy.isDead )																					//If we run out of health, die
 			Die ();
 	}
 
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour {
 		GetComponent<Collider2D> ().enabled = false;
 		GameObject curDrop;
 
-		for (int i = 0; i < Inventory.itemSlot.Length; i++) {
+		for (int i = 0; i < Inventory.itemSlot.Length; i++) {												//For each item in inventory, drop it and add force to dropped item
 			if(Inventory.itemSlot[i].item != null){
 				curDrop = GameObject.Instantiate (Inventory.itemSlot[i].pickupPrefab, transform.position, Quaternion.identity) as GameObject;
 				curDrop.GetComponent<Pickup> ().item = Inventory.itemSlot[i].getItem();
@@ -80,6 +80,14 @@ public class Player : MonoBehaviour {
 				Vector2 itemForce = Vector2.MoveTowards((Vector2)transform.position, randomPoint, 50f);		//Finds the force to apply based on the mouse and player
 				curDrop.GetComponent<Rigidbody2D> ().AddForce( itemForce - (Vector2)transform.position);	//Add the force to the 
 			}
+		}
+
+		if (weapon != null) {
+			curDrop = GameObject.Instantiate (Inventory.weaponSlot.pickupPrefab, transform.position, Quaternion.identity) as GameObject;
+			curDrop.GetComponent<Pickup> ().item = Inventory.weaponSlot.getItem ();
+			Vector2 randomPoint = Random.insideUnitCircle * 50 + (Vector2)transform.position;
+			Vector2 itemForce = Vector2.MoveTowards((Vector2)transform.position, randomPoint, 50f);		//Finds the force to apply based on the mouse and player
+			curDrop.GetComponent<Rigidbody2D> ().AddForce( itemForce - (Vector2)transform.position);	//Add the force to the 
 		}
 	}
 
@@ -129,7 +137,7 @@ public class Player : MonoBehaviour {
 		for (int x = 0; x < colliderList.Length; x++) {																//For each collider from the overlap circle
 			float objectAngle = getRelativeAngle (colliderList[x].gameObject);										//Get the angle of it to the player
 
-			if (colliderList [x].tag == "Enemy" && objectAngle > leftSide && objectAngle < rightSide) {				//If the collider is an enemy within the cone
+			if (colliderList [x].tag == "NPC" && objectAngle > leftSide && objectAngle < rightSide) {				//If the collider is an enemy within the cone
 				enemyList.Add (colliderList[x].gameObject);															//Add it to the list of enemies
 			}
 		}

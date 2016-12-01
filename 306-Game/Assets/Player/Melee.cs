@@ -46,7 +46,7 @@ public class Melee : Weapon {
 		for (int x = 0; x < colliderList.Length; x++) {																//For each collider from the overlap circle
 			float objectAngle = getRelativeAngle (colliderList[x].gameObject);										//Get the angle of it to the player
 
-			if (colliderList [x].tag == "Enemy" && objectAngle > leftSide && objectAngle < rightSide) {				//If the collider is an enemy within the cone
+			if (colliderList [x].tag == "NPC" && objectAngle > leftSide && objectAngle < rightSide) {				//If the collider is an enemy within the cone
 				enemyList.Add (colliderList[x].gameObject);															//Add it to the list of enemies
 			}
 		}
