@@ -99,7 +99,7 @@ public class DayNightSystem : MonoBehaviour {
 
         for(int i =0; i< objects.Length; i++)
         {
-            objects[i].SendMessage("ChangeForm");
+            objects[i].SendMessage("ChangeForm",SendMessageOptions.DontRequireReceiver);
         }
 
     }

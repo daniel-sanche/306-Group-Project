@@ -1,9 +1,27 @@
 fileFormatVersion: 2
-guid: 8c6ce60143154bc438ee870381f35246
-timeCreated: 1480542560
+guid: 8af4ac4ee80ded54f896cb46dda3f8a9
+timeCreated: 1480540388
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: cat1_0
+    21300002: cat1_1
+    21300004: cat1_2
+    21300006: cat1_3
+    21300008: cat1_4
+    21300010: cat1_5
+    21300012: cat1_6
+    21300014: cat1_7
+    21300016: cat1_8
+    21300018: cat1_9
+    21300020: cat1_10
+    21300022: cat1_11
+    21300024: cat1_12
+    21300026: cat1_13
+    21300028: cat1_14
+    21300030: cat1_15
+    21300032: cat1_16
+    21300034: cat1_17
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -38,7 +56,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -51,7 +69,241 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: cat1_0
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 612
+        width: 64
+        height: 77
+      alignment: 9
+      pivot: {x: 0.5816624, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_1
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 607
+        width: 66
+        height: 82
+      alignment: 9
+      pivot: {x: 0.5484855, y: 0.5228815}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_2
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 607
+        width: 60
+        height: 82
+      alignment: 9
+      pivot: {x: 0.5643829, y: 0.5177962}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_3
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 488
+        width: 124
+        height: 79
+      alignment: 9
+      pivot: {x: 0.40780872, y: 0.6664112}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_4
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 499
+        width: 124
+        height: 66
+      alignment: 9
+      pivot: {x: 0.4078465, y: 0.5888774}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_5
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 488
+        width: 124
+        height: 79
+      alignment: 9
+      pivot: {x: 0.40554196, y: 0.6664112}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_6
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 385
+        width: 53
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_7
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 385
+        width: 53
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_8
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 385
+        width: 52
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_9
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 272
+        width: 64
+        height: 82
+      alignment: 9
+      pivot: {x: 0.5780668, y: 0.5203098}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_10
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 272
+        width: 66
+        height: 82
+      alignment: 9
+      pivot: {x: 0.55767727, y: 0.51740843}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_11
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 253
+        width: 63
+        height: 101
+      alignment: 9
+      pivot: {x: 0.579306, y: 0.60835886}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_12
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 153
+        width: 135
+        height: 79
+      alignment: 9
+      pivot: {x: 0.49216366, y: 0.6964052}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_13
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 158
+        width: 126
+        height: 74
+      alignment: 9
+      pivot: {x: 0.5223896, y: 0.67155313}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_14
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 158
+        width: 160
+        height: 79
+      alignment: 9
+      pivot: {x: 0.41404516, y: 0.69194126}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_15
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 50
+        width: 64
+        height: 77
+      alignment: 9
+      pivot: {x: 0.44261384, y: 0.59062535}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_16
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 50
+        width: 72
+        height: 77
+      alignment: 9
+      pivot: {x: 0.39798015, y: 0.58585554}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat1_17
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 53
+        width: 72
+        height: 76
+      alignment: 9
+      pivot: {x: 0.4387881, y: 0.591818}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
     outline: []
   spritePackingTag: 
   userData: 
