@@ -73,8 +73,24 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 			Vector2 itemForce = Vector2.MoveTowards((Vector2)GameObject.FindGameObjectWithTag("Player").transform.position, relativeMousePos, dropForce + 2f);		//Finds the force to apply based on the mouse and player
 			
 			GameObject drop = (GameObject)Instantiate (pickupPrefab, dropPos, Quaternion.identity);																	//Drops the item at the given location
-			drop.GetComponent<Rigidbody2D> ().AddForce (itemForce - dropPos);																						//Applies force relative to the player
-			drop.GetComponent<Pickup> ().item = getItem ();																											//Transfers item from this to the pickup item
+			
+			if (!(item.itemType == ItemType.BUILDING)) {
+				drop.GetComponent<Rigidbody2D> ().AddForce (itemForce - dropPos);																						//Applies force relative to the player
+			}
+
+			if ((item.itemType == ItemType.BUILDING)) {
+				//Physics2D.IgnoreCollision (drop.GetComponent<BoxCollider2D>(), GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>());
+				drop.AddComponent<BoxCollider2D>();
+
+				//drop.GetComponent<BoxCollider2D> ().isTrigger = false;
+				drop.GetComponent<CircleCollider2D> ().isTrigger = false;
+				drop.GetComponent<Rigidbody2D> ().isKinematic = true;
+				drop.tag = "BOX";
+			
+			}
+
+			drop.GetComponent<Pickup> ().item = getItem ();		
+																									//Transfers item from this to the pickup item
 		}
 	}
 

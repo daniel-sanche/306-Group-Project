@@ -2,9 +2,9 @@
 using System.Collections;
 using System;
 
-public class Node{
-	public Node right;
-	public Node left;
+public class DecisionTreeNode{
+	public DecisionTreeNode right;
+	public DecisionTreeNode left;
 	public Decision decdel;
 	public Action actdel;
 
@@ -20,19 +20,19 @@ public class DecisionTree : MonoBehaviour {
 	
 
 
-	public Node root;
+	public DecisionTreeNode root;
 	/* useful for inserting nodes*/
 	public int mid = 50;
 	/*Constructor*/
 	public  DecisionTree(){
 	
-		root = new Node();
+		root = new DecisionTreeNode();
 		root.value = mid;
 
 
 	}
 
-	public void Insert(Node newnode, Node parent){
+	public void Insert(DecisionTreeNode newnode, DecisionTreeNode parent){
 		if (newnode == null || parent ==null) {
 			throw new Exception ("INSERT: newnode is null or parent is null");
 		}
@@ -55,7 +55,7 @@ public class DecisionTree : MonoBehaviour {
 
 	}
 
-	public void Search(Node node){
+	public void Search(DecisionTreeNode node){
 
 		/*Something has gone wrong*/
 		if (node == null) {

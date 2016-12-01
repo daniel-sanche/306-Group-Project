@@ -133,7 +133,7 @@ public class TileChunk : MonoBehaviour {
 	 * render's the tiles in the chunk on screen. 
 	 * If the tiles were already saved in a cache, just set the chunk as active so they are rendered
 	 **/
-	private void DisplayTiles() {
+	public void DisplayTiles() {
 		//add items if necessary
 		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
 		if (generateNewItems) {
@@ -336,11 +336,15 @@ public class TileChunk : MonoBehaviour {
 	 * Add enemies to the chunk
 	 * Will add numToAdd enemies
 	 */
+
+	public GameObject[] Enemies;
 	private void AddNewEnemies(int numToAdd, List<Vector2>availableSpaces){
-		int randomIndex = Random.Range(0, availableSpaces.Count);
-		Vector2 point = availableSpaces [randomIndex];
-		GameObject itemInstance = Instantiate (enemy, Vector3.zero, Quaternion.identity) as GameObject;
-		itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
+		if (availableSpaces.Count > 0) {
+			int randomIndex = Random.Range (0, availableSpaces.Count);
+			Vector2 point = availableSpaces [randomIndex];
+			GameObject itemInstance = Instantiate (Enemies[Random.Range(0,Enemies.Length)], Vector3.zero, Quaternion.identity) as GameObject;
+			itemInstance.transform.localPosition = new Vector3 (point.x + offset.x, point.y + offset.y, 0); 
+		}
 	}
 
 }
