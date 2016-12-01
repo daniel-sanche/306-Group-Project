@@ -37,8 +37,9 @@ public class TileRenderer : MonoBehaviour {
 		maxX = (int)TilesPerChunk.x;
 		maxY = (int)TilesPerChunk.y;
 		InitMap ();
-		SetActiveChunk (0, 0);
-
+		foreach (TileChunk thisChunk in chunkMatrix) {
+			thisChunk.DisplayTiles ();
+		}
 	}
 
 	/**
@@ -52,17 +53,26 @@ public class TileRenderer : MonoBehaviour {
 			Grid astar = (Grid)Instantiate (A_);
 
 		}
+		/*
+		if (countframes == 50) {
+			foreach (TileChunk thisChunk in chunkMatrix) {
+				thisChunk.HideTiles ();
+			}
+		}
+		*/
 		countframes++;
 		Vector3 newPos = this.transform.position;
-		if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
-			//changing active chunk of tiles
-			int chunkNumX = (int)Mathf.Floor (newPos.x / TilesPerChunk.x);
-			minX = chunkNumX * (int)TilesPerChunk.x;
-			maxX = (chunkNumX+1) * (int)TilesPerChunk.x;
-			int chunkNumY = (int)Mathf.Floor (newPos.y / TilesPerChunk.y);
-			minY = chunkNumY * (int)TilesPerChunk.y;
-			maxY = (chunkNumY+1) * (int)TilesPerChunk.y;
-			SetActiveChunk (chunkNumX, chunkNumY);
+		if (countframes > 50) {
+			if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
+				//changing active chunk of tiles
+				int chunkNumX = (int)Mathf.Floor (newPos.x / TilesPerChunk.x);
+				minX = chunkNumX * (int)TilesPerChunk.x;
+				maxX = (chunkNumX + 1) * (int)TilesPerChunk.x;
+				int chunkNumY = (int)Mathf.Floor (newPos.y / TilesPerChunk.y);
+				minY = chunkNumY * (int)TilesPerChunk.y;
+				maxY = (chunkNumY + 1) * (int)TilesPerChunk.y;
+				SetActiveChunk (chunkNumX, chunkNumY);
+			}
 		}
 	}
 		

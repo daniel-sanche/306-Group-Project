@@ -98,7 +98,7 @@ public class TileChunk : MonoBehaviour {
 	 * render's the tiles in the chunk on screen. 
 	 * If the tiles were already saved in a cache, just set the chunk as active so they are rendered
 	 **/
-	private void DisplayTiles() {
+	public void DisplayTiles() {
 		if (!isCached) {
 			tileList.Clear ();
 			for (int x = 0; x < tilesPerChunk.x; x++) {
@@ -136,7 +136,7 @@ public class TileChunk : MonoBehaviour {
 	 * hides the tiles rendered on screen
 	 * If the tiles aren't in use after a set amount of time, clear the cache of the tiles in memory
 	 **/
-	private void HideTiles () {
+	public void HideTiles () {
 		gameObject.SetActive(false);
 		Invoke ("ClearCache", cacheClearTime);
 	}
