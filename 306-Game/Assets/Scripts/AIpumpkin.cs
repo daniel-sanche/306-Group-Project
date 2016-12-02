@@ -450,7 +450,7 @@ public class AIpumpkin : MonoBehaviour {
 
 		Destroy (gameObject);
 	}
-	public string damage="5";
+	public float damage=5;
 	public float force=1000f;
 	void OnCollisionEnter2D(Collision2D col){
 
@@ -461,7 +461,7 @@ public class AIpumpkin : MonoBehaviour {
 			col.gameObject.GetComponent<Rigidbody2D> ().AddForce (-direction * force);
 
 			if (monster) {
-				col.gameObject.SendMessage ("ApplyDamage", damage);
+				col.gameObject.SendMessage ("removeHealth", damage);
 			}
 
 			AttackCD ();

@@ -544,7 +544,7 @@ public class FoobarAI : MonoBehaviour {
 		sayphrasecd = false;
 	}
 
-	public string damage="5";
+	public float damage=5f;
 	public float force=1000f;
 
 	void OnCollisionEnter2D(Collision2D col){
@@ -556,7 +556,7 @@ public class FoobarAI : MonoBehaviour {
 			col.gameObject.GetComponent<Rigidbody2D> ().AddForce (-direction * force);
 
 			if (monster) {
-				col.gameObject.SendMessage ("ApplyDamage", damage);
+				col.gameObject.SendMessage ("removeHealth", damage);
 			}
 
 			AttackCD ();

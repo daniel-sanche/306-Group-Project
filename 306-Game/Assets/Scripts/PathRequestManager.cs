@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
-/* Credit is due to Sebastian Lague's tutorial on https://www.youtube.com/watch?v=-L-WgKMFuhE&t=2s*/
+/* Credit is deserved to Sebastian Lague's tutorial on https://www.youtube.com/watch?v=-L-WgKMFuhE&t=2s*/
 
 public class PathRequestManager : MonoBehaviour {
 
@@ -19,7 +19,7 @@ public class PathRequestManager : MonoBehaviour {
 	}
 
 
-
+	/* AI's will request a newpath*/
 	public static void RequestPath(Vector3 pathStart, Vector2 pathEnd, Action<Vector3[], bool> callback){
 		PathRequest newRequest = new PathRequest(pathStart,pathEnd,callback);
 		instance.pathRequestQueue.Enqueue(newRequest );

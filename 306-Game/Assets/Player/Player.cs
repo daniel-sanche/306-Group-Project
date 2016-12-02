@@ -273,6 +273,12 @@ public class Player : MonoBehaviour {
 		StartCoroutine ("DamageFlash");
 	}
 
+	/** Damages the player for the given amount */
+	public void ApplyDamge(float amount){
+		healthEnergy.TakeDamage (amount);
+		StartCoroutine ("DamageFlash");
+	}
+
 	/** Heals the player for the given amount */
 	public void addHealth(float amount){
 		healthEnergy.RecoverHealth (amount);

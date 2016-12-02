@@ -28,13 +28,15 @@ public class Grid : MonoBehaviour {
 			return gridsizex * gridsizey;
 		}
 	}
+
+	/* creates the a* grid*/
 	void CreateGrid(){
 		grid = new Node[gridsizex, gridsizey];
 		Vector3 worldBottomLeft = transform.position ;//- Vector3.right * gridWorldSize.x/2 - Vector3.up * gridWorldSize.y/2;
 		for (int x = 0; x < gridsizex; x++) {
 			for (int y = 0; y < gridsizey; y++) {
 				Vector3 worldPoint = worldBottomLeft + Vector3.right * (x *nodeDiameter + nodeRadius) + Vector3.up * (y* nodeDiameter + nodeRadius);
-				//bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkablemask));
+				/* Find unwalkable nodes*/
 				bool walkable = true;
 				Collider2D collider = Physics2D.OverlapCircle (worldPoint, nodeRadius, unwalkablemask);
 
@@ -46,7 +48,7 @@ public class Grid : MonoBehaviour {
 			}
 		}
 	}
-
+	/* Used in pathfinding forA* search*/
 	public List<Node> GetNeighbours(Node node){
 		List<Node> neighbours = new List<Node> ();
 
@@ -68,6 +70,7 @@ public class Grid : MonoBehaviour {
 		return neighbours;
 	}
 
+	/* Get a node from a world position coordinate*/
 	public Node NodeFromWorldPoint(Vector3 worldPosition){
 		float percentx = (worldPosition.x /*+ gridWorldSize.x / 2*/) / gridWorldSize.x;
 		float percenty = (worldPosition.y /*+ gridWorldSize.y / 2*/) / gridWorldSize.y;
@@ -81,7 +84,8 @@ public class Grid : MonoBehaviour {
 
 	}
 
-
+	/* If we want to see the grid and unwalkable nodes
+	 * WARNING BECOMES LAGGY AT HIGH NODE COUNT*/
 	void OnDrawGizmos(){
 		Gizmos.DrawWireCube (transform.position, new Vector3 (gridWorldSize.x, gridWorldSize.y,1 ));
 		if (grid != null && displayGridGizmos ) {

@@ -11,7 +11,6 @@ public class Pathfinding : MonoBehaviour {
 	Grid grid;
 
 
-	//awake
 	void Awake(){
 		grid = GetComponent<Grid> ();
 		requestManager = GetComponent <PathRequestManager >();
@@ -22,7 +21,7 @@ public class Pathfinding : MonoBehaviour {
 
 	}
 
-
+	/* the a* search*/
 	IEnumerator FindPath(Vector3 startpos, Vector3 targetpos){
 		Node startnode = grid.NodeFromWorldPoint (startpos);
 		Node targetnode = grid.NodeFromWorldPoint (targetpos);
