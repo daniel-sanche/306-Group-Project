@@ -566,16 +566,20 @@ public class AIbanana : MonoBehaviour {
 		textballoon.enabled = false;
 		sayphrasecd = false;
 	}
-
-
-
-	/* Take damage from player attack*/
+		
 	private void TakeDamage(int dmg){
 		hp -= dmg;
-
+		StartCoroutine ("DamageFlash");
 		if (hp <= 0) {
 			Die ();	
 		}
+	}
+
+	/** Temporarily flashes red to indicate the pumpkin has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
 	}
 
 	public float damage=5f;
