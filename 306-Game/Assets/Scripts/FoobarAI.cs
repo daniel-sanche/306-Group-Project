@@ -336,6 +336,8 @@ public class FoobarAI : MonoBehaviour {
 
     }
 
+	public float attackCooldown;
+	
     public void Attack()
     {
         if (!attacking)
@@ -362,7 +364,7 @@ public class FoobarAI : MonoBehaviour {
             attacking = true;
             newpathcd = true;
 
-            Invoke("AttackCD", 3f);
+            Invoke("AttackCD", attackCooldown);
         }
 
     }
