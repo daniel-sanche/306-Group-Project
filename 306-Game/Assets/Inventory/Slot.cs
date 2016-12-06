@@ -159,7 +159,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 
 
 	//GameObject that represents the hover image for when items are moved by the player
-	protected GameObject hoverImage;
+	public GameObject hoverImage;
 
 	/**
 	 * This function is called whenever this slot is initially dragged by the cursor
@@ -207,7 +207,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 	 * This function is called whenever the pointer exits the slot
 	 **/
 	public void OnPointerExit(PointerEventData eventData){
-		if (tooltip != null) {																//Upon moving the mouse out of the sloow
+		if (tooltip != null) {																//Upon moving the mouse out of the slow
 			Destroy (tooltip);																//Delete the tooltip
 		}
 	}
@@ -217,7 +217,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDra
 //****************************************************************************************************************************************************
 
 	//GameObject that represents the tooltip displayed when hovering over an item
-	protected GameObject tooltip;
+	public GameObject tooltip;
 
 	/*
 	 * Gives the sprite renderer a new sprite.
