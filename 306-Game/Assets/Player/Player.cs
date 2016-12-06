@@ -297,10 +297,18 @@ public class Player : MonoBehaviour {
 
 	/** Decrements the player's energy based on energyLossRate */
 	private void handleEnergy(){
-		if (Input.GetKeyDown (KeyCode.LeftShift))
-			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate) / 10f);
-		else
-			healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate * 2) / 10f);
+		
+		if (healthEnergy.energy.CurrentVal <= 0f) {
+			if (Input.GetKeyDown (KeyCode.LeftShift))
+				healthEnergy.TakeDamage ((Time.deltaTime * energyLossRate * 2) / 10);
+			else
+				healthEnergy.TakeDamage (Time.deltaTime * energyLossRate / 10);
+		} else {
+			if (Input.GetKeyDown (KeyCode.LeftShift))
+				healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate) / 10f);
+			else
+				healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate * 2) / 10f);
+		}
 	}
 
 	/** Temporarily flashes red to indicate the player has taken damage */

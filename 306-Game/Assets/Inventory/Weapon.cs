@@ -4,7 +4,7 @@ using System.Collections;
 public class Weapon : Item {
 
 	//The weapon's damage
-	public float damage;
+	public int damage;
 
 	//The weapon's attack cooldown
 	public float attackCooldown;
