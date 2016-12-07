@@ -63,15 +63,6 @@ public class TileChunk : MonoBehaviour {
 	//the probability of an enemy being added to a chunk
 	public float enemyProb = 0.1f;
 
-	public float quickshotProb = 1;
-	public float poisonProb = 1;
-	public float healthProb = 5;
-	public float energyProb = 5;
-	public float clubProb = 1;
-	public float malletProb = 1;
-	public float slingshotProb = 1;
-	public float swordProb = 1;
-
 	private bool generateNewItems = true;
 	private bool generateNewEnemy = true;
 	public Vector2 offset;
