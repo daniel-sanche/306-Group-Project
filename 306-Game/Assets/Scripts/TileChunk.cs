@@ -22,7 +22,7 @@ public class TileChunk : MonoBehaviour {
 	private List<TileChunk> connectedChunks;
 	private List<TileChunk> distantChunks;
 
-	public GameObject grass;
+	public GameObject[] grass;
 	public GameObject gravel;
 	public GameObject water;
 	public GameObject sand;
@@ -152,7 +152,7 @@ public class TileChunk : MonoBehaviour {
 					if (noiseMap [x, y] == 0) {
 						//create noise for this tile if it hasn't been created
 						//noise is used to choose a type appearance for the type
-						noiseMap [x, y] = Random.Range (1, 1000);
+						noiseMap [x, y] = Random.Range (1, 10000);
 					}
 					GameObject groundTile = SpriteForCode (code, noiseMap [x, y]);
 					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
@@ -215,10 +215,15 @@ public class TileChunk : MonoBehaviour {
 	 * left,right,top,bottom = the tiles surrounding this one, to use for context information
 	 **/
 	public GameObject SpriteForCode(TileType code, int hashNum){
+		int idx = 0;
 		switch (code) 
 		{
 		case TileType.Grass:
-			return grass;
+			idx = 0;
+			if (hashNum % 100 == 0) {
+				idx = (hashNum % (grass.GetLength (0) - 1)) + 1;
+			}
+			return grass[idx];
 		case TileType.Gravel:
 			return gravel;
 		case TileType.Water:
@@ -256,7 +261,7 @@ public class TileChunk : MonoBehaviour {
 		case TileType.FloorDoorR:
 			return floorDoorR;
 		default:
-			return grass;
+			return grass[0];
 		}
 	}
 
