@@ -85,6 +85,8 @@ public class Player : MonoBehaviour {
 
 			if (Input.GetKeyDown (KeyCode.P))
 				Inventory.SortByName ();
+		} else {
+			rigidbody.velocity = new Vector2(0,0);
 		}
 	}
 
