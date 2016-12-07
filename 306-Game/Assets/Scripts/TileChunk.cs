@@ -27,7 +27,7 @@ public class TileChunk : MonoBehaviour {
 	public GameObject water;
 	public GameObject sand;
 	public GameObject[] rock;
-	public GameObject tree;
+	public GameObject[] tree;
 
 	public GameObject floor;
 	public GameObject floorTop;
@@ -228,7 +228,7 @@ public class TileChunk : MonoBehaviour {
 		case TileType.Rock:
 			return rock[hashNum%rock.GetLength(0)];
 		case TileType.Tree:
-			return tree;
+			return tree[hashNum%tree.GetLength(0)];
 		case TileType.Floor:
 			return floor;
 		case TileType.FloorTop:
