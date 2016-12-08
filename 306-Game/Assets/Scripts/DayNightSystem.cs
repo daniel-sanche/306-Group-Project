@@ -24,7 +24,10 @@ public class DayNightSystem : MonoBehaviour {
 	private Text leftText;
 
     //AudioSource
-    public AudioSource dayMusic, nightMusic;
+    public AudioClip[] dayClips;
+    public AudioClip[] nightClips;
+    public AudioClip ending;
+    public AudioSource music;
 
 
 
@@ -38,10 +41,7 @@ public class DayNightSystem : MonoBehaviour {
         daysLeft = numDays;
 		leftText = GetComponentInChildren<Text> ();
 		leftText.text = daysLeft.ToString();
-
-        // Find and instantiate day & night music
-        //dayMusic.Play();
-        //nightMusic.Stop();
+        
     }
 
     // Update is called once per frame
@@ -72,7 +72,10 @@ public class DayNightSystem : MonoBehaviour {
 			leftText.text = daysLeft.ToString();
 			if (daysLeft == 0)
 			{
-				SceneManager.LoadScene(2);
+                music.clip = ending;
+                music.loop = false;
+                music.Play();
+                SceneManager.LoadScene(2);
 			}
         }
         else
@@ -119,17 +122,43 @@ public class DayNightSystem : MonoBehaviour {
 
     }
 
+    //Simple switch statement chooses a sample to loop based on whether its day/night and how many days are left
+    //Each loop should be precisely 16 sec long
     void UpdateMusic()
     {
-        if (nightMusic.isPlaying)
+        switch (daysLeft)
         {
-            nightMusic.Stop();
-            dayMusic.Play();
-        }
-        else
-        {
-            nightMusic.Play();
-            dayMusic.Stop();
+            case 5:
+                if (!isDay) music.clip = dayClips[0];
+                else music.clip = nightClips[0];
+                music.Play();
+                break;
+            case 4:
+                if (!isDay) music.clip = dayClips[1];
+                else music.clip = nightClips[0];
+                music.Play();
+                break;
+            case 3:
+                if (!isDay) music.clip = dayClips[2];
+                else music.clip = nightClips[1];
+                music.Play();
+                break;
+            case 2:
+                if (!isDay) music.clip = dayClips[3];
+                else music.clip = nightClips[2];
+                music.Play();
+                break;
+            case 1:
+                if (!isDay) music.clip = dayClips[4];
+                else music.clip = nightClips[3];
+                music.Play();
+                break;
+            case 0:
+                music.clip = nightClips[4];
+                music.Play();
+                break;
+            default:
+                break;
         }
     }
 }
