@@ -330,29 +330,39 @@ public class AIbanana : MonoBehaviour {
 
 	}
 	private float oldspeed;
+	public int atkforce=1200;
 	public void Attack(){
 		if (!attacking) {
 			var point = new GameObject ().transform;
 			point.position = target;
-
+			/*
 			oldspeed = unitpath.speed;
 			unitpath.target = point;
 			unitpath.speed = speed;
 			ChangePath ();
+			*/
+			Vector2 dir = target - (Vector2) transform.position;
+			dir = dir.normalized;
+			//dir.Scale(2);
+			rb.AddForce (dir * atkforce);
+
+
 
 			attacking = true;
+			unitpath.StopAllCoroutines ();
 			newpathcd = true;
+			Invoke ("NewPathCd", 1f);
 
-			Invoke ("AttackCD", 2f);
+			Invoke ("AttackCD", 4f);
 		}
 
 	}
 
 
 	private void AttackCD(){
-		unitpath.speed = oldspeed;
+		//unitpath.speed = oldspeed;
 		attacking = false;
-		Invoke ("NewPathCd",0f);
+
 
 	}
 
@@ -390,6 +400,7 @@ public class AIbanana : MonoBehaviour {
 	public bool AttackRangeCheck(){
 
 		if (dist < attackrange) {
+			target = (Vector2)player.position;
 			return true;
 		}
 		return false;
