@@ -23,6 +23,11 @@ public class DayNightSystem : MonoBehaviour {
 
 	private Text leftText;
 
+    //AudioSource
+    public AudioSource dayMusic, nightMusic;
+
+
+
     // Use this for initialization
     void Start()
     {
@@ -33,6 +38,10 @@ public class DayNightSystem : MonoBehaviour {
         daysLeft = numDays;
 		leftText = GetComponentInChildren<Text> ();
 		leftText.text = daysLeft.ToString();
+
+        // Find and instantiate day & night music
+        //dayMusic.Play();
+        //nightMusic.Stop();
     }
 
     // Update is called once per frame
@@ -77,6 +86,7 @@ public class DayNightSystem : MonoBehaviour {
             daysLeft = daysLeft - 1;
         }
         UpdateNPCs();
+        UpdateMusic();
     }
 
     // counts how long the day or night has lasted
@@ -107,5 +117,19 @@ public class DayNightSystem : MonoBehaviour {
             objects[i].SendMessage("ChangeForm");
         }
 
+    }
+
+    void UpdateMusic()
+    {
+        if (nightMusic.isPlaying)
+        {
+            nightMusic.Stop();
+            dayMusic.Play();
+        }
+        else
+        {
+            nightMusic.Play();
+            dayMusic.Stop();
+        }
     }
 }
