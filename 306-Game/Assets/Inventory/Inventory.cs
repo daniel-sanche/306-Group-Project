@@ -129,6 +129,8 @@ public class Inventory : MonoBehaviour {
 	**/
 	public static void hideInventory(){
 		for (int x = 0; x < itemSlot.Length; x++) {										//For each item slot
+			Destroy(itemSlot[x].tooltip);
+			Destroy(itemSlot[x].hoverImage);
 			itemSlot [x].gameObject.SetActive (false);									//Set it as not active
 		}
 

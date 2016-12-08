@@ -25,6 +25,6 @@ public class Ranged : Weapon {
 		GameObject shot;
 		shot = GameObject.Instantiate (projectile.gameObject, player.transform.position, Quaternion.identity) as GameObject;	//Instantiates shot based on player
 
-		shot.GetComponent<Projectile> ().Initialize(force, new Vector2 (Mathf.Cos (mouseAngle), Mathf.Sin (mouseAngle)));		//Sets the velocity of the rigidbody
+		shot.GetComponent<Projectile> ().Initialize(force, new Vector2 (Mathf.Cos (mouseAngle), Mathf.Sin (mouseAngle)), damage);		//Sets the velocity of the rigidbody
 	}
 }
