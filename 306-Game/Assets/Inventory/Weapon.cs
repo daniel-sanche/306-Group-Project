@@ -11,7 +11,7 @@ public class Weapon : Item {
 
 	// Use this for initialization
 	void Start () {
-		itemType = ItemType.WEAPON;
+		itemType = ItemType.MELEE;
 	}
 
 	//Attack class to be used by all descendants

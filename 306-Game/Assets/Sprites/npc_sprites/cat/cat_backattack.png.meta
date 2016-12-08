@@ -1,0 +1,143 @@
+fileFormatVersion: 2
+guid: ae9f1fa6ec9fded40be8c5cc257b5215
+timeCreated: 1480561522
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: cat_backattack_0
+    21300002: cat_backattack_1
+    21300004: cat_backattack_2
+    21300006: cat_backattack_3
+    21300008: cat_backattack_4
+    21300010: cat_backattack_5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: cat_backattack_0
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 22
+        width: 26
+        height: 28
+      alignment: 9
+      pivot: {x: 0.40540203, y: 0.51952034}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat_backattack_1
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 22
+        width: 23
+        height: 44
+      alignment: 9
+      pivot: {x: 0.455443, y: 0.32919788}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat_backattack_2
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 23
+        width: 24
+        height: 50
+      alignment: 9
+      pivot: {x: 0.43737283, y: 0.2895716}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat_backattack_3
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 23
+        width: 27
+        height: 62
+      alignment: 9
+      pivot: {x: 0.38866228, y: 0.23222616}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat_backattack_4
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 24
+        width: 27
+        height: 82
+      alignment: 9
+      pivot: {x: 0.3903091, y: 0.17654726}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: cat_backattack_5
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 24
+        width: 30
+        height: 94
+      alignment: 9
+      pivot: {x: 0.34807995, y: 0.15356787}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

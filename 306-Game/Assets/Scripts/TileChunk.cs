@@ -12,6 +12,7 @@ public class TileChunk : MonoBehaviour {
 
 
 	private TileType [,] terrainMap;
+	private int [,] noiseMap;
 	private List<GameObject> tileList;
 	private List<GameObject> moveableObjects;
 	private Vector2 tilesPerChunk;
@@ -21,12 +22,12 @@ public class TileChunk : MonoBehaviour {
 	private List<TileChunk> connectedChunks;
 	private List<TileChunk> distantChunks;
 
-	public GameObject grass;
+	public GameObject[] grass;
 	public GameObject gravel;
 	public GameObject water;
 	public GameObject sand;
-	public GameObject rock;
-	public GameObject tree;
+	public GameObject[] rock;
+	public GameObject[] tree;
 
 	public GameObject floor;
 	public GameObject floorTop;
@@ -51,6 +52,8 @@ public class TileChunk : MonoBehaviour {
 	public GameObject slingshot;
 	public GameObject sword;
 
+	public GameObject[] itemPrefabs;
+	public float[] itemSpawnChances;
 	public GameObject enemy;
 
 	public float cacheClearTime = (5f*60f);
@@ -60,15 +63,6 @@ public class TileChunk : MonoBehaviour {
 	public float itemProbBuilding = 0.2f;
 	//the probability of an enemy being added to a chunk
 	public float enemyProb = 0.1f;
-
-	public float quickshotProb = 1;
-	public float poisonProb = 1;
-	public float healthProb = 5;
-	public float energyProb = 5;
-	public float clubProb = 1;
-	public float malletProb = 1;
-	public float slingshotProb = 1;
-	public float swordProb = 1;
 
 	private bool generateNewItems = true;
 	private bool generateNewEnemy = true;
@@ -82,6 +76,7 @@ public class TileChunk : MonoBehaviour {
 	 */
 	public void InitChunk(TileType [,] terrain, int x, int y, Vector2 tilesInChunk){
 		terrainMap = terrain;
+		noiseMap = new int[terrain.GetLength (0), terrain.GetLength (1)];
 		tilesPerChunk = tilesInChunk;
 		offset = new Vector2 (x * tilesPerChunk.x, y * tilesPerChunk.y);
 		moveableObjects = new List<GameObject> ();
@@ -131,7 +126,7 @@ public class TileChunk : MonoBehaviour {
 	 * render's the tiles in the chunk on screen. 
 	 * If the tiles were already saved in a cache, just set the chunk as active so they are rendered
 	 **/
-	private void DisplayTiles() {
+	public void DisplayTiles() {
 		//add items if necessary
 		//items will be randomly added when the chunk is first discovered, and possibly after a night cycle
 		if (generateNewItems) {
@@ -154,21 +149,12 @@ public class TileChunk : MonoBehaviour {
 			for (int x = 0; x < tilesPerChunk.x; x++) {
 				for (int y = 0; y < tilesPerChunk.y; y++) {
 					TileType code = terrainMap [x, y];
-					TileType l = TileType.NULL;
-					TileType r = TileType.NULL;
-					TileType t = TileType.NULL;
-					TileType b = TileType.NULL;
-					if (x > 0) {
-						l = terrainMap [x - 1, y];
-					} else if (x < tilesPerChunk.x - 1) {
-						r = terrainMap [x + 1, y];
+					if (noiseMap [x, y] == 0) {
+						//create noise for this tile if it hasn't been created
+						//noise is used to choose a type appearance for the type
+						noiseMap [x, y] = Random.Range (1, 10000);
 					}
-					if (y > 0) {
-						b = terrainMap [x, y - 1];
-					} else if (x < tilesPerChunk.x - 1) {
-						t = terrainMap [x, y + 1];
-					}
-					GameObject groundTile = SpriteForCode (code, left: l, right: r, top: t, bottom: b);
+					GameObject groundTile = SpriteForCode (code, noiseMap [x, y]);
 					GameObject instance = Instantiate (groundTile, Vector3.zero, Quaternion.identity) as GameObject;
 					tileList.Add (instance);
 					instance.transform.SetParent (transform);
@@ -228,12 +214,16 @@ public class TileChunk : MonoBehaviour {
 	 * code = the id of the tile from the generator
 	 * left,right,top,bottom = the tiles surrounding this one, to use for context information
 	 **/
-	public GameObject SpriteForCode(TileType code,	TileType left=TileType.NULL, TileType right = TileType.NULL, 
-									TileType top = TileType.NULL, TileType bottom = TileType.NULL){
+	public GameObject SpriteForCode(TileType code, int hashNum){
+		int idx = 0;
 		switch (code) 
 		{
 		case TileType.Grass:
-			return grass;
+			idx = 0;
+			if (hashNum % 100 == 0) {
+				idx = (hashNum % (grass.GetLength (0) - 1)) + 1;
+			}
+			return grass[idx];
 		case TileType.Gravel:
 			return gravel;
 		case TileType.Water:
@@ -241,9 +231,9 @@ public class TileChunk : MonoBehaviour {
 		case TileType.Sand:
 			return sand;
 		case TileType.Rock:
-			return rock;
+			return rock[hashNum%rock.GetLength(0)];
 		case TileType.Tree:
-			return tree;
+			return tree[hashNum%tree.GetLength(0)];
 		case TileType.Floor:
 			return floor;
 		case TileType.FloorTop:
@@ -271,7 +261,7 @@ public class TileChunk : MonoBehaviour {
 		case TileType.FloorDoorR:
 			return floorDoorR;
 		default:
-			return grass;
+			return grass[0];
 		}
 	}
 
@@ -297,14 +287,14 @@ public class TileChunk : MonoBehaviour {
 	 * Returns a random item based on the probabilities assigned to each one
 	 */
 	private GameObject _randomItem(){
-		float[] probArr = new float[] {poisonProb, quickshotProb, healthProb, energyProb, clubProb, malletProb, slingshotProb, swordProb};
-		GameObject[] objArr = new GameObject[] { poison, quickshot, health, energy, club, mallet, slingshot, sword };
+		float[] probArr = itemSpawnChances;
+		GameObject[] objArr = itemPrefabs;
 		float sum = 0;
 		foreach (float thisProb in probArr) {
 			sum = sum + thisProb;
 		}
 		float randVal = Random.Range (0, sum);
-		for (int i = 0; i < probArr.GetLength(0); i++) {
+		for (int i = 0; i < probArr.Length; i++) {
 			float thisProb = probArr [i];
 			if (randVal < thisProb) {
 				return objArr [i];
@@ -322,7 +312,9 @@ public class TileChunk : MonoBehaviour {
 			if (Random.value < itemProb) {
 				int randomIndex = Random.Range(0, availableSpaces.Count);
 				Vector2 point = availableSpaces [randomIndex];
-				GameObject itemInstance = Instantiate (_randomItem(), Vector3.zero, Quaternion.identity) as GameObject;
+				GameObject pickUpPrefab = Resources.Load ("Pickup") as GameObject;
+				pickUpPrefab.GetComponent<Pickup> ().item = _randomItem ().GetComponent<Item>();
+				GameObject itemInstance = Instantiate (pickUpPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 				itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
 			}
 		}
@@ -332,11 +324,15 @@ public class TileChunk : MonoBehaviour {
 	 * Add enemies to the chunk
 	 * Will add numToAdd enemies
 	 */
+
+	public GameObject[] Enemies;
 	private void AddNewEnemies(int numToAdd, List<Vector2>availableSpaces){
-		int randomIndex = Random.Range(0, availableSpaces.Count);
-		Vector2 point = availableSpaces [randomIndex];
-		GameObject itemInstance = Instantiate (enemy, Vector3.zero, Quaternion.identity) as GameObject;
-		itemInstance.transform.localPosition = new Vector3 (point.x+offset.x, point.y+offset.y, 0); 
+		if (availableSpaces.Count > 0) {
+			int randomIndex = Random.Range (0, availableSpaces.Count);
+			Vector2 point = availableSpaces [randomIndex];
+			GameObject itemInstance = Instantiate (Enemies[Random.Range(0,Enemies.Length)], Vector3.zero, Quaternion.identity) as GameObject;
+			itemInstance.transform.localPosition = new Vector3 (point.x + offset.x, point.y + offset.y, 0); 
+		}
 	}
 
 }

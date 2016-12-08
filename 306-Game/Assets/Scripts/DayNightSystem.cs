@@ -21,6 +21,8 @@ public class DayNightSystem : MonoBehaviour {
     bool isDay;
     float timeLimit;
 
+	private Text leftText;
+
     // Use this for initialization
     void Start()
     {
@@ -29,6 +31,8 @@ public class DayNightSystem : MonoBehaviour {
         InvokeRepeating("UpdateTime", 1, 1);
         InvokeRepeating("ChangeTimeType", 0, dayLength);
         daysLeft = numDays;
+		leftText = GetComponentInChildren<Text> ();
+		leftText.text = daysLeft.ToString();
     }
 
     // Update is called once per frame
@@ -56,6 +60,11 @@ public class DayNightSystem : MonoBehaviour {
             //Changes from keeping track of how much night is left to how much day is left
 			night.bar.GetComponent<CanvasGroup>().alpha = 0;
             day.bar.GetComponent<CanvasGroup>().alpha = 1;
+			leftText.text = daysLeft.ToString();
+			if (daysLeft == 0)
+			{
+				SceneManager.LoadScene(2);
+			}
         }
         else
         {
@@ -66,10 +75,6 @@ public class DayNightSystem : MonoBehaviour {
             day.bar.GetComponent<CanvasGroup>().alpha = 0;
             night.bar.GetComponent<CanvasGroup>().alpha = 1;
             daysLeft = daysLeft - 1;
-            if (daysLeft == 0)
-            {
-                print("\nThe game should go to a game over screen here");
-            }
         }
         UpdateNPCs();
     }

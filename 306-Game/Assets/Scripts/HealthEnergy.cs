@@ -9,7 +9,7 @@ public class HealthEnergy : MonoBehaviour {
     Stat energy;
 
     Animator anim;
-    bool isDead;
+    public bool isDead;
     bool damaged;
 
     // Use this for initialization
@@ -52,7 +52,7 @@ public class HealthEnergy : MonoBehaviour {
     {
         isDead = true;
 
-        anim.SetTrigger("Die");
+        anim.SetTrigger("Dead");
     }
 
     //increases the character's energy by "amount"

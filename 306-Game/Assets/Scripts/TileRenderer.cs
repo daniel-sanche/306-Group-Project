@@ -12,6 +12,9 @@ public class TileRenderer : MonoBehaviour {
 	 * breaks it into manageable chunks, and activates the chunks when needed
 	 **/
 
+	/*Nick change for pathfinding*/
+	public Grid A_;
+
 	public Vector2 NumChunks = new Vector2 ( 30, 30);
 	public Vector2 TilesPerChunk = new Vector2 (15, 10);
 	public int numBuildings = 30;
@@ -26,7 +29,7 @@ public class TileRenderer : MonoBehaviour {
 	private int maxX = 0;
 	private int minY = 0;
 	private int maxY = 0;
-
+	private int countframes;
 	/**
 	 * Called when the script is first initialized
 	 **/
@@ -34,31 +37,43 @@ public class TileRenderer : MonoBehaviour {
 		maxX = (int)TilesPerChunk.x;
 		maxY = (int)TilesPerChunk.y;
 		InitMap ();
+		foreach (TileChunk thisChunk in chunkMatrix) {
+			thisChunk.DisplayTiles ();
+		}
 	}
 
 	/**
 	 * Called on a continuous loop
 	 * Will check the current position of the camera, and render new chunks if necessary
 	 **/
+	Grid astar;
 	void Update(){
-		Vector3 newPos = this.transform.position;
-		if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
-			//changing active chunk of tiles
-			int chunkNumX = (int)Mathf.Floor (newPos.x / TilesPerChunk.x);
-			minX = chunkNumX * (int)TilesPerChunk.x;
-			maxX = (chunkNumX+1) * (int)TilesPerChunk.x;
-			int chunkNumY = (int)Mathf.Floor (newPos.y / TilesPerChunk.y);
-			minY = chunkNumY * (int)TilesPerChunk.y;
-			maxY = (chunkNumY+1) * (int)TilesPerChunk.y;
-			SetActiveChunk (chunkNumX, chunkNumY);
-		}
-	}
+		/* Nick Change, the astar needs to be activated after the gameboard appears.*/
+		if (countframes ==30) {
+			Grid astar = (Grid)Instantiate (A_);
 
-	/**
-	 * returns the matrix of TileChunks
-	 */
-	public TileChunk[,] GetChunkMatrix(){
-		return chunkMatrix;
+		}
+		/*
+		if (countframes == 50) {
+			foreach (TileChunk thisChunk in chunkMatrix) {
+				thisChunk.HideTiles ();
+			}
+		}
+		*/
+		countframes++;
+		Vector3 newPos = this.transform.position;
+		if (countframes > 50) {
+			if (!(newPos.x < maxX && newPos.x > minX && newPos.y < maxY && newPos.y > minY)) {
+				//changing active chunk of tiles
+				int chunkNumX = (int)Mathf.Floor (newPos.x / TilesPerChunk.x);
+				minX = chunkNumX * (int)TilesPerChunk.x;
+				maxX = (chunkNumX + 1) * (int)TilesPerChunk.x;
+				int chunkNumY = (int)Mathf.Floor (newPos.y / TilesPerChunk.y);
+				minY = chunkNumY * (int)TilesPerChunk.y;
+				maxY = (chunkNumY + 1) * (int)TilesPerChunk.y;
+				SetActiveChunk (chunkNumX, chunkNumY);
+			}
+		}
 	}
 		
 
@@ -87,7 +102,10 @@ public class TileRenderer : MonoBehaviour {
 	 * Calls on TileGenerator to create a map, then generates chunks from the map
 	 **/
 	private void InitMap(){
-		heading = new GameObject ("GameBoard").transform;
+
+		var gameboard = new GameObject ("GameBoard");
+		heading = gameboard.transform;
+
 		TileType[,] tileMap = TileGenerator.GenerateTileMap ((int)TilesPerChunk.x*(int)NumChunks.x, (int)TilesPerChunk.y*(int)NumChunks.y, numBuildings);
 		chunkMatrix = ChunksFromTileMap (tileMap, NumChunks, TilesPerChunk);
 	}
@@ -123,6 +141,10 @@ public class TileRenderer : MonoBehaviour {
 		}
 		ConnectChunks(chunkMat, numChunks);
 		return chunkMat;
+	}
+
+	public TileChunk[,] GetChunkMatrix(){
+		return chunkMatrix;
 	}
 
 	/**

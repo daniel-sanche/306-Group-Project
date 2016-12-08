@@ -1,10 +1,38 @@
 fileFormatVersion: 2
 guid: 450c64df95b564a4fadcdf173a55e04c
-timeCreated: 1475037792
+timeCreated: 1480616015
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - grass: {instanceID: 0}
+  - gravel: {instanceID: 0}
+  - water: {instanceID: 0}
+  - sand: {instanceID: 0}
+  - rock: {instanceID: 0}
+  - tree: {instanceID: 0}
+  - floor: {instanceID: 0}
+  - floorTop: {instanceID: 0}
+  - floorBottom: {instanceID: 0}
+  - floorLeft: {instanceID: 0}
+  - floorRight: {instanceID: 0}
+  - floorTL: {instanceID: 0}
+  - floorTR: {instanceID: 0}
+  - floorBL: {instanceID: 0}
+  - floorBR: {instanceID: 0}
+  - floorDoorL: {instanceID: 0}
+  - floorDoorR: {instanceID: 0}
+  - floorDoorT: {instanceID: 0}
+  - floorDoorB: {instanceID: 0}
+  - quickshot: {instanceID: 0}
+  - poison: {instanceID: 0}
+  - health: {instanceID: 0}
+  - energy: {instanceID: 0}
+  - club: {instanceID: 0}
+  - mallet: {instanceID: 0}
+  - slingshot: {instanceID: 0}
+  - sword: {instanceID: 0}
+  - enemy: {fileID: 1000014088309496, guid: cc995ff9cb87ce6479e7aa2b61914436, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
