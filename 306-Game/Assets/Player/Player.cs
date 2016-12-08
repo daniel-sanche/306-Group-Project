@@ -301,15 +301,15 @@ public class Player : MonoBehaviour {
 	private void handleEnergy(){
 		
 		if (healthEnergy.energy.CurrentVal <= 0f) {
-			if (Input.GetKeyDown (KeyCode.LeftShift))
-				healthEnergy.TakeDamage ((Time.deltaTime * energyLossRate * 2) / 10);
+			if (Input.GetKey (KeyCode.LeftShift))
+				healthEnergy.TakeDamage ((Time.deltaTime * energyLossRate * 2));
 			else
-				healthEnergy.TakeDamage (Time.deltaTime * energyLossRate / 10);
+				healthEnergy.TakeDamage (Time.deltaTime * energyLossRate);
 		} else {
 			if (Input.GetKeyDown (KeyCode.LeftShift))
-				healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate) / 10f);
+				healthEnergy.LoseEnergy (Time.deltaTime * energyLossRate * 2);
 			else
-				healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate * 2) / 10f);
+				healthEnergy.LoseEnergy ((Time.deltaTime * energyLossRate));
 		}
 	}
 

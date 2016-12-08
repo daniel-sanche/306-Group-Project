@@ -329,40 +329,29 @@ public class AIbanana : MonoBehaviour {
 		Invoke ("NewPathCd", 1f);
 
 	}
-	private float oldspeed;
-	public int atkforce=1200;
+	public float oldspeed;
 	public void Attack(){
 		if (!attacking) {
 			var point = new GameObject ().transform;
 			point.position = target;
-			/*
-			oldspeed = unitpath.speed;
+		
 			unitpath.target = point;
 			unitpath.speed = speed;
 			ChangePath ();
-			*/
-			Vector2 dir = target - (Vector2) transform.position;
-			dir = dir.normalized;
-			//dir.Scale(2);
-			rb.AddForce (dir * atkforce);
-
-
 
 			attacking = true;
-			unitpath.StopAllCoroutines ();
 			newpathcd = true;
-			Invoke ("NewPathCd", 1f);
 
-			Invoke ("AttackCD", 4f);
+			Invoke ("AttackCD", 2f);
 		}
 
 	}
 
 
 	private void AttackCD(){
-		//unitpath.speed = oldspeed;
+		unitpath.speed = oldspeed;
 		attacking = false;
-
+		newpathcd = false;
 
 	}
 
@@ -400,7 +389,6 @@ public class AIbanana : MonoBehaviour {
 	public bool AttackRangeCheck(){
 
 		if (dist < attackrange) {
-			target = (Vector2)player.position;
 			return true;
 		}
 		return false;
@@ -577,22 +565,26 @@ public class AIbanana : MonoBehaviour {
 		textballoon.enabled = false;
 		sayphrasecd = false;
 	}
-
-
-
-	/* Take damage from player attack*/
+		
 	private void TakeDamage(int dmg){
 		hp -= dmg;
-
+		StartCoroutine ("DamageFlash");
 		if (hp <= 0) {
 			Die ();	
 		}
 	}
 
+	/** Temporarily flashes red to indicate the pumpkin has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+	}
+
 	public float damage=5f;
 	public float force=1000f;
 
-	void OnCollisionEnter2D(Collision2D col){
+	void OnTriggerEnter2D(Collider2D col){
 
 
 		if (col.gameObject.tag == "Player" || col.gameObject.tag =="BOX") {
