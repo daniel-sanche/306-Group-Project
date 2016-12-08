@@ -336,6 +336,8 @@ public class FoobarAI : MonoBehaviour {
 
     }
 
+	public float attackCooldown;
+	
     public void Attack()
     {
         if (!attacking)
@@ -362,7 +364,7 @@ public class FoobarAI : MonoBehaviour {
             attacking = true;
             newpathcd = true;
 
-            Invoke("AttackCD", 3f);
+            Invoke("AttackCD", attackCooldown);
         }
 
     }
@@ -582,9 +584,16 @@ public class FoobarAI : MonoBehaviour {
 	public int hp = 5;
 	private void TakeDamage(int dmg){
 		hp -= dmg;
-
+		StartCoroutine ("DamageFlash");
 		if (hp <= 0) {
 			Die ();	
 		}
+	}
+
+	/** Temporarily flashes red to indicate the pumpkin has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
 	}
 }

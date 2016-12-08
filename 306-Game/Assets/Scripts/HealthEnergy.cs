@@ -3,10 +3,9 @@ using System.Collections;
 
 public class HealthEnergy : MonoBehaviour {
 
-    [SerializeField]
-    Stat health;
-    [SerializeField]
-    Stat energy;
+    public Stat health;
+
+    public Stat energy;
 
     Animator anim;
     public bool isDead;

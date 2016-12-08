@@ -9,6 +9,9 @@ public class Projectile : MonoBehaviour {
 	//The lifetime of the projectile
 	private float projectileLifetime = 1f;
 
+	//The projectile damage
+	private int damage;
+
 	//The direction the projectile travels
 	private Vector2 direction;
 
@@ -23,9 +26,10 @@ public class Projectile : MonoBehaviour {
 	}
 
 	//Initializes projectile with the given speed, direction, and death time
-	public void Initialize(float _speed, Vector2 _direction){
+	public void Initialize(float _speed, Vector2 _direction, int _damage){
 		speed = _speed;
 		direction = _direction;
+		damage = _damage;
 	}
 
 	//Destroys this projectile
@@ -34,10 +38,10 @@ public class Projectile : MonoBehaviour {
 	}
 
 	//If we collide with something
-	void OnCollisionEnter2D(Collision2D col){
-		if(col.gameObject.tag == "NPC")
-			col.rigidbody.AddForce (direction * speed);
-
-		Destroy (gameObject);
+	void OnTriggerEnter2D(Collider2D col){
+		if (col.gameObject.tag == "NPC") {
+			col.gameObject.SendMessage ("TakeDamage", damage);
+			Destroy (gameObject);
+		}
 	}
 }

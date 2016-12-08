@@ -6,7 +6,7 @@ public class AIcat : MonoBehaviour {
 
     UnitPath unitpath;
 
-
+	public int hp;
     public float randompointlimit = 20f;
     public int randombal_spawn = 50;
     public int randombal_strolloridle = 50;
@@ -469,5 +469,37 @@ public class AIcat : MonoBehaviour {
 	private void SayPhraseCD(){
 		textballoon.enabled = false;
 		sayphrasecd = false;
+	}
+
+	private void TakeDamage(int dmg){
+		hp -= dmg;
+		StartCoroutine ("DamageFlash");
+		if (hp <= 0) {
+			Die ();	
+		}
+	}
+
+
+	public Item[] dropList;
+
+	private void Die(){
+
+		GameObject dropPrefab = Resources.Load ("Pickup") as GameObject;
+		GameObject curDrop;
+
+		for (int i = 0; i < dropList.Length; i++) {
+			curDrop = GameObject.Instantiate (dropPrefab, transform.position, Quaternion.identity) as GameObject;
+			curDrop.GetComponent<Pickup> ().item = dropList [i];
+		}
+
+
+		Destroy (gameObject);
+	}
+
+	/** Temporarily flashes red to indicate the pumpkin has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
 	}
 }

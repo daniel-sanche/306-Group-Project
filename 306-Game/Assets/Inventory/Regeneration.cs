@@ -16,12 +16,12 @@ public class Regeneration : Item {
 
 	//Uses the regeneration item
 	public override void Use(){
-		if(healthRegen >= 0f)
+		if(healthRegen >= 0)
 			GameObject.FindGameObjectWithTag ("Player").SendMessage ("addHealth", healthRegen);
 		else
 			GameObject.FindGameObjectWithTag ("Player").SendMessage ("removeHealth", healthRegen * -1f);
 
-		if(energyRegen >= 0f)
+		if(energyRegen >= 0)
 			GameObject.FindGameObjectWithTag ("Player").SendMessage ("addEnergy", energyRegen);
 		else
 			GameObject.FindGameObjectWithTag ("Player").SendMessage ("removeEnergy", energyRegen * -1f);
