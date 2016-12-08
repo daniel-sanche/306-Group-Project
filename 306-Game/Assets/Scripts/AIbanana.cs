@@ -329,13 +329,12 @@ public class AIbanana : MonoBehaviour {
 		Invoke ("NewPathCd", 1f);
 
 	}
-	private float oldspeed;
+	public float oldspeed;
 	public void Attack(){
 		if (!attacking) {
 			var point = new GameObject ().transform;
 			point.position = target;
-
-			oldspeed = unitpath.speed;
+		
 			unitpath.target = point;
 			unitpath.speed = speed;
 			ChangePath ();
@@ -352,7 +351,7 @@ public class AIbanana : MonoBehaviour {
 	private void AttackCD(){
 		unitpath.speed = oldspeed;
 		attacking = false;
-		Invoke ("NewPathCd",0f);
+		newpathcd = false;
 
 	}
 
@@ -566,22 +565,26 @@ public class AIbanana : MonoBehaviour {
 		textballoon.enabled = false;
 		sayphrasecd = false;
 	}
-
-
-
-	/* Take damage from player attack*/
+		
 	private void TakeDamage(int dmg){
 		hp -= dmg;
-
+		StartCoroutine ("DamageFlash");
 		if (hp <= 0) {
 			Die ();	
 		}
 	}
 
+	/** Temporarily flashes red to indicate the pumpkin has taken damage */
+	private IEnumerator DamageFlash(){
+		GetComponent<SpriteRenderer> ().color = Color.red;
+		yield return new WaitForSeconds (0.1f);
+		GetComponent<SpriteRenderer> ().color = Color.white;
+	}
+
 	public float damage=5f;
 	public float force=1000f;
 
-	void OnCollisionEnter2D(Collision2D col){
+	void OnTriggerEnter2D(Collider2D col){
 
 
 		if (col.gameObject.tag == "Player" || col.gameObject.tag =="BOX") {
